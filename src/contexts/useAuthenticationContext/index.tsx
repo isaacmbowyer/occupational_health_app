@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { IProviderProps } from "../../entities/IProviderProps";
 import { ILoginData } from "../../entities/ILoginData";
+import { services } from "../../services";
 
 const AuthenticationContext = createContext({});
 
@@ -26,6 +27,30 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       email: data.email,
       password: data.password,
     }));
+  };
+
+  const handleResetState = () => {
+    setFormState(INITAL_STATE);
+  };
+
+  // ACTION METHODS
+  const handleLogin = async () => {
+    try {
+      _handleSetLoading(true);
+
+      const data = await services.post.authLogin({
+        email: formState.email,
+        password: formState.password,
+      });
+
+      handleSetLoginData({ email: "", password: "" });
+      setUser(data.user);
+    } catch (e: any) {
+      console.log("error");
+      handleResetState();
+    } finally {
+      _handleSetLoading(false);
+    }
   };
 };
 

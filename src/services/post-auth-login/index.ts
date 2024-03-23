@@ -1,5 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebase";
+import { ILoginData } from "../../entities/ILoginData";
 
 export const postAuthLogin: IPostAuthLoginService = async (payload) => {
   const data = await signInWithEmailAndPassword(
@@ -12,10 +13,5 @@ export const postAuthLogin: IPostAuthLoginService = async (payload) => {
 };
 
 interface IPostAuthLoginService {
-  (payload: IPayload): Promise<any>;
-}
-
-interface IPayload {
-  email: string;
-  password: string;
+  (payload: ILoginData): Promise<any>;
 }

@@ -31,6 +31,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
 
   const handleResetState = () => {
     setFormState(INITAL_STATE);
+    setUser({});
   };
 
   // ACTION METHODS
@@ -49,6 +50,19 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       console.log("error");
       handleResetState();
     } finally {
+      _handleSetLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      _handleSetLoading(true);
+
+      await services.post.authLogout();
+
+      // RESET STATE
+      handleResetState();
+    } catch (error: any) {
       _handleSetLoading(false);
     }
   };

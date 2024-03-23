@@ -2,6 +2,9 @@ import { createContext, useContext, useState } from "react";
 import { IProviderProps } from "../../entities/IProviderProps";
 import { ILoginData } from "../../entities/ILoginData";
 import { services } from "../../services";
+import { validateEmail } from "../../utils/validateEmail";
+import { VALIDATION_ERRORS } from "../../data/errors";
+import { validatePassword } from "../../utils/validatePassword";
 
 const AuthenticationContext = createContext({});
 
@@ -11,7 +14,7 @@ const INITAL_STATE: IAuthenticationContextFormState = {
   isLoading: false,
 };
 
-export const AuthenticationProvider = ({ children }: IProviderProps) => {
+export const AuthenticationContextProvider = ({ children }: IProviderProps) => {
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
   const [user, setUser] = useState({} as any);
@@ -66,6 +69,38 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       _handleSetLoading(false);
     }
   };
+
+  const emailError = validateEmail(formState.email)
+    ? ""
+    : VALIDATION_ERRORS.EMAIL;
+  const passwordError = validatePassword(formState.password)
+    ? ""
+    : VALIDATION_ERRORS.PASSWORD;
+
+  const isDisabled = !!emailError || !!passwordError;
+
+  return (
+    <AuthenticationContext.Provider
+      value={{
+        state: {
+          email: formState.email,
+          password: formState.password,
+          user: user,
+          isLoading: formState.isLoading,
+          isDisabled: isDisabled,
+          emailError: emailError,
+          passwordError: passwordError,
+        },
+        methods: {
+          handleLogin: handleLogin,
+          handleLogout: handleLogout,
+          handleResetState: handleResetState,
+        },
+      }}
+    >
+      {children}
+    </AuthenticationContext.Provider>
+  );
 };
 
 export const useAuthenticationContext = () => {

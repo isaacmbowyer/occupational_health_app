@@ -6,7 +6,7 @@ import { validateEmail } from "../../utils/validateEmail";
 import { VALIDATION_ERRORS } from "../../data/errors";
 import { validatePassword } from "../../utils/validatePassword";
 
-const AuthenticationContext = createContext({});
+const AuthenticationContext = createContext({} as IAuthenticationContext);
 
 const INITAL_STATE: IAuthenticationContextFormState = {
   email: "",
@@ -14,7 +14,7 @@ const INITAL_STATE: IAuthenticationContextFormState = {
   isLoading: false,
 };
 
-export const AuthenticationContextProvider = ({ children }: IProviderProps) => {
+export const AuthenticationProvider = ({ children }: IProviderProps) => {
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
   const [user, setUser] = useState({} as any);
@@ -106,3 +106,20 @@ export const AuthenticationContextProvider = ({ children }: IProviderProps) => {
 export const useAuthenticationContext = () => {
   return useContext(AuthenticationContext);
 };
+
+interface IAuthenticationContext {
+  state: {
+    email: string;
+    password: string;
+    user: any;
+    isLoading: boolean;
+    isDisabled: boolean;
+    emailError: string;
+    passwordError: string;
+  };
+  methods: {
+    handleLogin: () => Promise<void>;
+    handleLogout: () => Promise<void>;
+    handleResetState: () => void;
+  };
+}

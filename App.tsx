@@ -1,16 +1,25 @@
 import { config } from "@gluestack-ui/config";
-import { GluestackUIProvider } from "@gluestack-ui/themed";
+import { GluestackUIProvider, SafeAreaView } from "@gluestack-ui/themed";
+import { AuthenticationProvider } from "./src/contexts/useAuthenticationContext";
+import { AppNavigation } from "./src/components/modules/AppNavigation";
+import { Platform, StatusBar } from "react-native";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import { AuthenticationContextProvider } from "./src/contexts/useAuthenticationContext";
+
+const isAndorid = Platform.OS === "android";
 
 export default function App() {
   return (
     <>
-      <GluestackUIProvider config={config}>
-        <AuthenticationContextProvider>
-          <></>
-        </AuthenticationContextProvider>
-      </GluestackUIProvider>
+      <SafeAreaView
+        flex={1}
+        marginTop={isAndorid ? StatusBar.currentHeight : 0}
+      >
+        <GluestackUIProvider config={config}>
+          <AuthenticationProvider>
+            <AppNavigation />
+          </AuthenticationProvider>
+        </GluestackUIProvider>
+      </SafeAreaView>
       <ExpoStatusBar style="auto"></ExpoStatusBar>
     </>
   );

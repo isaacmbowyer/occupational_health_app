@@ -1,7 +1,7 @@
 import { Text as GluestackText } from "@gluestack-ui/themed";
 import { ReactNode } from "react";
 import { IColor } from "../../../entities/IColor";
-import { COLORS } from "../../../data/colors";
+import { colors } from "../../../data/colors";
 
 interface ITextProps {
   children: ReactNode;
@@ -18,7 +18,7 @@ const TextExtraSmall = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="2xs"
       fontFamily="sans-serif"
       bold={bold}
@@ -37,7 +37,7 @@ const TextSmall = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="sm"
       fontFamily="sans-serif"
       bold={bold}
@@ -56,7 +56,7 @@ const TextRegular = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="md"
       fontFamily="sans-serif"
       bold={bold}
@@ -75,7 +75,7 @@ const TextSubHeader = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="xl"
       fontFamily="sans-serif"
       bold={bold}
@@ -94,7 +94,7 @@ const TextHeader = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="2xl"
       fontFamily="sans-serif"
       bold={bold}
@@ -113,7 +113,7 @@ const TextTitle = ({
 }: ITextProps) => {
   return (
     <GluestackText
-      color={COLORS[color]}
+      color={colors[color]}
       size="3xl"
       fontFamily="sans-serif"
       bold={bold}

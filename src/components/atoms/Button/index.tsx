@@ -1,13 +1,13 @@
 import { ButtonIcon, ButtonText } from "@gluestack-ui/themed";
 import { Button as GluestackButton } from "@gluestack-ui/themed";
-import { COLORS } from "../../../data/colors";
-import { ReactNode } from "react";
+import { colors } from "../../../data/colors";
+import { IColor } from "../../../entities/IColor";
 
 interface IButtonProps {
   text: string;
   onPress: () => void;
   isDisabled?: boolean;
-  color?: "SKY_BLUE";
+  color?: IColor;
   icon?: any;
 }
 
@@ -15,7 +15,7 @@ const ButtonSolid = ({
   text,
   onPress,
   isDisabled = false,
-  color = "SKY_BLUE",
+  color = "sky_blue",
   icon,
 }: IButtonProps) => {
   return (
@@ -23,7 +23,7 @@ const ButtonSolid = ({
       size="xl"
       variant="solid"
       borderRadius="$full"
-      backgroundColor={COLORS[color]}
+      backgroundColor={colors[color]}
       isDisabled={isDisabled}
       isFocusVisible={false}
       width="$full"
@@ -42,7 +42,7 @@ const ButtonOutline = ({
   text,
   onPress,
   isDisabled = false,
-  color = "SKY_BLUE",
+  color = "sky_blue",
   icon,
 }: IButtonProps) => {
   return (
@@ -55,14 +55,14 @@ const ButtonOutline = ({
       isFocusVisible={false}
       width="$full"
       borderWidth="$1"
-      borderColor={COLORS[color]}
+      borderColor={colors[color]}
       onPress={onPress}
     >
-      <ButtonText width="95%" textAlign="center" color={COLORS[color]}>
+      <ButtonText width="95%" textAlign="center" color={colors[color]}>
         {text}
       </ButtonText>
 
-      {icon && <ButtonIcon as={icon} color={COLORS[color]} />}
+      {icon && <ButtonIcon as={icon} color={colors[color]} />}
     </GluestackButton>
   );
 };

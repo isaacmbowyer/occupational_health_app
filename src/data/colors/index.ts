@@ -1,6 +1,6 @@
-export const COLORS = {
-  WHITE: "#FFFFFF",
-  GRAY: "#3807B7B",
-  BLACK: "#000000",
-  SKY_BLUE: "#758BFD",
+export const colors = {
+  white: "#FFFFFF",
+  gray: "#807B7B",
+  black: "#000000",
+  sky_blue: "#758BFD",
 };

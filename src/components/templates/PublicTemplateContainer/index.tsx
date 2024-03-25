@@ -1,8 +1,8 @@
-import { SafeAreaView, VStack, Center, HStack } from "@gluestack-ui/themed";
+import { SafeAreaView, VStack, HStack } from "@gluestack-ui/themed";
 import { ImageLink } from "../../atoms/ImageLink";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { COLORS } from "../../../data/colors";
+import { colors } from "../../../data/colors";
 import { Text } from "../../atoms/Text";
 import { ReactNode } from "react";
 
@@ -16,7 +16,7 @@ export const PublicTemplateContainer = ({
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return (
-    <SafeAreaView flex={1} backgroundColor={COLORS.WHITE}>
+    <SafeAreaView flex={1} backgroundColor={colors.white}>
       <VStack flex={1} alignItems="center" padding={"$8"} space="xl">
         <VStack alignItems="center" space="md">
           <ImageLink

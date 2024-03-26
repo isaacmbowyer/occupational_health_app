@@ -7,11 +7,13 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <PublicTemplateContainer
       mainSection={
-        <VStack flex={1} alignItems="center" width="$full">
-          <Text.Regular textAlign="center" color="gray" bold>
-            Self-manage your Long-COVID Symptoms for a smoother reintegration to
-            the workplace
-          </Text.Regular>
+        <VStack>
+          <VStack marginBottom={"$20"}>
+            <Text.Regular textAlign="center" color="gray" bold>
+              Self-manage your Long-COVID Symptoms for a smoother reintegration
+              to the workplace
+            </Text.Regular>
+          </VStack>
 
           <HomePageActions />
         </VStack>

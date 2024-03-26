@@ -7,13 +7,12 @@ import {
 import { Input as GluestackInput } from "@gluestack-ui/themed";
 import { Label } from "../Label";
 import { InputSlot } from "@gluestack-ui/themed";
-import { useEffect, useState } from "react";
 import { LabelError } from "../LabelError";
 
 interface IInputProps {
   label: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (e: any) => void;
   isDisabled?: boolean;
   icon?: any;
   helpText?: string;

@@ -1,11 +1,11 @@
 import { InputField, InputIcon, VStack } from "@gluestack-ui/themed";
 import { Input as GluestackInput } from "@gluestack-ui/themed";
-import { Label } from "../Label";
 import { InputSlot } from "@gluestack-ui/themed";
 import { useState } from "react";
 import { ICONS } from "../../../data/icons";
 import { FormControl } from "@gluestack-ui/themed";
 import { LabelError } from "../LabelError";
+import { Label } from "../Label";
 
 interface IInputPasswordProps {
   label: string;
@@ -37,14 +37,12 @@ export const InputPassword = ({
           <InputField
             type={showPassword ? "text" : "password"}
             value={value}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
 
-          {icon && (
-            <InputSlot pr="$3" onPress={handleShowPassword}>
-              <InputIcon as={showPassword ? ICONS.EYE : ICONS.EYE_OFF} />
-            </InputSlot>
-          )}
+          <InputSlot pr="$3" onPress={handleShowPassword}>
+            <InputIcon as={showPassword ? ICONS.EYE : ICONS.EYE_OFF} />
+          </InputSlot>
         </GluestackInput>
 
         <LabelError>{helpText}</LabelError>

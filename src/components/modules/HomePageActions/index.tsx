@@ -8,7 +8,7 @@ export const HomePageActions = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return (
-    <VStack w="$full" h="$full" justifyContent="center" space="lg">
+    <VStack space="2xl">
       <Button.Solid
         text="Log In"
         onPress={() => navigation.navigate("Log In")}

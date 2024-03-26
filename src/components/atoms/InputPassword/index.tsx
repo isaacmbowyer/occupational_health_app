@@ -29,7 +29,7 @@ export const InputPassword = ({
   };
 
   return (
-    <VStack width="$full" space="xs">
+    <VStack space="xs">
       <FormControl isDisabled={isDisabled} isInvalid={!!helpText}>
         <Label>{label}</Label>
 
@@ -40,9 +40,11 @@ export const InputPassword = ({
             onChange={(e) => onChange(e)}
           />
 
-          <InputSlot pr="$3" onPress={handleShowPassword}>
-            <InputIcon as={showPassword ? ICONS.EYE : ICONS.EYE_OFF} />
-          </InputSlot>
+          {icon && (
+            <InputSlot pr="$3" onPress={handleShowPassword}>
+              <InputIcon as={showPassword ? ICONS.EYE : ICONS.EYE_OFF} />
+            </InputSlot>
+          )}
         </GluestackInput>
 
         <LabelError>{helpText}</LabelError>

@@ -9,7 +9,7 @@ interface IImageLinkProps {
 export const ImageLink = ({ image, onPress }: IImageLinkProps) => {
   return (
     <Pressable onPress={onPress}>
-      <Image source={image} height={190} width={160} alt="image-link" />
+      <Image source={image} height={160} width={140} alt="image-link" />
     </Pressable>
   );
 };

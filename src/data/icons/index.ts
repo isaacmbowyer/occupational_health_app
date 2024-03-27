@@ -1,5 +1,7 @@
+import { ChevronDownIcon } from "@gluestack-ui/themed";
 import {
   AlertCircleIcon,
+  CalendarDaysIcon,
   CheckIcon,
   CloseIcon,
   EyeIcon,
@@ -16,4 +18,6 @@ export const ICONS = {
   ALERT: AlertCircleIcon,
   CLOSE: CloseIcon,
   CHECK: CheckIcon,
+  CALANDER: CalendarDaysIcon,
+  CHEVRON: ChevronDownIcon,
 };

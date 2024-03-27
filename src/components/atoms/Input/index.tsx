@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 interface IInputProps {
   label: string;
   value: string;
-  onChange: (e: any) => void;
+  onChange?: (e: any) => void;
   isDisabled?: boolean;
   icon?: any;
   helpText?: string;
@@ -31,7 +31,7 @@ export const Input = ({
 
   const handleOnChange = (e) => {
     setIsTouched(true);
-    onChange(e);
+    onChange && onChange(e);
   };
 
   useEffect(() => {
@@ -45,10 +45,10 @@ export const Input = ({
 
   return (
     <VStack space="xs">
-      <FormControl isDisabled={isDisabled} isInvalid={!!helpText}>
+      <FormControl isReadOnly={isDisabled} isInvalid={!!helpText}>
         <Label>{label}</Label>
 
-        <GluestackInput variant="underlined">
+        <GluestackInput variant="underlined" size="sm">
           <InputField type="text" value={value} onChange={handleOnChange} />
 
           {icon && (

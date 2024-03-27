@@ -12,7 +12,7 @@ export const AppNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Log In"
+        initialRouteName="Home"
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Log In" component={LogInScreen} />

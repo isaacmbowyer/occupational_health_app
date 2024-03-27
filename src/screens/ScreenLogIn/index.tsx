@@ -45,10 +45,22 @@ export const LogInScreen = ({ navigation }) => {
             />
           </VStack>
 
-          <HStack width="$full" alignItems="center" backgroundColor="pink">
-            <Text.Small color="gray">Forgot your credentials?</Text.Small>
-            {/* <Link bold screen="Reset Password" label="Reset Password" /> */}
-          </HStack>
+          <VStack
+            alignItems="center"
+            justifyContent="center"
+            marginTop="$1"
+            space="md"
+          >
+            <HStack width="$full" alignItems="center" justifyContent="center">
+              <Text.Small color="gray">Forgot your credentials? </Text.Small>
+              <Link.Small
+                bold
+                label="Reset Password"
+                screen="Home"
+              ></Link.Small>
+            </HStack>
+            <Link.Regular label="Return to Home" screen="Home"></Link.Regular>
+          </VStack>
         </VStack>
       }
     />

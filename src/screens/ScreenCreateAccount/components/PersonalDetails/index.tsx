@@ -42,9 +42,9 @@ export const PersonalDetails = () => {
         selectedOption=""
         label="Gender"
         items={[
-          { name: "Male", id: "1" },
-          { name: "Female", id: "2" },
-          { name: "Other", id: "3" },
+          { name: "Male", id: 1 },
+          { name: "Female", id: 2 },
+          { name: "Other", id: 3 },
         ]}
       />
 

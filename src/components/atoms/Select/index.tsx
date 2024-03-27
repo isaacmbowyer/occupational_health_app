@@ -20,7 +20,7 @@ import { LabelError } from "../LabelError";
 import { getOptionName } from "../../../utils/getOptionName";
 
 interface ISelectProps {
-  selectedOption: string;
+  selectedOption: number;
   label: string;
   items: IOption[];
   isDisabled?: boolean;

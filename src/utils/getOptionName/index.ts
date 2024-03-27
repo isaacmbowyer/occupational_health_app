@@ -8,5 +8,5 @@ export const getOptionName: IGetOptionNameUtil = (items, id) => {
 };
 
 interface IGetOptionNameUtil {
-  (items: IOption[], value: string): string;
+  (items: IOption[], value: number): string;
 }

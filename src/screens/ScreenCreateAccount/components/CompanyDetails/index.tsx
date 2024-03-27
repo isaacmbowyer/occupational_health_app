@@ -18,22 +18,22 @@ export const CompanyDetails = () => {
       />
 
       <Select
-        selectedOption=""
+        selectedOption={null}
         label="Country"
         items={[
-          { name: "United Kingdom", id: "1" },
-          { name: "United States", id: "2" },
-          { name: "France", id: "3" },
+          { name: "United Kingdom", id: 1 },
+          { name: "United States", id: 2 },
+          { name: "France", id: 3 },
         ]}
       />
 
       <Select
-        selectedOption=""
+        selectedOption={null}
         label="Industry"
         items={[
-          { name: "Legal", id: "1" },
-          { name: "Lesiure/Toursim", id: "2" },
-          { name: "Gaming", id: "3" },
+          { name: "Legal", id: 1 },
+          { name: "Lesiure/Toursim", id: 2 },
+          { name: "Gaming", id: 3 },
         ]}
       />
     </VStack>

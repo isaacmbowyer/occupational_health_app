@@ -1,4 +1,4 @@
 export interface IOption {
-  id: string;
+  id: number;
   name: string;
 }

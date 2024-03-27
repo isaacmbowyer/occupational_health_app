@@ -95,6 +95,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
           handleLogin: handleLogin,
           handleLogout: handleLogout,
           handleResetState: handleResetState,
+          handleSetLoginData: handleSetLoginData,
         },
       }}
     >
@@ -121,5 +122,6 @@ interface IAuthenticationContext {
     handleLogin: () => Promise<void>;
     handleLogout: () => Promise<void>;
     handleResetState: () => void;
+    handleSetLoginData: (data: ILoginData) => void;
   };
 }

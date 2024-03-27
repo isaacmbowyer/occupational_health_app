@@ -12,9 +12,7 @@ export const LabelError = ({ children }: ILabelErrorProps) => {
   return (
     <FormControlError>
       <FormControlErrorIcon as={ICONS.ALERT} />
-      <FormControlErrorText>
-        At least 6 characters are required.
-      </FormControlErrorText>
+      <FormControlErrorText>{children}</FormControlErrorText>
     </FormControlError>
   );
 };

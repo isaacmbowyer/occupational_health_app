@@ -17,10 +17,10 @@ import { IOption } from "../../../entities/IOption";
 import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
-import { getLabelFromValue } from "../../../utils/getLabelFromValue";
+import { getOptionName } from "../../../utils/getOptionName";
 
 interface ISelectProps {
-  value: string;
+  selectedOption: string;
   label: string;
   items: IOption[];
   isDisabled?: boolean;
@@ -28,7 +28,7 @@ interface ISelectProps {
 }
 
 export const Select = ({
-  value,
+  selectedOption,
   label,
   items,
   isDisabled = false,
@@ -57,7 +57,7 @@ export const Select = ({
         <SelectTrigger variant="underlined" size="sm">
           <SelectInput
             placeholder="Select"
-            value={getLabelFromValue(items, value)}
+            value={getOptionName(items, selectedOption)}
             onChange={handleOnChange}
           />
           <SelectIcon mr="$3">
@@ -71,11 +71,7 @@ export const Select = ({
               <SelectDragIndicator />
             </SelectDragIndicatorWrapper>
             {items.map((item) => (
-              <SelectItem
-                label={item.label}
-                value={item.value}
-                key={item.value}
-              />
+              <SelectItem label={item.name} value={item.id} key={item.id} />
             ))}
           </SelectContent>
         </SelectPortal>

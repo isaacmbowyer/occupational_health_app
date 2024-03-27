@@ -39,12 +39,12 @@ export const PersonalDetails = () => {
       <DatePicker label="Date of Birth" date={date} onChange={onChange} />
 
       <Select
-        value=""
+        selectedOption=""
         label="Gender"
         items={[
-          { label: "Male", value: "1" },
-          { label: "Female", value: "2" },
-          { label: "Other", value: "3" },
+          { name: "Male", id: "1" },
+          { name: "Female", id: "2" },
+          { name: "Other", id: "3" },
         ]}
       />
 

@@ -5,6 +5,7 @@ import { services } from "../../services";
 import { validateEmail } from "../../utils/validateEmail";
 import { VALIDATION_ERRORS } from "../../data/errors";
 import { validatePassword } from "../../utils/validatePassword";
+import { useCustomToast } from "../../hooks/useCustomToast";
 
 const AuthenticationContext = createContext({} as IAuthenticationContext);
 
@@ -15,6 +16,8 @@ const INITAL_STATE: IAuthenticationContextFormState = {
 };
 
 export const AuthenticationProvider = ({ children }: IProviderProps) => {
+  const toast = useCustomToast();
+
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
   const [user, setUser] = useState({} as any);
@@ -50,7 +53,9 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       handleSetLoginData({ email: "", password: "" });
       setUser(data.user);
     } catch (e: any) {
-      console.log("error");
+      toast.errorToast(
+        "Unable to login. Please ensure your credentials are correct"
+      );
       handleResetState();
     } finally {
       _handleSetLoading(false);
@@ -66,6 +71,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       // RESET STATE
       handleResetState();
     } catch (error: any) {
+      toast.errorToast("Unable to logout. Try again later");
       _handleSetLoading(false);
     }
   };

@@ -7,13 +7,16 @@ import { InputPassword } from "../../components/atoms/InputPassword";
 import { Button } from "../../components/atoms/Button";
 import { HStack } from "@gluestack-ui/themed";
 import { Link } from "../../components/atoms/Link";
+import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 
 export const LogInScreen = ({ navigation }) => {
+  const { state, methods } = useAuthenticationContext();
+
   return (
     <PublicTemplateContainer
       mainSection={
         <VStack>
-          <VStack space="xs" marginBottom="$8">
+          <VStack space="xs" marginBottom="$4">
             <Text.Header color="sky_blue">Log In</Text.Header>
             <Text.Regular color="gray">
               Enter your credentials below
@@ -23,25 +26,33 @@ export const LogInScreen = ({ navigation }) => {
           <VStack space="xl">
             <Input
               label="Email"
-              value="text"
+              value={state.email}
               icon={ICONS.EMAIL}
-              helpText=""
-              onChange={(e) => console.log(e.nativeEvent.text)}
-              isDisabled={false}
+              helpText={state.emailError}
+              onChange={(e) => {
+                methods.handleSetLoginData({
+                  email: e.nativeEvent.text,
+                  password: state.password,
+                });
+              }}
             />
 
             <InputPassword
               label="Password"
-              value="test"
-              helpText=""
-              onChange={(e) => console.log(e.nativeEvent.text)}
-              isDisabled={false}
+              value={state.password}
+              helpText={state.passwordError}
+              onChange={(e) => {
+                methods.handleSetLoginData({
+                  email: state.email,
+                  password: e.nativeEvent.text,
+                });
+              }}
             />
 
             <Button.Solid
               text="Log In"
-              onPress={() => console.log("Submitted")}
-              isDisabled={false}
+              onPress={methods.handleLogin}
+              isDisabled={state.isDisabled}
             />
           </VStack>
 

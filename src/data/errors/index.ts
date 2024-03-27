@@ -1,7 +1,5 @@
-const EMAIL_ERROR =
-  "The email address you provided is invalid. Please enter a valid email address.";
-const PASSWORD_ERROR =
-  "Your password must be at least 12 characters long, and include a lower case letter (a-z), an upper case letter (A-Z), a digit (0-9) and a symbol (e.g. @).";
+const EMAIL_ERROR = "Please enter a valid email address";
+const PASSWORD_ERROR = "Please enter a strong password";
 const PASSWORD_CONFIRM_ERROR =
   "The passwords you entered do not match. Please enter the same password in both fields.";
 

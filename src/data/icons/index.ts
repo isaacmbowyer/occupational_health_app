@@ -1,5 +1,7 @@
 import {
   AlertCircleIcon,
+  CheckIcon,
+  CloseIcon,
   EyeIcon,
   EyeOffIcon,
   MailIcon,
@@ -12,4 +14,6 @@ export const ICONS = {
   EYE: EyeIcon,
   EYE_OFF: EyeOffIcon,
   ALERT: AlertCircleIcon,
+  CLOSE: CloseIcon,
+  CHECK: CheckIcon,
 };

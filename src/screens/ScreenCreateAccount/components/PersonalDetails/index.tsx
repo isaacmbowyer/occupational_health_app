@@ -16,9 +16,7 @@ export const PersonalDetails = () => {
 
   return (
     <VStack space="xl">
-      <VStack>
-        <Text.Regular color="gray">1. Personal Details</Text.Regular>
-      </VStack>
+      <Text.Regular color="gray">1. Personal Details</Text.Regular>
 
       <Input
         label="First Name"

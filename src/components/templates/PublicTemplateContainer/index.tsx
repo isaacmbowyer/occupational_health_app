@@ -14,10 +14,12 @@ import { colors } from "../../../data/colors";
 
 interface IPublicTemplateContainerProps {
   mainSection: ReactNode;
+  scrollable?: boolean;
 }
 
 export const PublicTemplateContainer = ({
   mainSection,
+  scrollable = false,
 }: IPublicTemplateContainerProps) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -57,7 +59,7 @@ export const PublicTemplateContainer = ({
     >
       <ScrollView
         ref={scrollViewRef}
-        scrollEnabled={false}
+        scrollEnabled={scrollable}
         keyboardShouldPersistTaps="handled"
       >
         <KeyboardAvoidingView behaviour="padding">

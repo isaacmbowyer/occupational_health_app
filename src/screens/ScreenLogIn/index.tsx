@@ -10,6 +10,7 @@ import { Link } from "../../components/atoms/Link";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 
 export const LogInScreen = ({ navigation }) => {
+  // AUTH
   const { state, methods } = useAuthenticationContext();
 
   return (

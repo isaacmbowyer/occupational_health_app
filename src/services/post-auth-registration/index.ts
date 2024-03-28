@@ -1,7 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { IOption } from "../../entities/IOption";
-import { formatDate } from "../../utils/formatDate";
 import { addDoc, collection } from "firebase/firestore/lite";
 
 export const postAuthRegistration: IPostAuthRegistrationService = async (
@@ -13,7 +12,6 @@ export const postAuthRegistration: IPostAuthRegistrationService = async (
     props?.password
   );
 
-  const date = formatDate(props?.dateOfBirth);
   const userId = user?.uid;
 
   await addDoc(collection(db, "users"), {
@@ -21,11 +19,13 @@ export const postAuthRegistration: IPostAuthRegistrationService = async (
     firstName: props?.firstName,
     lastName: props?.lastName,
     companyName: props?.companyName,
-    dateOfBirth: date,
+    dateOfBirth: props?.dateOfBirth,
     gender: props?.gender?.name,
     country: props?.country?.name,
     industry: props?.industry?.name,
   });
+
+  return user;
 };
 
 interface IPostAuthLoginServiceProps {

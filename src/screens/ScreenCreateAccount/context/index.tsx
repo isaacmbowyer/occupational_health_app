@@ -70,7 +70,7 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
-      await services.post.authRegistration({
+      const user = await services.post.authRegistration({
         email: formState?.email,
         password: formState?.password,
         firstName: formState?.firstName,
@@ -82,12 +82,11 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
         country: formState?.country,
       });
 
-      _handleResetState();
       toast.successToast("Account created. You can now Log In");
       navigation.navigate("Log In");
+      _handleResetState();
     } catch (e: any) {
       toast.errorToast("Unable to create account. Try again later");
-      _handleResetState();
     } finally {
       _handleSetLoading(false);
     }

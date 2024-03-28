@@ -2,39 +2,55 @@ import { VStack } from "@gluestack-ui/themed";
 import { Text } from "../../../../components/atoms/Text";
 import { Input } from "../../../../components/atoms/Input";
 import { Select } from "../../../../components/atoms/Select";
+import { IOption } from "../../../../entities/IOption";
+import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
+import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
 
-export const CompanyDetails = () => {
+interface ICompanyDetailsProps {
+  name: string;
+  country: IOption;
+  industry: IOption;
+  nameError: string;
+  countryOptions: IOption[];
+  industryOptions: IOption[];
+  handleOnChange: (
+    key: ICreateAccountStateKey,
+    value: ICreateAccountStateKeyValue
+  ) => void;
+}
+
+export const CompanyDetails = ({
+  name,
+  country,
+  industry,
+  nameError,
+  countryOptions,
+  industryOptions,
+  handleOnChange,
+}: ICompanyDetailsProps) => {
   return (
     <VStack space="xl">
       <Text.Regular color="gray">3. Company Details</Text.Regular>
 
       <Input
         label="Name"
-        value=""
-        helpText=""
-        onChange={(e) => {
-          console.log(e.nativeEvent.text);
-        }}
+        value={name}
+        helpText={nameError}
+        onChange={(e) => handleOnChange("companyName", e.nativeEvent.text)}
       />
 
       <Select
-        value=""
+        selectedOption={country}
         label="Country"
-        items={[
-          { label: "United Kingdom", value: "1" },
-          { label: "United States", value: "2" },
-          { label: "France", value: "3" },
-        ]}
+        items={countryOptions}
+        onChange={(value) => handleOnChange("country", value)}
       />
 
       <Select
-        value=""
+        selectedOption={industry}
         label="Industry"
-        items={[
-          { label: "Legal", value: "1" },
-          { label: "Lesiure/Toursim", value: "2" },
-          { label: "Gaming", value: "3" },
-        ]}
+        items={industryOptions}
+        onChange={(value) => handleOnChange("industry", value)}
       />
     </VStack>
   );

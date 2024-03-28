@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { IProviderProps } from "../../entities/IProviderProps";
 import { ILoginData } from "../../entities/ILoginData";
 import { services } from "../../services";
@@ -20,7 +20,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
 
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
-  const [user, setUser] = useState({} as any);
 
   // STATE METHODS
   const _handleSetLoading = (loadingState: boolean) => {
@@ -35,11 +34,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
     }));
   };
 
-  const handleResetState = () => {
-    setFormState(INITAL_STATE);
-    setUser({});
-  };
-
   // ACTION METHODS
   const handleLogin = async () => {
     try {
@@ -51,12 +45,10 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       });
 
       handleSetLoginData({ email: "", password: "" });
-      setUser(data.user);
     } catch (e: any) {
       toast.errorToast(
         "Unable to login. Please ensure your credentials are correct"
       );
-      handleResetState();
     } finally {
       _handleSetLoading(false);
     }
@@ -69,9 +61,10 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       await services.post.authLogout();
 
       // RESET STATE
-      handleResetState();
+      handleSetLoginData({ email: "", password: "" });
     } catch (error: any) {
       toast.errorToast("Unable to logout. Try again later");
+    } finally {
       _handleSetLoading(false);
     }
   };
@@ -91,7 +84,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
         state: {
           email: formState.email,
           password: formState.password,
-          user: user,
           isLoading: formState.isLoading,
           isDisabled: isDisabled,
           emailError: emailError,
@@ -100,7 +92,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
         methods: {
           handleLogin: handleLogin,
           handleLogout: handleLogout,
-          handleResetState: handleResetState,
           handleSetLoginData: handleSetLoginData,
         },
       }}
@@ -118,7 +109,6 @@ interface IAuthenticationContext {
   state: {
     email: string;
     password: string;
-    user: any;
     isLoading: boolean;
     isDisabled: boolean;
     emailError: string;
@@ -127,7 +117,6 @@ interface IAuthenticationContext {
   methods: {
     handleLogin: () => Promise<void>;
     handleLogout: () => Promise<void>;
-    handleResetState: () => void;
     handleSetLoginData: (data: ILoginData) => void;
   };
 }

@@ -4,58 +4,76 @@ import { Input } from "../../../../components/atoms/Input";
 import { DatePicker } from "../../../../components/atoms/DatePicker";
 import { Select } from "../../../../components/atoms/Select";
 import { ICONS } from "../../../../data/icons";
-import { useState } from "react";
+import { IOption } from "../../../../entities/IOption";
+import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
+import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
 
-export const PersonalDetails = () => {
-  const [date, setDate] = useState(new Date());
+interface IPersonalDetailsProps {
+  firstName: string;
+  lastName: string;
+  email: string;
+  date: Date;
+  gender: IOption;
+  firstNameError: string;
+  lastNameError: string;
+  emailError: string;
+  genderOptions: IOption[];
+  handleOnChange: (
+    key: ICreateAccountStateKey,
+    value: ICreateAccountStateKeyValue
+  ) => void;
+}
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-  };
-
+export const PersonalDetails = ({
+  firstName,
+  lastName,
+  email,
+  date,
+  gender,
+  firstNameError,
+  lastNameError,
+  emailError,
+  genderOptions,
+  handleOnChange,
+}: IPersonalDetailsProps) => {
   return (
     <VStack space="xl">
       <Text.Regular color="gray">1. Personal Details</Text.Regular>
 
       <Input
         label="First Name"
-        value=""
-        helpText=""
-        onChange={(e) => {
-          console.log(e.nativeEvent.text);
-        }}
+        value={firstName}
+        helpText={firstNameError}
+        onChange={(e) => handleOnChange("firstName", e.nativeEvent.text)}
       />
 
       <Input
         label="Last Name"
-        value=""
-        helpText=""
-        onChange={(e) => {
-          console.log(e.nativeEvent.text);
-        }}
+        value={lastName}
+        helpText={lastNameError}
+        onChange={(e) => handleOnChange("lastName", e.nativeEvent.text)}
       />
 
-      <DatePicker label="Date of Birth" date={date} onChange={onChange} />
+      <DatePicker
+        label="Date of Birth"
+        date={date}
+        onChange={(event, newDate) => handleOnChange("birthDate", newDate)}
+        maxDate={new Date()}
+      />
 
       <Select
-        value=""
+        selectedOption={gender}
         label="Gender"
-        items={[
-          { label: "Male", value: "1" },
-          { label: "Female", value: "2" },
-          { label: "Other", value: "3" },
-        ]}
+        items={genderOptions}
+        onChange={(value) => handleOnChange("gender", value)}
       />
 
       <Input
         label="Email"
-        value=""
-        helpText=""
+        value={email}
+        helpText={emailError}
         icon={ICONS.EMAIL}
-        onChange={(e) => {
-          console.log(e.nativeEvent.text);
-        }}
+        onChange={(e) => handleOnChange("email", e.nativeEvent.text)}
       />
     </VStack>
   );

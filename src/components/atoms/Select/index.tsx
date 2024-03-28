@@ -10,6 +10,7 @@ import {
   SelectDragIndicatorWrapper,
   SelectDragIndicator,
   SelectItem,
+  SelectScrollView,
   Icon,
 } from "@gluestack-ui/themed";
 import { ICONS } from "../../../data/icons";
@@ -17,23 +18,28 @@ import { IOption } from "../../../entities/IOption";
 import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
-import { getLabelFromValue } from "../../../utils/getLabelFromValue";
+import { SelectFlatList } from "@gluestack-ui/themed";
+import { getOptionNameFromId } from "../../../utils/getOptionNameFromId";
 
 interface ISelectProps {
-  value: string;
+  selectedOption: IOption;
   label: string;
   items: IOption[];
   isDisabled?: boolean;
   helpText?: string;
+  onChange: (value: IOption) => void;
 }
 
 export const Select = ({
-  value,
+  onChange,
+  selectedOption,
   label,
   items,
   isDisabled = false,
   helpText,
 }: ISelectProps) => {
+  const defaultValue = selectedOption?.name;
+
   const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
@@ -45,21 +51,20 @@ export const Select = ({
 
   const isTouchedAndHasHelpText = isTouched && helpText;
 
-  const handleOnChange = (e) => {
-    setIsTouched(true);
-    console.log(e);
+  const _handleOnChange = (value: string) => {
+    const selectedName = getOptionNameFromId(items, +value);
+    onChange({ id: +value, name: selectedName });
   };
 
   return (
     <FormControl isReadOnly={isDisabled} isInvalid={!!helpText}>
       <Label>{label}</Label>
-      <GluestackSelect>
+      <GluestackSelect
+        selectedValue={defaultValue}
+        onValueChange={_handleOnChange}
+      >
         <SelectTrigger variant="underlined" size="sm">
-          <SelectInput
-            placeholder="Select"
-            value={getLabelFromValue(items, value)}
-            onChange={handleOnChange}
-          />
+          <SelectInput placeholder="Select" />
           <SelectIcon mr="$3">
             <Icon as={ICONS.CHEVRON} />
           </SelectIcon>
@@ -67,16 +72,15 @@ export const Select = ({
         <SelectPortal>
           <SelectBackdrop />
           <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            {items.map((item) => (
-              <SelectItem
-                label={item.label}
-                value={item.value}
-                key={item.value}
-              />
-            ))}
+            <SelectScrollView maxHeight="200px">
+              {items.map((item) => (
+                <SelectItem
+                  label={item.name}
+                  value={item.id.toString()}
+                  key={item.id}
+                />
+              ))}
+            </SelectScrollView>
           </SelectContent>
         </SelectPortal>
       </GluestackSelect>

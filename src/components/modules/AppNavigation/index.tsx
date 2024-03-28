@@ -1,14 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { auth } from "../../../config/firebase";
 import { PrivateNavigation } from "../../organisms/PrivateNavigation";
 import { PublicNavigation } from "../../organisms/PublicNavigation";
+import { useAuthenticationContext } from "../../../contexts/useAuthenticationContext";
 
 export const AppNavigation = () => {
-  const isAuthenticated = !!auth?.currentUser?.uid;
+  const { state } = useAuthenticationContext();
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <PrivateNavigation /> : <PublicNavigation />}
+      {state?.isAuthenticated ? <PrivateNavigation /> : <PublicNavigation />}
     </NavigationContainer>
   );
 };

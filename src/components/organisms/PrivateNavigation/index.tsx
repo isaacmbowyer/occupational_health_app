@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../../../data/colors";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { SymptomsScreen } from "../../../screens/ScreenAppSymptoms";
 import { SettingsScreen } from "../../../screens/ScreenAppSettings";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const TAB_ICON = {
-  Symptoms: "self_improvement",
+  Symptoms: "accessibility-outline",
   Settings: "settings",
 };
 
@@ -16,7 +16,7 @@ const createScreenOptions = ({ route }) => {
     tabBarIcon: ({ size, color }) => (
       <Icon name={iconName} size={size} color={color} />
     ),
-    activeTintColor: colors.sky_blue,
+    activeTintColor: colors.black,
     inactiveTintColor: colors.muted,
   };
 };
@@ -25,7 +25,26 @@ export const PrivateNavigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator screenOptions={createScreenOptions}>
+    <Tab.Navigator
+      initialRouteName="Symptoms"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Symptoms") {
+            iconName = "accessibility-outline";
+          } else if (route.name === "Settings") {
+            iconName = "settings";
+          }
+
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: colors.dark_blue,
+        tabBarInactiveTintColor: colors.gray,
+        headerTitleAlign: "center",
+      })}
+    >
       <Tab.Screen name="Symptoms" component={SymptomsScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

@@ -20,6 +20,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
 
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
+  const [user, setUser] = useState(null);
 
   // STATE METHODS
   const _handleSetLoading = (loadingState: boolean) => {
@@ -45,6 +46,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       });
 
       handleSetLoginData({ email: "", password: "" });
+      setUser(data);
     } catch (e: any) {
       toast.errorToast(
         "Unable to login. Please ensure your credentials are correct"
@@ -62,6 +64,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
 
       // RESET STATE
       handleSetLoginData({ email: "", password: "" });
+      setUser(null);
     } catch (error: any) {
       toast.errorToast("Unable to logout. Try again later");
     } finally {
@@ -88,6 +91,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
           isDisabled: isDisabled,
           emailError: emailError,
           passwordError: passwordError,
+          isAuthenticated: !!user,
         },
         methods: {
           handleLogin: handleLogin,
@@ -113,6 +117,7 @@ interface IAuthenticationContext {
     isDisabled: boolean;
     emailError: string;
     passwordError: string;
+    isAuthenticated: boolean;
   };
   methods: {
     handleLogin: () => Promise<void>;

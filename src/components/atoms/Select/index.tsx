@@ -10,6 +10,7 @@ import {
   SelectDragIndicatorWrapper,
   SelectDragIndicator,
   SelectItem,
+  SelectScrollView,
   Icon,
 } from "@gluestack-ui/themed";
 import { ICONS } from "../../../data/icons";
@@ -18,6 +19,7 @@ import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
 import { getOptionName } from "../../../utils/getOptionName";
+import { SelectFlatList } from "@gluestack-ui/themed";
 
 interface ISelectProps {
   selectedOption: number;
@@ -25,15 +27,19 @@ interface ISelectProps {
   items: IOption[];
   isDisabled?: boolean;
   helpText?: string;
+  onChange: (value: string) => void;
 }
 
 export const Select = ({
+  onChange,
   selectedOption,
   label,
   items,
   isDisabled = false,
   helpText,
 }: ISelectProps) => {
+  const defaultValue = getOptionName(items, selectedOption);
+
   const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
@@ -45,21 +51,12 @@ export const Select = ({
 
   const isTouchedAndHasHelpText = isTouched && helpText;
 
-  const handleOnChange = (e) => {
-    setIsTouched(true);
-    console.log(e);
-  };
-
   return (
     <FormControl isReadOnly={isDisabled} isInvalid={!!helpText}>
       <Label>{label}</Label>
-      <GluestackSelect>
+      <GluestackSelect selectedValue={defaultValue} onValueChange={onChange}>
         <SelectTrigger variant="underlined" size="sm">
-          <SelectInput
-            placeholder="Select"
-            value={getOptionName(items, selectedOption)}
-            onChange={handleOnChange}
-          />
+          <SelectInput placeholder="Select" />
           <SelectIcon mr="$3">
             <Icon as={ICONS.CHEVRON} />
           </SelectIcon>
@@ -67,12 +64,15 @@ export const Select = ({
         <SelectPortal>
           <SelectBackdrop />
           <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            {items.map((item) => (
-              <SelectItem label={item.name} value={item.id} key={item.id} />
-            ))}
+            <SelectScrollView maxHeight="200px">
+              {items.map((item) => (
+                <SelectItem
+                  label={item.name}
+                  value={item.id.toString()}
+                  key={item.id}
+                />
+              ))}
+            </SelectScrollView>
           </SelectContent>
         </SelectPortal>
       </GluestackSelect>

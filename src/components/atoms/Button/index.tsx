@@ -1,4 +1,4 @@
-import { ButtonIcon, ButtonText } from "@gluestack-ui/themed";
+import { ButtonIcon, ButtonText, Spinner } from "@gluestack-ui/themed";
 import { Button as GluestackButton } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
 import { IColor } from "../../../entities/IColor";
@@ -9,12 +9,14 @@ interface IButtonProps {
   isDisabled?: boolean;
   color?: IColor;
   icon?: any;
+  isLoading?: boolean;
 }
 
 const ButtonSolid = ({
   text,
   onPress,
   isDisabled = false,
+  isLoading = false,
   color = "sky_blue",
   icon,
 }: IButtonProps) => {
@@ -34,6 +36,7 @@ const ButtonSolid = ({
         {text}
       </ButtonText>
       {icon && <ButtonIcon as={icon} />}
+      {isLoading && <Spinner size="small" />}
     </GluestackButton>
   );
 };

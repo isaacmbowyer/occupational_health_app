@@ -53,6 +53,7 @@ const CreateAccount = () => {
             text="Create Account"
             onPress={methods.handleSubmit}
             isDisabled={state.isDisabled}
+            isLoading={state.values.isLoading}
           />
 
           <VStack alignItems="center" justifyContent="center" mb="$4">

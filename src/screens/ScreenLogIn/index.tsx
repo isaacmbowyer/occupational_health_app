@@ -53,6 +53,7 @@ export const LogInScreen = ({ navigation }) => {
               text="Log In"
               onPress={methods.handleLogin}
               isDisabled={state.isDisabled}
+              isLoading={state.isLoading}
             />
           </VStack>
 

@@ -1,7 +1,9 @@
 import { IOption } from "../../entities/IOption";
 
 export const getOptionName: IGetOptionNameUtil = (items, id) => {
-  const item = items.find((item) => item.id === id);
+  if (!items?.length) return "";
+
+  const item = items.find((item) => item?.id === id);
 
   if (!item) return "";
   return item.name;

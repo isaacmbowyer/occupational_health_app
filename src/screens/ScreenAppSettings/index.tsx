@@ -1,5 +1,6 @@
 import { Text } from "@gluestack-ui/themed";
+import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 
 export const SettingsScreen = () => {
-  return <Text>Settings</Text>;
+  return <PrivateTemplateContainer mainSection={<Text>Settings</Text>} />;
 };

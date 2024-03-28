@@ -5,4 +5,5 @@ export const colors = {
   muted: "#C6DAF7",
   sky_blue: "#758BFD",
   dark_blue: "#696AC3",
+  light_gray: "#FFFBFA",
 };

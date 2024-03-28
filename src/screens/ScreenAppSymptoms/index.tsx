@@ -1,5 +1,8 @@
 import { Text } from "@gluestack-ui/themed";
+import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 
 export const SymptomsScreen = () => {
-  return <Text>Symptoms</Text>;
+  return (
+    <PrivateTemplateContainer scrollable mainSection={<Text>Hello</Text>} />
+  );
 };

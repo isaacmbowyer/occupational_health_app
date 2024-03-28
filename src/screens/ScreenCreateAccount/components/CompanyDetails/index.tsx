@@ -8,8 +8,8 @@ import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountState
 
 interface ICompanyDetailsProps {
   name: string;
-  countryId: number;
-  industryId: number;
+  country: IOption;
+  industry: IOption;
   nameError: string;
   countryOptions: IOption[];
   industryOptions: IOption[];
@@ -21,8 +21,8 @@ interface ICompanyDetailsProps {
 
 export const CompanyDetails = ({
   name,
-  countryId,
-  industryId,
+  country,
+  industry,
   nameError,
   countryOptions,
   industryOptions,
@@ -40,14 +40,14 @@ export const CompanyDetails = ({
       />
 
       <Select
-        selectedOption={countryId}
+        selectedOption={country}
         label="Country"
         items={countryOptions}
         onChange={(value) => handleOnChange("country", value)}
       />
 
       <Select
-        selectedOption={industryId}
+        selectedOption={industry}
         label="Industry"
         items={industryOptions}
         onChange={(value) => handleOnChange("industry", value)}

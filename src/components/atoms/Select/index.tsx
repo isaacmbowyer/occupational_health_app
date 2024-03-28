@@ -18,16 +18,16 @@ import { IOption } from "../../../entities/IOption";
 import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
-import { getOptionName } from "../../../utils/getOptionName";
 import { SelectFlatList } from "@gluestack-ui/themed";
+import { getOptionNameFromId } from "../../../utils/getOptionNameFromId";
 
 interface ISelectProps {
-  selectedOption: number;
+  selectedOption: IOption;
   label: string;
   items: IOption[];
   isDisabled?: boolean;
   helpText?: string;
-  onChange: (value: string) => void;
+  onChange: (value: IOption) => void;
 }
 
 export const Select = ({
@@ -38,7 +38,7 @@ export const Select = ({
   isDisabled = false,
   helpText,
 }: ISelectProps) => {
-  const defaultValue = getOptionName(items, selectedOption);
+  const defaultValue = selectedOption?.name;
 
   const [isTouched, setIsTouched] = useState(false);
 
@@ -51,10 +51,18 @@ export const Select = ({
 
   const isTouchedAndHasHelpText = isTouched && helpText;
 
+  const _handleOnChange = (value: string) => {
+    const selectedName = getOptionNameFromId(items, +value);
+    onChange({ id: +value, name: selectedName });
+  };
+
   return (
     <FormControl isReadOnly={isDisabled} isInvalid={!!helpText}>
       <Label>{label}</Label>
-      <GluestackSelect selectedValue={defaultValue} onValueChange={onChange}>
+      <GluestackSelect
+        selectedValue={defaultValue}
+        onValueChange={_handleOnChange}
+      >
         <SelectTrigger variant="underlined" size="sm">
           <SelectInput placeholder="Select" />
           <SelectIcon mr="$3">

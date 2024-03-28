@@ -15,6 +15,9 @@ import { IOption } from "../../../entities/IOption";
 import { ICreateAccountStateKey } from "../../../entities/ICreateAccountStateKey";
 import { ICreateAccountStateKeyValue } from "../../../entities/ICreateAccountStateKeyValue";
 import { IProviderProps } from "../../../entities/IProviderProps";
+import { services } from "../../../services";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const INITAL_OPTION: IOption = {
   id: 0,
@@ -38,6 +41,7 @@ const INITAL_STATE: ICreateAccountState = {
 const CreateAccountContext = createContext({} as ICreateAccountContext);
 
 export const CreateAccountProvider = ({ children }: IProviderProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const industries = useIndustries();
   const countries = useCountries();
   const genders = useGenders();
@@ -46,10 +50,15 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
   const [formState, setFormState] = useState<ICreateAccountState>(INITAL_STATE);
 
   // STATE METHODS
-  const _handleLoading = (boolean: boolean) => {
+  const _handleSetLoading = (boolean: boolean) => {
     setFormState((prev) => ({ ...prev, isLoading: boolean }));
   };
 
+  const _handleResetState = () => {
+    setFormState(INITAL_STATE);
+  };
+
+  // ACTION METHODS
   const handleOnChange = (
     key: ICreateAccountStateKey,
     value: ICreateAccountStateKeyValue
@@ -58,7 +67,30 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
   };
 
   const handleSubmit = async () => {
-    console.log("submit");
+    try {
+      _handleSetLoading(true);
+
+      await services.post.authRegistration({
+        email: formState?.email,
+        password: formState?.password,
+        firstName: formState?.firstName,
+        lastName: formState?.lastName,
+        companyName: formState?.companyName,
+        dateOfBirth: formState?.birthDate,
+        gender: formState?.gender,
+        industry: formState?.industry,
+        country: formState?.country,
+      });
+
+      _handleResetState();
+      toast.successToast("Account created. You can now Log In");
+      navigation.navigate("Log In");
+    } catch (e: any) {
+      toast.errorToast("Unable to create account. Try again later");
+      _handleResetState();
+    } finally {
+      _handleSetLoading(false);
+    }
   };
 
   const validationError: ICreateAccountValidationError = {

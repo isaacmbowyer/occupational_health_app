@@ -13,7 +13,7 @@ interface IPersonalDetailsProps {
   lastName: string;
   email: string;
   date: Date;
-  genderId: number;
+  gender: IOption;
   firstNameError: string;
   lastNameError: string;
   emailError: string;
@@ -29,7 +29,7 @@ export const PersonalDetails = ({
   lastName,
   email,
   date,
-  genderId,
+  gender,
   firstNameError,
   lastNameError,
   emailError,
@@ -62,7 +62,7 @@ export const PersonalDetails = ({
       />
 
       <Select
-        selectedOption={genderId}
+        selectedOption={gender}
         label="Gender"
         items={genderOptions}
         onChange={(value) => handleOnChange("gender", value)}

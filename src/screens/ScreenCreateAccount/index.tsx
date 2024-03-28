@@ -23,7 +23,7 @@ const CreateAccount = () => {
             lastName={state.values.lastName}
             email={state.values.email}
             date={state.values.birthDate}
-            genderId={state.values.gender}
+            gender={state.values.gender}
             firstNameError={state.validationError.firstName}
             lastNameError={state.validationError.lastName}
             emailError={state.validationError.email}
@@ -41,8 +41,8 @@ const CreateAccount = () => {
 
           <CompanyDetails
             name={state.values.companyName}
-            countryId={state.values.country}
-            industryId={state.values.industry}
+            country={state.values.country}
+            industry={state.values.industry}
             nameError={state.validationError.companyName}
             countryOptions={state.countryOptions}
             industryOptions={state.industryOptions}

@@ -1,4 +1,5 @@
 import { ICreateAccountValidationError } from "../../entities/ICreateAccountValidationError";
+import { IOption } from "../../entities/IOption";
 
 export const validateCreateAccountState: IValidateCreateAccountStateUtil = ({
   validationError,
@@ -9,18 +10,18 @@ export const validateCreateAccountState: IValidateCreateAccountStateUtil = ({
 }) => {
   return (
     Object.values(validationError).some((field) => field !== "") ||
-    !industry ||
-    !gender ||
-    !country ||
+    !industry.id ||
+    !gender.id ||
+    !country.id ||
     !dateOfBirth
   );
 };
 
 interface IProps {
   validationError: ICreateAccountValidationError;
-  industry: number;
-  gender: number;
-  country: number;
+  industry: IOption;
+  gender: IOption;
+  country: IOption;
   dateOfBirth: Date;
 }
 

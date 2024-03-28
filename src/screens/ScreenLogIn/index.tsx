@@ -10,6 +10,7 @@ import { Link } from "../../components/atoms/Link";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 
 export const LogInScreen = ({ navigation }) => {
+  // AUTH
   const { state, methods } = useAuthenticationContext();
 
   return (
@@ -53,6 +54,7 @@ export const LogInScreen = ({ navigation }) => {
               text="Log In"
               onPress={methods.handleLogin}
               isDisabled={state.isDisabled}
+              isLoading={state.isLoading}
             />
           </VStack>
 

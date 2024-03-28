@@ -7,16 +7,28 @@ import { formatDate } from "../../../utils/formatDate";
 interface IDatePicker {
   label: string;
   date: Date;
-  onChange: (e, selectedDate) => void;
+  onChange: (e: any, selectedDate: Date) => void;
+  maxDate?: Date;
+  minDate?: Date;
 }
 
-export const DatePicker = ({ label, date, onChange }: IDatePicker) => {
+export const DatePicker = ({
+  label,
+  date,
+  onChange,
+  maxDate,
+  minDate,
+}: IDatePicker) => {
+  const formattedDate = !!date ? formatDate(date) : "";
+
   const showDatepicker = () => {
     DateTimePickerAndroid.open({
-      value: date,
+      value: !!date ? date : new Date(),
       onChange,
       mode: "date",
       is24Hour: true,
+      maximumDate: maxDate && maxDate,
+      minimumDate: minDate && minDate,
     });
   };
 
@@ -24,7 +36,7 @@ export const DatePicker = ({ label, date, onChange }: IDatePicker) => {
     <Pressable onPress={showDatepicker}>
       <Input
         label={label}
-        value={formatDate(date)}
+        value={formattedDate}
         icon={ICONS.CALANDER}
         isDisabled={true}
       />

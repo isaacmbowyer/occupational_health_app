@@ -4,12 +4,9 @@ import { Input } from "../../../../components/atoms/Input";
 import { DatePicker } from "../../../../components/atoms/DatePicker";
 import { Select } from "../../../../components/atoms/Select";
 import { ICONS } from "../../../../data/icons";
-import {
-  ICreateAccountStateKey,
-  ICreateAccountStateKeyValue,
-  useCreateAccount,
-} from "../../hooks";
 import { IOption } from "../../../../entities/IOption";
+import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
+import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
 
 interface IPersonalDetailsProps {
   firstName: string;

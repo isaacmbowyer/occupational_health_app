@@ -6,10 +6,10 @@ import { PasswordDetails } from "./components/PasswordDetails";
 import { CompanyDetails } from "./components/CompanyDetails";
 import { Link } from "../../components/atoms/Link";
 import { Button } from "../../components/atoms/Button";
-import { useCreateAccount } from "./hooks";
+import { CreateAccountProvider, useCreateAccountContext } from "./context";
 
-export const CreateAccountScreen = ({ navigation }) => {
-  const { state, methods } = useCreateAccount();
+const CreateAccount = () => {
+  const { state, methods } = useCreateAccountContext();
 
   return (
     <PublicTemplateContainer
@@ -61,5 +61,13 @@ export const CreateAccountScreen = ({ navigation }) => {
         </VStack>
       }
     />
+  );
+};
+
+export const CreateAccountScreen = ({ navigation }) => {
+  return (
+    <CreateAccountProvider>
+      <CreateAccount />
+    </CreateAccountProvider>
   );
 };

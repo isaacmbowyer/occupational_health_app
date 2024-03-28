@@ -2,12 +2,9 @@ import { VStack } from "@gluestack-ui/themed";
 import { Text } from "../../../../components/atoms/Text";
 import { Input } from "../../../../components/atoms/Input";
 import { Select } from "../../../../components/atoms/Select";
-import {
-  ICreateAccountStateKey,
-  ICreateAccountStateKeyValue,
-  useCreateAccount,
-} from "../../hooks";
 import { IOption } from "../../../../entities/IOption";
+import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
+import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
 
 interface ICompanyDetailsProps {
   name: string;

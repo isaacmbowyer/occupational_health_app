@@ -1,3 +1,5 @@
+import { IOption } from "./IOption";
+
 export interface ICreateAccountState {
   isLoading: boolean;
   firstName: string;
@@ -6,8 +8,8 @@ export interface ICreateAccountState {
   password: string;
   confirmPassword: string;
   companyName: string;
-  country: number;
-  industry: number;
-  gender: number;
+  country: IOption;
+  industry: IOption;
+  gender: IOption;
   birthDate: Date;
 }

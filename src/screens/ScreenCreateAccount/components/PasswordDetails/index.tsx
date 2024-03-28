@@ -1,11 +1,8 @@
 import { VStack } from "@gluestack-ui/themed";
 import { InputPassword } from "../../../../components/atoms/InputPassword";
 import { Text } from "../../../../components/atoms/Text";
-import {
-  ICreateAccountStateKey,
-  ICreateAccountStateKeyValue,
-  useCreateAccount,
-} from "../../hooks";
+import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
+import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
 
 interface IPasswordDetailsProps {
   password: string;

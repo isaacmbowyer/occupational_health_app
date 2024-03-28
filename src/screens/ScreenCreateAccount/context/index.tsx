@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useCountries } from "../../../hooks/useCountries";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useGenders } from "../../../hooks/useGenders";
@@ -11,6 +11,15 @@ import { validatePassword } from "../../../utils/validatePassword";
 import { compareValues } from "../../../utils/compareValues";
 import { ICreateAccountValidationError } from "../../../entities/ICreateAccountValidationError";
 import { validateCreateAccountState } from "../../../utils/validateCreateAccountState";
+import { IOption } from "../../../entities/IOption";
+import { ICreateAccountStateKey } from "../../../entities/ICreateAccountStateKey";
+import { ICreateAccountStateKeyValue } from "../../../entities/ICreateAccountStateKeyValue";
+import { IProviderProps } from "../../../entities/IProviderProps";
+
+const INITAL_OPTION: IOption = {
+  id: 0,
+  name: "",
+};
 
 const INITAL_STATE: ICreateAccountState = {
   isLoading: false,
@@ -20,13 +29,15 @@ const INITAL_STATE: ICreateAccountState = {
   password: "",
   confirmPassword: "",
   companyName: "",
-  country: 0,
-  industry: 0,
-  gender: 0,
+  country: INITAL_OPTION,
+  industry: INITAL_OPTION,
+  gender: INITAL_OPTION,
   birthDate: null,
 };
 
-export const useCreateAccount = () => {
+const CreateAccountContext = createContext({} as ICreateAccountContext);
+
+export const CreateAccountProvider = ({ children }: IProviderProps) => {
   const industries = useIndustries();
   const countries = useCountries();
   const genders = useGenders();
@@ -76,21 +87,46 @@ export const useCreateAccount = () => {
     dateOfBirth: formState.birthDate,
   });
 
-  return {
-    state: {
-      isDisabled: isDisabled,
-      validationError: validationError,
-      industryOptions: industries,
-      countryOptions: countries,
-      genderOptions: genders,
-      values: formState,
-    },
-    methods: {
-      handleOnChange: handleOnChange,
-      handleSubmit: handleSubmit,
-    },
-  };
+  return (
+    <CreateAccountContext.Provider
+      value={{
+        state: {
+          isDisabled: isDisabled,
+          validationError: validationError,
+          industryOptions: industries,
+          countryOptions: countries,
+          genderOptions: genders,
+          values: formState,
+        },
+        methods: {
+          handleOnChange: handleOnChange,
+          handleSubmit: handleSubmit,
+        },
+      }}
+    >
+      {children}
+    </CreateAccountContext.Provider>
+  );
 };
 
-export type ICreateAccountStateKey = keyof ICreateAccountState;
-export type ICreateAccountStateKeyValue = string | number | Date;
+export const useCreateAccountContext = () => {
+  return useContext(CreateAccountContext);
+};
+
+interface ICreateAccountContext {
+  state: {
+    isDisabled: boolean;
+    validationError: ICreateAccountValidationError;
+    industryOptions: IOption[];
+    countryOptions: IOption[];
+    genderOptions: IOption[];
+    values: ICreateAccountState;
+  };
+  methods: {
+    handleOnChange: (
+      key: ICreateAccountStateKey,
+      value: ICreateAccountStateKeyValue
+    ) => void;
+    handleSubmit: () => void;
+  };
+}

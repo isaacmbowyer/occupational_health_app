@@ -1,10 +1,8 @@
 import { formatTitleWithCount } from "../../../utils/formatTitleWithCount";
 import { AppHeaderTags } from "../AppHeaderTags";
-import { IconButton } from "../../atoms/IconButton";
-import { ICONS } from "../../../data/icons";
 import { AppHeaderFetchingState } from "../AppHeaderFetchingState";
-import { HStack } from "@gluestack-ui/themed";
 import { AppHeaderContent } from "../AppHeaderContent";
+import { SearchAction } from "../../modules/SearchAction";
 
 interface IAppHeaderProps {
   title: string;
@@ -36,20 +34,10 @@ export const AppHeader = ({
       <AppHeaderFetchingState
         tags={tagList}
         action={
-          <HStack>
-            {!search.isSearchActive && (
-              <IconButton.Medium
-                handleOnPress={search.handleOnSearch}
-                icon={ICONS.SEARCH}
-              />
-            )}
-            {search.isSearchActive && (
-              <IconButton.Medium
-                handleOnPress={search.handleOnSearch}
-                icon={ICONS.CLOSE}
-              />
-            )}
-          </HStack>
+          <SearchAction
+            isSearchActive={search.isSearchActive}
+            handleOnSearch={search.handleOnSearch}
+          />
         }
       />
     );
@@ -58,20 +46,10 @@ export const AppHeader = ({
   return (
     <AppHeaderContent
       action={
-        <HStack>
-          {!search.isSearchActive && (
-            <IconButton.Medium
-              handleOnPress={search.handleOnSearch}
-              icon={ICONS.SEARCH}
-            />
-          )}
-          {search.isSearchActive && (
-            <IconButton.Medium
-              handleOnPress={search.handleOnSearch}
-              icon={ICONS.CLOSE}
-            />
-          )}
-        </HStack>
+        <SearchAction
+          isSearchActive={search.isSearchActive}
+          handleOnSearch={search.handleOnSearch}
+        />
       }
       title={formattedTitle}
       tags={

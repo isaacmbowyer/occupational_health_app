@@ -1,10 +1,11 @@
 import { formatTitleWithCount } from "../../../utils/formatTitleWithCount";
-import { AppHeaderTags } from "../AppHeaderTags";
-import { AppHeaderFetchingState } from "../AppHeaderFetchingState";
-import { AppHeaderContent } from "../AppHeaderContent";
+import { HeaderSkeleton } from "../HeaderSkeleton";
 import { SearchAction } from "../../modules/SearchAction";
+import { VStack, HStack } from "@gluestack-ui/themed";
+import { Text } from "../../atoms/Text";
+import { HeaderTags } from "../HeaderTags";
 
-interface IAppHeaderProps {
+interface IHeaderProps {
   title: string;
   count: number;
   isFetching: boolean;
@@ -19,19 +20,19 @@ interface IAppHeaderProps {
   tagList: string[];
 }
 
-export const AppHeader = ({
+export const Header = ({
   title,
   count,
   isFetching,
   symptomSource,
   search,
   tagList,
-}: IAppHeaderProps) => {
+}: IHeaderProps) => {
   const formattedTitle = formatTitleWithCount(title, count);
 
   if (isFetching) {
     return (
-      <AppHeaderFetchingState
+      <HeaderSkeleton
         tags={tagList}
         action={
           <SearchAction
@@ -44,21 +45,21 @@ export const AppHeader = ({
   }
 
   return (
-    <AppHeaderContent
-      action={
+    <VStack width="$full" marginBottom="$2" space="sm">
+      <HStack width="$full" justifyContent="space-between" alignItems="center">
+        <Text.SubHeader bold color="sky_blue">
+          {formattedTitle}
+        </Text.SubHeader>
         <SearchAction
           isSearchActive={search.isSearchActive}
           handleOnSearch={search.handleOnSearch}
         />
-      }
-      title={formattedTitle}
-      tags={
-        <AppHeaderTags
-          tagList={tagList}
-          active={symptomSource.active}
-          handleSetActive={symptomSource.handleOnChange}
-        />
-      }
-    />
+      </HStack>
+      <HeaderTags
+        tagList={tagList}
+        active={symptomSource.active}
+        handleSetActive={symptomSource.handleOnChange}
+      />
+    </VStack>
   );
 };

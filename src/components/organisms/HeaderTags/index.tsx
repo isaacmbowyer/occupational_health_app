@@ -1,17 +1,17 @@
 import { HStack } from "@gluestack-ui/themed";
 import { Tag } from "../../atoms/Tag";
 
-interface IAppHeaderTagsProps {
+interface IHeaderTagsProps {
   active: string;
   handleSetActive: (active: string) => void;
   tagList: string[];
 }
 
-export const AppHeaderTags = ({
+export const HeaderTags = ({
   active,
   handleSetActive,
   tagList,
-}: IAppHeaderTagsProps) => {
+}: IHeaderTagsProps) => {
   return (
     <HStack space="md">
       {tagList.map((tag) => (

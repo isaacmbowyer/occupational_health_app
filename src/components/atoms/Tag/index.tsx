@@ -13,7 +13,7 @@ export const Tag = ({ name, isActive, handleOnPress }: ITagProps) => {
   return (
     <Pressable onPress={() => handleOnPress(name)}>
       <Badge size="lg" variant={variant} borderRadius="$md" action={color}>
-        <BadgeText>{name}</BadgeText>
+        <BadgeText># {name}</BadgeText>
       </Badge>
     </Pressable>
   );

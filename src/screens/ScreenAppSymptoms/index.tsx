@@ -1,8 +1,7 @@
-import { VStack, View } from "@gluestack-ui/themed";
+import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
-import { Text } from "../../components/atoms/Text";
-import { Skeleton, SkeletonContainer } from "react-native-skeleton-component";
-import { AppHeader } from "../../components/organisms/AppHeader";
+import { Header } from "../../components/organisms/Header";
+import { SubHeader } from "../../components/organisms/SubHeader";
 
 export const SymptomsScreen = () => {
   return (
@@ -10,18 +9,27 @@ export const SymptomsScreen = () => {
       scrollable
       mainSection={
         <VStack>
-          <AppHeader
-            title="Long Covid Symptoms"
-            count={40}
+          <Header
+            title="Long-Covid Symptoms"
+            count={4}
             search={{
               isSearchActive: false,
               handleOnSearch: () => console.log("search"),
             }}
             symptomSource={{
               active: "current",
-              handleOnChange: (string) => console.log("new source"),
+              handleOnChange: (val) => console.log("new source"),
             }}
             isFetching={false}
+            tagList={["current", "completed"]}
+          />
+          <SubHeader
+            pageCount={1}
+            currentPage={1}
+            entriesCount={4}
+            currentEntries={4}
+            isFetching={false}
+            label="symptoms"
           />
         </VStack>
       }

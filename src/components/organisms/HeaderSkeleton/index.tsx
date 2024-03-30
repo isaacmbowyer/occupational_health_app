@@ -1,28 +1,25 @@
-import { HStack, Icon, VStack } from "@gluestack-ui/themed";
+import { HStack, VStack } from "@gluestack-ui/themed";
 import { ReactNode } from "react";
 import { Skeleton, SkeletonContainer } from "react-native-skeleton-component";
 
-interface IAppHeaderFetchingStateProps {
+interface IHeaderSkeletonProps {
   tags: string[];
   action: ReactNode;
 }
-export const AppHeaderFetchingState = ({
-  tags,
-  action,
-}: IAppHeaderFetchingStateProps) => {
+export const HeaderSkeleton = ({ tags, action }: IHeaderSkeletonProps) => {
   return (
     <SkeletonContainer>
       <VStack
         width="$full"
         alignItems="flex-start"
-        marginBottom="$4"
-        space="lg"
+        marginBottom="$2"
+        space="sm"
       >
         <HStack width="$full" justifyContent="space-between">
           <Skeleton
             style={{
-              height: 36,
-              width: 214,
+              height: 30,
+              width: 220,
             }}
           />
           {action}

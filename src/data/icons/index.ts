@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@gluestack-ui/themed";
 import {
   AlertCircleIcon,
   CalendarDaysIcon,
@@ -7,6 +6,8 @@ import {
   EyeIcon,
   EyeOffIcon,
   MailIcon,
+  ChevronDownIcon
+  SearchIcon,
 } from "@gluestack-ui/themed";
 import { AddIcon } from "@gluestack-ui/themed";
 
@@ -20,4 +21,5 @@ export const ICONS = {
   CHECK: CheckIcon,
   CALANDER: CalendarDaysIcon,
   CHEVRON: ChevronDownIcon,
+  SEARCH: SearchIcon,
 };

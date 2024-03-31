@@ -1,3 +1,4 @@
+import { getSymptoms } from "./get-symptoms";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
@@ -7,5 +8,8 @@ export const services = {
     authLogin: postAuthLogin,
     authLogout: postAuthLogout,
     authRegistration: postAuthRegistration,
+  },
+  get: {
+    symptoms: getSymptoms,
   },
 };

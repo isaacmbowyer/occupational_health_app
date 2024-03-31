@@ -34,7 +34,7 @@ export const PrivateTemplateContainer = ({
       flex={1}
       backgroundColor={colors.light_gray}
       justifyContent="space-between"
-      padding={"$8"}
+      padding={"$4"}
     >
       <ScrollView
         ref={scrollViewRef}

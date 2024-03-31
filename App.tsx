@@ -4,9 +4,11 @@ import { AuthenticationProvider } from "./src/contexts/useAuthenticationContext"
 import { AppNavigation } from "./src/components/modules/AppNavigation";
 import { Platform, StatusBar } from "react-native";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import { colors } from "./src/data/colors";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const isAndorid = Platform.OS === "android";
+
+export const queryClient = new QueryClient();
 
 export default function App() {
   return (
@@ -16,9 +18,11 @@ export default function App() {
         marginTop={isAndorid ? StatusBar.currentHeight : 0}
       >
         <GluestackUIProvider config={config}>
-          <AuthenticationProvider>
-            <AppNavigation />
-          </AuthenticationProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthenticationProvider>
+              <AppNavigation />
+            </AuthenticationProvider>
+          </QueryClientProvider>
         </GluestackUIProvider>
       </SafeAreaView>
       <ExpoStatusBar style="auto"></ExpoStatusBar>

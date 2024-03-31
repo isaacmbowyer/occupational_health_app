@@ -2,8 +2,11 @@ import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import { Header } from "../../components/organisms/Header";
 import { SubHeader } from "../../components/organisms/SubHeader";
+import { useSymptomsContext } from "../../contexts/useSymptomsContext";
 
 export const SymptomsScreen = () => {
+  const data = useSymptomsContext();
+
   return (
     <PrivateTemplateContainer
       scrollable

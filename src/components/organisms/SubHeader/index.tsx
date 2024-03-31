@@ -24,7 +24,12 @@ export const SubHeader = ({
   }
 
   return (
-    <HStack width="$full" justifyContent="space-between" height="$10">
+    <HStack
+      width="$full"
+      justifyContent="space-between"
+      height="$10"
+      marginBottom="$4"
+    >
       <Text.Small color="sky_blue">
         Displaying {currentEntries} of {entriesCount} {label}
       </Text.Small>

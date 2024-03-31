@@ -55,7 +55,7 @@ export const PublicTemplateContainer = ({
       flex={1}
       backgroundColor={colors.white}
       justifyContent="space-between"
-      padding={"$8"}
+      padding={"$4"}
     >
       <ScrollView
         ref={scrollViewRef}

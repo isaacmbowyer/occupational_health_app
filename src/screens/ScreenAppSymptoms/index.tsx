@@ -28,10 +28,10 @@ const Symptoms = () => {
             tagList={["current", "completed"]}
           />
           <SubHeader
-            pageCount={1}
-            currentPage={1}
-            entriesCount={4}
-            currentEntries={4}
+            pageCount={state?.totalPages}
+            currentPage={state?.currentPage}
+            entriesCount={state?.count}
+            currentEntries={state?.symptoms?.length}
             isFetching={false}
             label="symptoms"
           />

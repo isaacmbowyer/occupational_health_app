@@ -1,5 +1,15 @@
 import { HStack, VStack, Image } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
+import { ISeverityRating } from "../../../entities/ISeverityRating";
+
+interface ISymptomCardProps {
+  label: string;
+  severityRating: ISeverityRating;
+  imageName: string;
+  targetDate: Date;
+  handleOnDelete: () => void;
+  handleOnView: () => void;
+}
 
 export const SymptomCard = () => {
   return (

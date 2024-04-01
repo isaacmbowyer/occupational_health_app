@@ -5,7 +5,7 @@ import { SubHeader } from "../../components/organisms/SubHeader";
 import { useSymptomsContext } from "../../contexts/useSymptomsContext";
 
 export const SymptomsScreen = () => {
-  const data = useSymptomsContext();
+  const { data, isFetching } = useSymptomsContext();
 
   return (
     <PrivateTemplateContainer

@@ -2,10 +2,11 @@ import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import { Header } from "../../components/organisms/Header";
 import { SubHeader } from "../../components/organisms/SubHeader";
-import { useSymptomsContext } from "../../contexts/useSymptomsContext";
+import Pagination from "@cherry-soft/react-native-basic-pagination";
+import { TrackedSymptomsProvider, useTrackedSymptomsContext } from "./context";
 
-export const SymptomsScreen = () => {
-  const { data, isFetching } = useSymptomsContext();
+const Symptoms = () => {
+  const { state, methods } = useTrackedSymptomsContext();
 
   return (
     <PrivateTemplateContainer
@@ -34,8 +35,22 @@ export const SymptomsScreen = () => {
             isFetching={false}
             label="symptoms"
           />
+          <Pagination
+            totalItems={state?.count}
+            pageSize={state?.limit}
+            currentPage={state?.currentPage}
+            onPageChange={methods?.handleSetCurrentPage}
+          />
         </VStack>
       }
     />
+  );
+};
+
+export const SymptomsScreen = ({ navigation }) => {
+  return (
+    <TrackedSymptomsProvider>
+      <Symptoms />
+    </TrackedSymptomsProvider>
   );
 };

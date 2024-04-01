@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@cherry-soft/react-native-basic-pagination": "^1.0.4",
     "@expo/html-elements": "latest",
     "@gluestack-style/react": "latest",
     "@gluestack-ui/config": "latest",

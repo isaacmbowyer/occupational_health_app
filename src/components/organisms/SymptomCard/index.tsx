@@ -1,10 +1,10 @@
 import { HStack, VStack, Image } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
-import { ISeverityRating } from "../../../entities/ISeverityRating";
+import { ISeverityType } from "../../../entities/ISeverityType";
 
 interface ISymptomCardProps {
   label: string;
-  severityRating: ISeverityRating;
+  severityType: ISeverityType;
   imageName: string;
   targetDate: Date;
   handleOnDelete: () => void;

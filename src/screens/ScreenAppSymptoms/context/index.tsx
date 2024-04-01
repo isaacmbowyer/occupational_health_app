@@ -7,15 +7,20 @@ import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { SERVICES_LIMITS } from "../../../config/services";
 import { useGetTrackedSymptoms } from "../../../hooks/useGetTrackedSymptoms";
 import { auth } from "../../../config/firebase";
+import { services } from "../../../services";
+import { formatUserSymptoms } from "../../../utils/formatUserSymptoms";
+import { IUserSymptom } from "../../../entities/IUserSymptom";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
 interface ITrackedSymptomsState {
   currentPage: number;
+  isLoading: boolean;
 }
 
 const INITAL_STATE: ITrackedSymptomsState = {
   currentPage: 1,
+  isLoading: false,
 };
 
 export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
@@ -36,11 +41,64 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       skip: SKIP,
     });
 
+  // STATE METHODS
+  const _handleSetLoading = (boolean: boolean) => {
+    setState((prev) => ({ ...prev, isLoading: boolean }));
+  };
+
+  const handleSetCurrentPage = (newPage: number) => {
+    setState((prev) => ({ ...prev, currentPage: newPage }));
+  };
+
+  // ACTION METHODS
+  const handleDeleteTrackedSymptom = async (symptomId: string) => {
+    try {
+      _handleSetLoading(true);
+
+      await services.delete.trackedSymptomId({
+        id: symptomId,
+      });
+
+      trackedSymptomsMethods.handleOnRefetch();
+    } catch (e: any) {
+      toast.errorToast("Failed to this tracked symptom.");
+    } finally {
+      _handleSetLoading(false);
+    }
+  };
+
+  const handleNavigateToTrackedSymptom = (symptomId: string) => {
+    console.log(symptomId);
+  };
+
+  const handleAddTrackedSymptom = () => {
+    console.log("Add a new symptom");
+  };
+
+  const userSymptoms = formatUserSymptoms({
+    symptoms: symptomList,
+    trackedSymptoms: trackedSymptomsState.trackedSymptoms,
+  });
+
+  const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;
+
   return (
     <TrackedSymptomsContext.Provider
       value={{
-        state: {},
-        methods: {},
+        state: {
+          isFetching: isFetching,
+          currentPage: state?.currentPage,
+          count: trackedSymptomsState?.count,
+          totalPages: trackedSymptomsState?.totalPages,
+          limit: LIMIT,
+          symptoms: userSymptoms,
+        },
+        methods: {
+          handleOnDelete: handleDeleteTrackedSymptom,
+          handleOnPress: handleNavigateToTrackedSymptom,
+          handleOnAdd: handleAddTrackedSymptom,
+          handleSetCurrentPage: handleSetCurrentPage,
+        },
       }}
     >
       {children}
@@ -53,6 +111,18 @@ export const useTrackedSymptomsContext = () => {
 };
 
 interface ITrackedSymptomsContext {
-  state: {};
-  methods: {};
+  state: {
+    isFetching: boolean;
+    currentPage: number;
+    count: number;
+    totalPages: number;
+    limit: number;
+    symptoms: IUserSymptom[];
+  };
+  methods: {
+    handleOnDelete: (symptomId: string) => void;
+    handleOnPress: (symptomId: string) => void;
+    handleOnAdd: () => void;
+    handleSetCurrentPage: (newPage: number) => void;
+  };
 }

@@ -1,24 +1,14 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen } from "../../../screens/ScreenHome";
 import { NavigationContainer } from "@react-navigation/native";
-import { LogInScreen } from "../../../screens/ScreenLogIn";
-import { CreateAccountScreen } from "../../../screens/ScreenCreateAccount";
+import { PrivateNavigation } from "../../organisms/PrivateNavigation";
+import { PublicNavigation } from "../../organisms/PublicNavigation";
+import { useAuthenticationContext } from "../../../contexts/useAuthenticationContext";
 
 export const AppNavigation = () => {
-  const Stack = createNativeStackNavigator();
+  const { state } = useAuthenticationContext();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName="Create Account"
-      >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Log In" component={LogInScreen} />
-        <Stack.Screen name="Create Account" component={CreateAccountScreen} />
-      </Stack.Navigator>
+      {state?.isAuthenticated ? <PrivateNavigation /> : <PublicNavigation />}
     </NavigationContainer>
   );
 };

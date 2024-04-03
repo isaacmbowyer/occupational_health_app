@@ -18,11 +18,7 @@ import { IProviderProps } from "../../../entities/IProviderProps";
 import { services } from "../../../services";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
-const INITAL_OPTION: IOption = {
-  id: 0,
-  name: "",
-};
+import { INITAL_OPTION } from "../../../data/defaultValues";
 
 const INITAL_STATE: ICreateAccountState = {
   isLoading: false,

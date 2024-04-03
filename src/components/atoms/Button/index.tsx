@@ -10,6 +10,7 @@ interface IButtonProps {
   color?: IColor;
   icon?: any;
   isLoading?: boolean;
+  size?: string;
 }
 
 const ButtonSolid = ({
@@ -19,10 +20,11 @@ const ButtonSolid = ({
   isLoading = false,
   color = "sky_blue",
   icon,
+  size = "md",
 }: IButtonProps) => {
   return (
     <GluestackButton
-      size="xl"
+      size="lg"
       variant="solid"
       borderRadius="$full"
       backgroundColor={colors[color]}
@@ -32,7 +34,7 @@ const ButtonSolid = ({
       onPress={onPress}
       justifyContent="space-between"
     >
-      <ButtonText width="95%" textAlign="center">
+      <ButtonText width="95%" textAlign="center" fontSize={`$${size}`}>
         {text}
       </ButtonText>
       {icon && <ButtonIcon as={icon} />}
@@ -47,10 +49,11 @@ const ButtonOutline = ({
   isDisabled = false,
   color = "sky_blue",
   icon,
+  size = "md",
 }: IButtonProps) => {
   return (
     <GluestackButton
-      size="xl"
+      size="lg"
       variant="solid"
       borderRadius="$full"
       backgroundColor="transparent"
@@ -61,7 +64,12 @@ const ButtonOutline = ({
       borderColor={colors[color]}
       onPress={onPress}
     >
-      <ButtonText width="95%" textAlign="center" color={colors[color]}>
+      <ButtonText
+        fontSize={`$${size}`}
+        width="95%"
+        textAlign="center"
+        color={colors[color]}
+      >
         {text}
       </ButtonText>
 

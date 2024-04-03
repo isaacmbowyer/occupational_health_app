@@ -66,7 +66,7 @@ export const Select = ({
         <SelectTrigger variant="underlined" size="sm">
           <SelectInput placeholder="Select" />
           <SelectIcon mr="$3">
-            <Icon as={ICONS.CHEVRON} />
+            <Icon as={ICONS.CHEVRON_DOWN} />
           </SelectIcon>
         </SelectTrigger>
         <SelectPortal>

@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { IOption } from "../../entities/IOption";
-import { addDoc, collection } from "firebase/firestore/lite";
+import { addDoc, collection } from "firebase/firestore";
 
 export const postAuthRegistration: IPostAuthRegistrationService = async (
   props

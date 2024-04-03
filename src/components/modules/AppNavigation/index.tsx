@@ -8,8 +8,7 @@ export const AppNavigation = () => {
 
   return (
     <NavigationContainer>
-      {/* {state?.isAuthenticated ? <PrivateNavigation /> : <PublicNavigation />} */}
-      <PrivateNavigation />
+      {state?.isAuthenticated ? <PrivateNavigation /> : <PublicNavigation />}
     </NavigationContainer>
   );
 };

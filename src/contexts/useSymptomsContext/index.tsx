@@ -3,10 +3,12 @@ import { IProviderProps } from "../../entities/IProviderProps";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useQuery } from "@tanstack/react-query";
 import { services } from "../../services";
+import { useAuthenticationContext } from "../useAuthenticationContext";
 
 const SymptomsContext = createContext({} as any);
 
 export const SymptomsProvider = ({ children }: IProviderProps) => {
+  const { state } = useAuthenticationContext();
   const toast = useCustomToast();
 
   const { data, isFetching } = useQuery(
@@ -16,7 +18,7 @@ export const SymptomsProvider = ({ children }: IProviderProps) => {
       return data;
     },
     {
-      enabled: true,
+      enabled: state?.isAuthenticated,
       onError: (e) => {
         toast.errorToast("Failed to load symptoms");
       },

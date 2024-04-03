@@ -12,6 +12,7 @@ export const trackedSymptomsAdapter: ITrackedSymptomsAdapter = (docs) => {
     return {
       id: doc?.id,
       symptomId: data?.symptomId,
+      userId: data?.userId,
       currentSeverity: data?.currentSeverity,
       targetSeverity: data?.targetSeverity,
       targetDate: targetTimestamp?.toDate(),

@@ -14,7 +14,8 @@ export const formatUserSymptoms: IFormatUserSymptomsUtil = (props) => {
     return {
       id: trackedSymptom?.id,
       symptomId: trackedSymptom?.symptomId,
-      image: symptom?.image,
+      userId: trackedSymptom?.userId,
+      imageUri: symptom?.imageUri,
       name: symptom?.name,
       createdAt: trackedSymptom?.createdAt,
       targetDate: trackedSymptom?.targetDate,

@@ -9,7 +9,7 @@ export const symptomsAdapter: ISymptomsAdapter = (docs) => {
       id: doc?.id,
       name: data?.name,
       description: data?.description,
-      image: data?.image,
+      imageUri: data?.imageUri,
     };
   });
 

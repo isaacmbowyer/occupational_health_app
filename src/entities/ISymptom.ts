@@ -1,6 +1,6 @@
 export interface ISymptom {
   id: string;
   name: string;
-  image: string;
+  imageUri: string;
   description: number;
 }

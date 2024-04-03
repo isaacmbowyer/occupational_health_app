@@ -1,4 +1,5 @@
-import { db } from "../../config/firebase";
+import { trackedSymptomsAdapter } from "../../utils/trackedSymptomsAdapter";
+import { ITrackedSymptomsResponse } from "../../entities/ITrackedSymptomsResponse";
 import {
   collection,
   getDocs,
@@ -7,14 +8,14 @@ import {
   query,
   startAt,
   where,
-} from "firebase/firestore/lite";
-import { trackedSymptomsAdapter } from "../../utils/trackedSymptomsAdapter";
-import { ITrackedSymptomsResponse } from "../../entities/ITrackedSymptomsResponse";
+} from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
   userId,
   skip,
   pageLimit,
+  source,
 }) => {
   const collectionRef = collection(db, "tracked_symptoms");
 
@@ -22,11 +23,22 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
   const totalSnapshot = await getDocs(collectionRef);
   const totalDocuments = totalSnapshot.size;
 
+  let dateCriteria;
+
+  if (source === "current") {
+    // Retrieve future dates (after today)
+    dateCriteria = where("targetDate", ">", new Date());
+  } else if (source === "past") {
+    // Retrieve past dates (before today)
+    dateCriteria = where("targetDate", "<", new Date());
+  }
+
   // Fetch documents for the requested query
   const collectionQuery = query(
     collectionRef,
-    where("uid", "==", userId),
-    orderBy("__createdAt__"),
+    where("userId", "==", userId),
+    dateCriteria,
+    orderBy("createdAt"),
     startAt(skip),
     limit(pageLimit)
   );
@@ -44,7 +56,8 @@ interface IGetTrackedSymptomsService {
 }
 
 interface IPayload {
-  userId: number;
+  userId: string;
   skip: number;
   pageLimit: number;
+  source: string;
 }

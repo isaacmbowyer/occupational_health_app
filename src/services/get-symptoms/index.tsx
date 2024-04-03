@@ -1,7 +1,7 @@
 import { db } from "../../config/firebase";
-import { collection, getDocs } from "firebase/firestore/lite";
 import { symptomsAdapter } from "../../utils/symptomsAdapter";
 import { ISymptom } from "../../entities/ISymptom";
+import { collection, getDocs } from "firebase/firestore";
 
 export const getSymptoms: IGetSymptomsService = async () => {
   const { docs } = await getDocs(collection(db, "symptoms"));

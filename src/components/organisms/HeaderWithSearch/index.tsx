@@ -1,11 +1,11 @@
 import { formatTitleWithCount } from "../../../utils/formatTitleWithCount";
-import { HeaderSkeleton } from "../HeaderSkeleton";
 import { SearchAction } from "../../modules/SearchAction";
 import { VStack, HStack } from "@gluestack-ui/themed";
 import { Text } from "../../atoms/Text";
 import { HeaderTags } from "../HeaderTags";
+import { HeaderWithSearchSkeleton } from "../HeaderWithSearchSkeleton";
 
-interface IHeaderProps {
+interface IHeaderWithSearchProps {
   title: string;
   count: number;
   isFetching: boolean;
@@ -20,19 +20,19 @@ interface IHeaderProps {
   tagList: string[];
 }
 
-export const Header = ({
+export const HeaderWithSearch = ({
   title,
   count,
   isFetching,
   symptomSource,
   search,
   tagList,
-}: IHeaderProps) => {
+}: IHeaderWithSearchProps) => {
   const formattedTitle = formatTitleWithCount(title, count);
 
   if (isFetching) {
     return (
-      <HeaderSkeleton
+      <HeaderWithSearchSkeleton
         tags={tagList}
         action={
           <SearchAction

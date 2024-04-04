@@ -1,7 +1,5 @@
 import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
-import { Header } from "../../components/organisms/Header";
-import { SubHeader } from "../../components/organisms/SubHeader";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { TrackedSymptomsProvider, useTrackedSymptomsContext } from "./context";
 import { UserSymptomSkeleton } from "../../components/organisms/UserSymptomSkeleton";
@@ -9,6 +7,8 @@ import { UserSymptomsContainer } from "../../components/organisms/UserSymptomsCo
 import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
+import { HeaderWithSearch } from "../../components/organisms/HeaderWithSearch";
+import { SubHeader } from "../../components/organisms/SubHeader";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();
@@ -18,7 +18,7 @@ const Symptoms = () => {
       scrollable
       mainSection={
         <VStack>
-          <Header
+          <HeaderWithSearch
             title="Long-Covid Symptoms"
             count={4}
             search={{

@@ -2,11 +2,14 @@ import { HStack, VStack } from "@gluestack-ui/themed";
 import { ReactNode } from "react";
 import { Skeleton, SkeletonContainer } from "react-native-skeleton-component";
 
-interface IHeaderSkeletonProps {
+interface IHeaderWithSearchSkeletonProps {
   tags: string[];
   action: ReactNode;
 }
-export const HeaderSkeleton = ({ tags, action }: IHeaderSkeletonProps) => {
+export const HeaderWithSearchSkeleton = ({
+  tags,
+  action,
+}: IHeaderWithSearchSkeletonProps) => {
   return (
     <SkeletonContainer>
       <VStack

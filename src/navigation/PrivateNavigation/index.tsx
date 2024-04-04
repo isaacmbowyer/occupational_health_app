@@ -4,12 +4,13 @@ import { SettingsScreen } from "../../screens/ScreenAppSettings";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SymptomsProvider } from "../../contexts/useSymptomsContext";
 import { SymptomNavigation } from "../SymptomNavigation";
+import { CurrentEntityProvider } from "../../contexts/useCurrentEntityContext";
 
 export const PrivateNavigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <SymptomsProvider>
+    <CurrentEntityProvider>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -36,6 +37,6 @@ export const PrivateNavigation = () => {
         <Tab.Screen name="Symptoms" component={SymptomNavigation} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
-    </SymptomsProvider>
+    </CurrentEntityProvider>
   );
 };

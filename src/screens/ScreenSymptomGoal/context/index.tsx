@@ -3,6 +3,7 @@ import { IProviderProps } from "../../../entities/IProviderProps";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { getDaysLeft } from "../../../utils/getDaysLeft";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
@@ -25,7 +26,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           currentSeverity: currentSymptom?.currentSeverity,
           targetSeverity: state?.targetSeverity,
           targetDate: state?.targetDate,
-          daysLeft: 10,
+          daysLeft: getDaysLeft(state?.targetDate),
         },
         methods: {},
       }}

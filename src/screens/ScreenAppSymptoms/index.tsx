@@ -5,7 +5,7 @@ import { SubHeader } from "../../components/organisms/SubHeader";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { TrackedSymptomsProvider, useTrackedSymptomsContext } from "./context";
 import { UserSymptomSkeleton } from "../../components/organisms/UserSymptomSkeleton";
-import { UserSymptomsContainer } from "../../components/modules/UserSymptomsContainer";
+import { UserSymptomsContainer } from "../../components/organisms/UserSymptomsContainer";
 import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
@@ -66,7 +66,7 @@ const Symptoms = () => {
             </VStack>
           ) : null}
 
-          {state.count && !state?.isFetching ? (
+          {state?.symptoms?.length && !state?.isFetching ? (
             <>
               <UserSymptomsContainer
                 items={state?.symptoms}

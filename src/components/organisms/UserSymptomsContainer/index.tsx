@@ -1,6 +1,6 @@
 import { VStack } from "@gluestack-ui/themed";
 import { IUserSymptom } from "../../../entities/IUserSymptom";
-import { UserSymptomCard } from "../../organisms/UserSymptomCard";
+import { UserSymptomCard } from "../../modules/UserSymptomCard";
 
 interface IUserSymptomsContainer {
   items: IUserSymptom[];

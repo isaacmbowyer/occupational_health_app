@@ -1,5 +1,4 @@
 import { VStack } from "@gluestack-ui/themed";
-import { Text } from "../../components/atoms/Text";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import { MainHeader } from "../../components/organisms/MainHeader";
 import { SymptomGoalProvider, useSymptomGoalContext } from "./context";

@@ -6,6 +6,7 @@ import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityConte
 import { getDaysLeft } from "../../../utils/getDaysLeft";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { services } from "../../../services";
+import { useGetSymptomRatings } from "../../../hooks/useGetSymptomRatings";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
@@ -19,6 +20,9 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     targetDate: currentSymptom?.targetDate,
     isLoading: false,
   };
+
+  const { symptomRatings, isFetching: isFetchingRatings } =
+    useGetSymptomRatings();
 
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
 
@@ -50,6 +54,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     }
   };
 
+  const isFetching = isFetchingRatings;
+
   return (
     <SymptomGoalContext.Provider
       value={{
@@ -59,6 +65,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           targetSeverity: state?.targetSeverity,
           targetDate: state?.targetDate,
           daysLeft: getDaysLeft(state?.targetDate),
+          isFetching: isFetching,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -81,6 +88,7 @@ interface ISymptomGoalContext {
     targetSeverity: number;
     targetDate: Date;
     daysLeft: number;
+    isFetching: boolean;
   };
   methods: {
     handleOnChange: (

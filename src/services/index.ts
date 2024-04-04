@@ -1,4 +1,5 @@
 import { deleteSymptomId } from "./delete-symptom-id";
+import { getSymptomIdScores } from "./get-symptom-id-scores";
 import { getSymptoms } from "./get-symptoms";
 import { getTrackedSymptoms } from "./get-trackedSymptoms";
 import { postAuthLogin } from "./post-auth-login";
@@ -15,6 +16,7 @@ export const services = {
   get: {
     symptoms: getSymptoms,
     trackedSymptoms: getTrackedSymptoms,
+    symptomIdScores: getSymptomIdScores,
   },
   delete: {
     trackedSymptomId: deleteSymptomId,

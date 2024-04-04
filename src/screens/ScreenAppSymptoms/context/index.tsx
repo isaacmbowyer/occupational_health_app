@@ -55,14 +55,21 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
   const SKIP = (state?.currentPage - 1) * LIMIT;
 
+  // DATA
   const { data: symptomList, isFetching: isFetchingSymptoms } =
     useSymptomsContext();
+
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useGetTrackedSymptoms({
       limit: LIMIT,
       skip: SKIP,
       source: state?.source,
     });
+
+  const userSymptoms = formatUserSymptoms({
+    symptoms: symptomList,
+    trackedSymptoms: trackedSymptomsState.trackedSymptoms,
+  });
 
   const severityTypeList = useSeverityTypes();
   const ratingList = createDropdownOptions(NUMBERS);
@@ -110,18 +117,15 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const handleNavigateToTrackedSymptom = (symptomId: string) => {
-    console.log("Navigate");
+  const handleNavigateToTrackedSymptom = (symptom: IUserSymptom) => {
+    navigation.navigate("Symptom Goal", {
+      symptomDetails: symptom,
+    });
   };
 
   const handleAddTrackedSymptom = () => {
     console.log("Add");
   };
-
-  const userSymptoms = formatUserSymptoms({
-    symptoms: symptomList,
-    trackedSymptoms: trackedSymptomsState.trackedSymptoms,
-  });
 
   const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;
 
@@ -186,7 +190,7 @@ interface ITrackedSymptomsContext {
   };
   methods: {
     handleOnDelete: (symptomId: string) => void;
-    handleOnPress: (symptomId: string) => void;
+    handleOnPress: (symptom: IUserSymptom) => void;
     handleOnAdd: () => void;
     handleOnChange: (
       key: IAppSymptomsStateKey,

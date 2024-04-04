@@ -4,7 +4,7 @@ import { UserSymptomCard } from "../../organisms/UserSymptomCard";
 
 interface IUserSymptomsContainer {
   items: IUserSymptom[];
-  handleOnView: (id: string) => void;
+  handleOnView: (symptom: IUserSymptom) => void;
   handleOnDelete: (id: string) => void;
 }
 
@@ -23,7 +23,7 @@ export const UserSymptomsContainer = ({
           imageUri={item?.imageUri}
           targetDate={item?.targetDate}
           handleOnDelete={() => handleOnDelete(item?.id)}
-          handleOnView={() => handleOnView(item?.id)}
+          handleOnView={() => handleOnView(item)}
         />
       ))}
     </VStack>

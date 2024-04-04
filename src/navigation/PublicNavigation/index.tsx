@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen } from "../../../screens/ScreenHome";
-import { LogInScreen } from "../../../screens/ScreenLogIn";
-import { CreateAccountScreen } from "../../../screens/ScreenCreateAccount";
+import { HomeScreen } from "../../screens/ScreenHome";
+import { LogInScreen } from "../../screens/ScreenLogIn";
+import { CreateAccountScreen } from "../../screens/ScreenCreateAccount";
 
 export const PublicNavigation = () => {
   const Stack = createNativeStackNavigator();

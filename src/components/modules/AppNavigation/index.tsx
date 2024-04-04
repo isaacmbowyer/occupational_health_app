@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { PrivateNavigation } from "../../organisms/PrivateNavigation";
-import { PublicNavigation } from "../../organisms/PublicNavigation";
+import { PrivateNavigation } from "../../../navigation/PrivateNavigation";
+import { PublicNavigation } from "../../../navigation/PublicNavigation";
 import { useAuthenticationContext } from "../../../contexts/useAuthenticationContext";
 
 export const AppNavigation = () => {

@@ -16,6 +16,7 @@ import { IOption } from "../../../entities/IOption";
 import { createDropdownOptions } from "../../../utils/createDropdownOptions";
 import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateKey";
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
+import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -47,6 +48,7 @@ const INITAL_SEARCH: IAdvancedSearch = {
 export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
+  const { setCurrentSymptom } = useCurrentEntityContext();
 
   const [state, setState] = useState<ITrackedSymptomsState>(INITAL_STATE);
   const [searchState, setSearchState] =
@@ -118,9 +120,8 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   };
 
   const handleNavigateToTrackedSymptom = (symptom: IUserSymptom) => {
-    navigation.navigate("Symptom Goal", {
-      symptomDetails: symptom,
-    });
+    setCurrentSymptom(symptom);
+    navigation.navigate("Symptom Goal");
   };
 
   const handleAddTrackedSymptom = () => {

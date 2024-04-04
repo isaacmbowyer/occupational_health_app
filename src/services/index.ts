@@ -4,6 +4,7 @@ import { getTrackedSymptoms } from "./get-trackedSymptoms";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
+import { updateSymptomId } from "./update-symptom-id";
 
 export const services = {
   post: {
@@ -17,5 +18,8 @@ export const services = {
   },
   delete: {
     trackedSymptomId: deleteSymptomId,
+  },
+  update: {
+    trackedSymptomId: updateSymptomId,
   },
 };

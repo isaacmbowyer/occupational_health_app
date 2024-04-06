@@ -6,7 +6,7 @@ interface IProgressBar {
 
 export const ProgressBar = ({ value }: IProgressBar) => {
   return (
-    <Progress value={value} w="$full" size="lg">
+    <Progress value={value} w="$full" size="xl">
       <ProgressFilledTrack />
     </Progress>
   );

@@ -2,7 +2,7 @@ import { formatTitleWithCount } from "../../../utils/formatTitleWithCount";
 import { SearchAction } from "../../modules/SearchAction";
 import { VStack, HStack } from "@gluestack-ui/themed";
 import { Text } from "../../atoms/Text";
-import { HeaderTags } from "../HeaderTags";
+import { HeaderTags } from "../../modules/HeaderTags";
 import { HeaderWithSearchSkeleton } from "../HeaderWithSearchSkeleton";
 
 interface IHeaderWithSearchProps {

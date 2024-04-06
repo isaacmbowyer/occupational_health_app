@@ -1,6 +1,6 @@
 import { HStack } from "@gluestack-ui/themed";
 import { Text } from "../../atoms/Text";
-import { SubHeaderSkeleton } from "../../modules/SubHeaderSkeleton";
+import { SubHeaderSkeleton } from "../SubHeaderSkeleton";
 
 interface ISubHeaderProps {
   pageCount?: number;

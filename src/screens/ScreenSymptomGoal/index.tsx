@@ -1,6 +1,6 @@
 import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
-import { MainHeader } from "../../components/organisms/MainHeader";
+import { MainHeader } from "../../components/modules/MainHeader";
 import { SymptomGoalProvider, useSymptomGoalContext } from "./context";
 
 const SymptomGoal = () => {

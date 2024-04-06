@@ -8,7 +8,7 @@ import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
 import { HeaderWithSearch } from "../../components/organisms/HeaderWithSearch";
-import { SubHeader } from "../../components/organisms/SubHeader";
+import { SubHeader } from "../../components/modules/SubHeader";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();

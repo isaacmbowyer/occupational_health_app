@@ -6,20 +6,20 @@ import { ITrackedSymptomsResponse } from "../../entities/ITrackedSymptomsRespons
 import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
+import { ISourcePageProps } from "../../entities/ISourcePageProps";
 
 const INIITAL_DATA: ITrackedSymptomsResponse = {
   count: 0,
   results: [],
 };
 
-export const useGetTrackedSymptoms = ({
+export const useTrackedSymptoms = ({
   skip,
   limit,
   source,
-}: IUseGetTrackedSymptomsProps): IUseGetTrackedSymptomsResponse => {
+}: ISourcePageProps): IUseTrackedSymptomsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
-  console.log(source);
 
   const { data, isFetching, refetch } = useQuery(
     ["/tracked_symptoms", source, limit, skip],
@@ -67,13 +67,7 @@ export const useGetTrackedSymptoms = ({
   };
 };
 
-interface IUseGetTrackedSymptomsProps {
-  limit: number;
-  skip: number;
-  source: string;
-}
-
-interface IUseGetTrackedSymptomsResponse {
+interface IUseTrackedSymptomsResponse {
   state: {
     trackedSymptoms: ITrackedSymptom[];
     count: number;

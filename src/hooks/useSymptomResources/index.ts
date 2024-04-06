@@ -3,21 +3,33 @@ import { useCustomToast } from "../useCustomToast";
 import { services } from "../../services";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import { ISymptomScore } from "../../entities/ISymptomScore";
 import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext";
+import { IResource } from "../../entities/IResource";
+import { ISourcePageProps } from "../../entities/ISourcePageProps";
+import { IResourceResponse } from "../../entities/IResourceResponse";
 
-export const useGetSymptomRatings = (): IUseGetSymptomIdScoresResponse => {
+const INITAL_DATA: IResourceResponse = {
+  count: 0,
+  results: [],
+};
+
+export const useSymptomResources = (
+  props: ISourcePageProps
+): ISymptomResourcesResponse => {
   const { state } = useAuthenticationContext();
   const { currentSymptom } = useCurrentEntityContext();
 
   const toast = useCustomToast();
 
   const { data, isFetching } = useQuery(
-    ["/scores"],
+    ["/resources"],
     async () => {
-      const data = await services.get.symptomIdScores({
+      const data = await services.get.symptomResources({
         userId: auth?.currentUser?.uid,
         symptomId: currentSymptom?.symptomId,
+        source: props?.source,
+        pageLimit: props?.limit,
+        skip: props?.skip,
       });
 
       return data;
@@ -25,23 +37,25 @@ export const useGetSymptomRatings = (): IUseGetSymptomIdScoresResponse => {
     {
       enabled: state?.isAuthenticated,
       onError: (e) => {
-        toast.errorToast("Failed to load your symptom ratings");
+        toast.errorToast("Failed to load symptom resources");
       },
       onSuccess: () => {
-        console.log("SUCCESS", "Loaded your symptom ratings successfully");
+        console.log("SUCCESS", "Loaded symptom resources successfully");
       },
-      initialData: [],
+      initialData: INITAL_DATA,
       refetchOnWindowFocus: false,
     }
   );
 
   return {
-    symptomRatings: data,
+    totalCount: data?.count,
+    symptomResources: data.results,
     isFetching,
   };
 };
 
-interface IUseGetSymptomIdScoresResponse {
-  symptomRatings: ISymptomScore[];
+interface ISymptomResourcesResponse {
+  totalCount: number;
+  symptomResources: IResource[];
   isFetching: boolean;
 }

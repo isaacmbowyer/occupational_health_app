@@ -6,7 +6,9 @@ import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityConte
 import { getDaysLeft } from "../../../utils/getDaysLeft";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { services } from "../../../services";
-import { useGetSymptomRatings } from "../../../hooks/useGetSymptomRatings";
+import { useSymptomRatings } from "../../../hooks/useSymptomRatings";
+import { SERVICES_LIMITS } from "../../../config/services";
+import { useSymptomResources } from "../../../hooks/useSymptomResources";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
@@ -18,13 +20,27 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const INITIAL_STATE: ISymptomGoalState = {
     targetSeverity: currentSymptom?.targetSeverity,
     targetDate: currentSymptom?.targetDate,
+    currentPage: 1,
     isLoading: false,
+    source: "Website",
   };
 
-  const { symptomRatings, isFetching: isFetchingRatings } =
-    useGetSymptomRatings();
-
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
+
+  const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
+  const SKIP = (state?.currentPage - 1) * LIMIT;
+
+  const { symptomRatings, isFetching: isFetchingRatings } = useSymptomRatings();
+
+  const {
+    symptomResources,
+    totalCount,
+    isFetching: isFetchingResources,
+  } = useSymptomResources({
+    limit: LIMIT,
+    skip: SKIP,
+    source: state?.source,
+  });
 
   // ACTION METHODS
   const handleOnChange = (
@@ -32,7 +48,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     value: ISymptomGoalStateKeyValue
   ) => {
     setState((prev) => ({ ...prev, [key]: value }));
-    _handleOnEdit();
+
+    if (key === "targetDate" || key === "targetSeverity") _handleOnEdit();
   };
 
   const _handleSetLoading = (bool: boolean) => {
@@ -41,6 +58,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const _handleOnEdit = async () => {
     try {
+      _handleSetLoading(true);
       await services.update.trackedSymptomId({
         id: currentSymptom?.id,
         currentSeverity: currentSymptom?.currentSeverity,
@@ -51,10 +69,12 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
       toast.successToast("Successfully updated the Symptom details");
     } catch (e: any) {
       toast.errorToast("Unable to update the symptom. Try again later");
+    } finally {
+      _handleSetLoading(false);
     }
   };
 
-  const isFetching = isFetchingRatings;
+  const isFetching = isFetchingRatings || isFetchingResources;
 
   return (
     <SymptomGoalContext.Provider
@@ -66,6 +86,10 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           targetDate: state?.targetDate,
           daysLeft: getDaysLeft(state?.targetDate),
           isFetching: isFetching,
+          currentPage: state?.currentPage,
+          count: symptomResources?.length,
+          totalPages: totalCount,
+          limit: LIMIT,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -89,6 +113,10 @@ interface ISymptomGoalContext {
     targetDate: Date;
     daysLeft: number;
     isFetching: boolean;
+    currentPage: number;
+    count: number;
+    totalPages: number;
+    limit: number;
   };
   methods: {
     handleOnChange: (
@@ -101,7 +129,9 @@ interface ISymptomGoalContext {
 interface ISymptomGoalState {
   targetSeverity: number;
   targetDate: Date;
+  currentPage: number;
   isLoading: boolean;
+  source: string;
 }
 
 type ISymptomGoalStateKey = keyof ISymptomGoalState;

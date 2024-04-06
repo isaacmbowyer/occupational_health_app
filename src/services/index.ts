@@ -1,4 +1,5 @@
 import { deleteSymptomId } from "./delete-symptom-id";
+import { getSymptomIdResources } from "./get-symptom-id-resources";
 import { getSymptomIdScores } from "./get-symptom-id-scores";
 import { getSymptoms } from "./get-symptoms";
 import { getTrackedSymptoms } from "./get-trackedSymptoms";
@@ -17,6 +18,7 @@ export const services = {
     symptoms: getSymptoms,
     trackedSymptoms: getTrackedSymptoms,
     symptomIdScores: getSymptomIdScores,
+    symptomResources: getSymptomIdResources,
   },
   delete: {
     trackedSymptomId: deleteSymptomId,

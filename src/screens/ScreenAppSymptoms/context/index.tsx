@@ -5,7 +5,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { SERVICES_LIMITS } from "../../../config/services";
-import { useGetTrackedSymptoms } from "../../../hooks/useGetTrackedSymptoms";
 import { services } from "../../../services";
 import { formatUserSymptoms } from "../../../utils/formatUserSymptoms";
 import { IUserSymptom } from "../../../entities/IUserSymptom";
@@ -17,6 +16,7 @@ import { createDropdownOptions } from "../../../utils/createDropdownOptions";
 import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateKey";
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -62,7 +62,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     useSymptomsContext();
 
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
-    useGetTrackedSymptoms({
+    useTrackedSymptoms({
       limit: LIMIT,
       skip: SKIP,
       source: state?.source,
@@ -112,7 +112,6 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
 
       trackedSymptomsMethods.handleOnRefetch();
     } catch (e: any) {
-      console.log(e);
       toast.errorToast("Failed to delete this tracked symptom.");
     } finally {
       _handleSetLoading(false);

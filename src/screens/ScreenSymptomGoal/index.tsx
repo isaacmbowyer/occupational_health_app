@@ -11,7 +11,7 @@ const SymptomGoal = () => {
       scrollable
       mainSection={
         <VStack>
-          <MainHeader title={state?.title} isFetching={false} />
+          <MainHeader title={state?.title} isFetching={state?.isFetching} />
         </VStack>
       }
     />

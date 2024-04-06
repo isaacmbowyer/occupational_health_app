@@ -7,7 +7,7 @@ interface IMainHeader {
 }
 export const MainHeader = ({ title, isFetching }: IMainHeader) => {
   if (isFetching) {
-    return <SkeletonText width={220} height={30} />;
+    return <SkeletonText width={230} height={30} />;
   }
 
   return (

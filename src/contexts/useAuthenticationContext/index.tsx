@@ -48,7 +48,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       handleSetLoginData({ email: "", password: "" });
       setUser(data);
     } catch (e: any) {
-      console.log("ERROR", e);
       toast.errorToast(
         "Unable to login. Please ensure your credentials are correct"
       );

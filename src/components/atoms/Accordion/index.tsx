@@ -18,32 +18,33 @@ interface IAccordion {
 export const Accordion = ({ title, hiddenSection }: IAccordion) => {
   return (
     <GluestackAccordion
-      m="$5"
+      m="$0"
       width="$full"
-      size="md"
+      size="lg"
       variant="unfilled"
       type="single"
       isCollapsible={true}
-      isDisabled={false}
     >
       <AccordionItem value="a">
         <AccordionHeader>
-          <AccordionTrigger>
+          <AccordionTrigger pl="$0" pr="$0">
             {({ isExpanded }) => {
               return (
                 <>
                   <AccordionTitleText>{title}</AccordionTitleText>
                   {isExpanded ? (
-                    <AccordionIcon as={ICONS.CHEVRON_UP} ml="$3" />
+                    <AccordionIcon as={ICONS.CHEVRON_UP} />
                   ) : (
-                    <AccordionIcon as={ICONS.CHEVRON_DOWN} ml="$3" />
+                    <AccordionIcon as={ICONS.CHEVRON_DOWN} />
                   )}
                 </>
               );
             }}
           </AccordionTrigger>
         </AccordionHeader>
-        <AccordionContent>{hiddenSection}</AccordionContent>
+        <AccordionContent pl="$0" pr="$0">
+          {hiddenSection}
+        </AccordionContent>
       </AccordionItem>
     </GluestackAccordion>
   );

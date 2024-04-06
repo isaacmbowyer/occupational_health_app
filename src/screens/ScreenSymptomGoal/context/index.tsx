@@ -9,16 +9,23 @@ import { services } from "../../../services";
 import { useSymptomRatings } from "../../../hooks/useSymptomRatings";
 import { SERVICES_LIMITS } from "../../../config/services";
 import { useSymptomResources } from "../../../hooks/useSymptomResources";
+import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
+import { IOption } from "../../../entities/IOption";
+import { createSeverityOption } from "../../../utils/createSeverityOption";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
+  const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
 
   const INITIAL_STATE: ISymptomGoalState = {
-    targetSeverity: currentSymptom?.targetSeverity,
+    targetSeverity: createSeverityOption(
+      severityList,
+      String(currentSymptom?.targetSeverity)
+    ),
     targetDate: currentSymptom?.targetDate,
     currentPage: 1,
     isLoading: false,
@@ -49,21 +56,29 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   ) => {
     setState((prev) => ({ ...prev, [key]: value }));
 
-    if (key === "targetDate" || key === "targetSeverity") _handleOnEdit();
+    if (key === "targetDate")
+      return _handleOnEdit(value as Date, state?.targetSeverity);
+
+    if (key === "targetSeverity")
+      return _handleOnEdit(state?.targetDate, value as IOption);
   };
 
   const _handleSetLoading = (bool: boolean) => {
     setState((prev) => ({ ...prev, isLoading: bool }));
   };
 
-  const _handleOnEdit = async () => {
+  const _handleOnEdit = async (
+    newTargetDate: Date,
+    newTargetSeverity: IOption
+  ) => {
     try {
       _handleSetLoading(true);
+
       await services.update.trackedSymptomId({
         id: currentSymptom?.id,
         currentSeverity: currentSymptom?.currentSeverity,
-        targetSeverity: state?.targetSeverity,
-        targetDate: state?.targetDate,
+        targetSeverity: +newTargetSeverity?.name,
+        targetDate: newTargetDate,
       });
 
       toast.successToast("Successfully updated the Symptom details");
@@ -90,6 +105,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           count: symptomResources?.length,
           totalPages: totalCount,
           limit: LIMIT,
+          severityList: severityList,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -109,7 +125,7 @@ interface ISymptomGoalContext {
   state: {
     title: string;
     currentSeverity: number;
-    targetSeverity: number;
+    targetSeverity: IOption;
     targetDate: Date;
     daysLeft: number;
     isFetching: boolean;
@@ -117,6 +133,7 @@ interface ISymptomGoalContext {
     count: number;
     totalPages: number;
     limit: number;
+    severityList: IOption[];
   };
   methods: {
     handleOnChange: (
@@ -127,7 +144,7 @@ interface ISymptomGoalContext {
 }
 
 interface ISymptomGoalState {
-  targetSeverity: number;
+  targetSeverity: IOption;
   targetDate: Date;
   currentPage: number;
   isLoading: boolean;
@@ -135,4 +152,4 @@ interface ISymptomGoalState {
 }
 
 type ISymptomGoalStateKey = keyof ISymptomGoalState;
-type ISymptomGoalStateKeyValue = number | Date;
+type ISymptomGoalStateKeyValue = IOption | Date;

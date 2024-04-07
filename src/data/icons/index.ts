@@ -11,6 +11,7 @@ import {
   TrashIcon,
   ChevronRightIcon,
   ChevronUpIcon,
+  FavouriteIcon,
 } from "@gluestack-ui/themed";
 import { AddIcon } from "@gluestack-ui/themed";
 
@@ -28,4 +29,5 @@ export const ICONS = {
   CHEVRON_UP: ChevronUpIcon,
   SEARCH: SearchIcon,
   DELETE: TrashIcon,
+  HEART: FavouriteIcon,
 };

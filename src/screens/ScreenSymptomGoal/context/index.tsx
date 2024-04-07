@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { IProviderProps } from "../../../entities/IProviderProps";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -12,8 +12,8 @@ import { useSymptomResources } from "../../../hooks/useSymptomResources";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { IOption } from "../../../entities/IOption";
 import { createSeverityOption } from "../../../utils/createSeverityOption";
-import { calculateAverageScores } from "../../../utils/calculateAverageScores";
 import { IScore } from "../../../entities/IScore";
+import { useUsersContext } from "../../../contexts/useUsersContext";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
@@ -22,6 +22,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
+  const { data: users, isFetching: isFetchingUsers } = useUsersContext();
 
   const INITIAL_STATE: ISymptomGoalState = {
     targetSeverity: createSeverityOption(
@@ -50,8 +51,6 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     skip: SKIP,
     source: state?.source,
   });
-
-  console.log(symptomResources);
 
   // ACTION METHODS
   const handleOnChange = (
@@ -97,7 +96,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     console.log("Navigate");
   };
 
-  const isFetching = isFetchingRatings || isFetchingResources;
+  const isFetching =
+    isFetchingRatings || isFetchingResources || isFetchingUsers;
 
   return (
     <SymptomGoalContext.Provider
@@ -115,6 +115,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           limit: LIMIT,
           severityList: severityList,
           averageScores: averageScores,
+          numberOfUsers: users?.count,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -145,6 +146,7 @@ interface ISymptomGoalContext {
     limit: number;
     severityList: IOption[];
     averageScores: IScore[];
+    numberOfUsers: number;
   };
   methods: {
     handleOnChange: (

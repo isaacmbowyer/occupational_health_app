@@ -32,8 +32,6 @@ export const getSymptomIdScores: IGetSymptomIdScoresService = async (props) => {
 
   const { docs } = await getDocs(collectionQuery);
 
-  console.log(docs.length);
-
   return symptomIdScoresAdapter(docs);
 };
 

@@ -2,13 +2,13 @@ import { Divider, VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import { MainHeader } from "../../components/modules/MainHeader";
 import { SymptomGoalProvider, useSymptomGoalContext } from "./context";
-import { OverallProgressCard } from "../../components/modules/OverallProgressCard";
 import { Accordion } from "../../components/atoms/Accordion";
 import { Select } from "../../components/atoms/Select";
 import { DatePicker } from "../../components/atoms/DatePicker";
 import { Chart } from "../../components/atoms/Chart";
 import { Text } from "../../components/atoms/Text";
 import { Button } from "../../components/atoms/Button";
+import { OverallProgressCard } from "../../components/organisms/OverallProgressCard";
 
 const SymptomGoal = () => {
   const { state, methods } = useSymptomGoalContext();

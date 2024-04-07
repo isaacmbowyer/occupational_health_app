@@ -8,6 +8,7 @@ export interface IResource {
   details: string;
   type: IResourceType;
   companyName: string;
+  companyDetails: string;
   isLiked: boolean;
   numberOfLikes: number;
 }

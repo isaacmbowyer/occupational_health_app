@@ -1,30 +1,43 @@
-import { HStack, VStack } from "@gluestack-ui/themed";
+import { HStack, Image, VStack } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
-import { ISeverityType } from "../../../entities/ISeverityType";
-import { DeleteIcon } from "../../atoms/DeleteIcon";
+import { IResourceType } from "../../../entities/IResourceType";
 import { Text } from "../../atoms/Text";
-import { Image } from "@gluestack-ui/themed";
 import { Button } from "../../atoms/Button";
+import { getResourceLikePercentage } from "../../../utils/getResourceLikePercentage";
 import { ICONS } from "../../../data/icons";
-import { displayDate } from "../../../utils/displayDate";
+import { getResourceButtonLabel } from "../../../utils/getResourceButtonLabel";
+import { IconButton } from "../../atoms/IconButton";
 
-interface ISymptomCardProps {
-  label: string;
-  severityType: ISeverityType;
+interface IUserCardProps {
+  companyName: string;
+  companyDescription: string;
   imageUri: string;
-  targetDate: Date;
-  handleOnDelete: () => void;
+  resourceType: IResourceType;
+  resourceInformation: string;
+  numberOfUsers: number;
+  numberOfLikes: number;
+  isLiked: boolean;
+  handleOnLike: () => void;
   handleOnView: () => void;
 }
 
-export const SymptomCard = ({
-  label,
-  severityType,
+export const ResourceCard = ({
+  companyName,
+  companyDescription,
   imageUri,
-  targetDate,
-  handleOnDelete,
+  resourceType,
+  resourceInformation,
+  numberOfUsers,
+  numberOfLikes,
+  isLiked,
+  handleOnLike,
   handleOnView,
-}: ISymptomCardProps) => {
+}: IUserCardProps) => {
+  const likedPercentage = getResourceLikePercentage(
+    numberOfUsers,
+    numberOfLikes
+  );
+
   return (
     <VStack
       borderColor={colors.gray}
@@ -45,40 +58,46 @@ export const SymptomCard = ({
         <Image
           size="md"
           borderRadius={0}
-          source={require("../../../../assets/symptom.jpg")}
+          source={{
+            uri: imageUri,
+          }}
           alt="Resource Logo Image"
+        />
+
+        <VStack space="xs">
+          <Text.Small bold>{companyName}</Text.Small>
+          <Text.Small>{companyDescription}</Text.Small>
+        </VStack>
+
+        <IconButton.Large
+          icon={ICONS.HEART}
+          color="sky_blue"
+          fill={isLiked ? "sky_blue" : null}
+          handleOnPress={handleOnLike}
         />
       </HStack>
       <VStack width="$full" space="sm">
         <VStack space="xs">
-          <Text.Small bold>Symptom</Text.Small>
-          <Text.Small>{label}</Text.Small>
+          <Text.Small bold>Resource Type</Text.Small>
+          <Text.Small>{resourceType}</Text.Small>
         </VStack>
 
         <VStack space="xs">
-          <HStack width="$full" alignItems="flex-end">
-            <Text.Small bold>Severity Type </Text.Small>
-            <Text.ExtraSmall>
-              (Based on your Current Severity Rating)
-            </Text.ExtraSmall>
-          </HStack>
-          <Text.Small>{severityType}</Text.Small>
+          <Text.Small bold>Resource Information</Text.Small>
+          <Text.Small>{resourceInformation}</Text.Small>
         </VStack>
 
         <VStack space="xs">
-          <Text.Small bold>Progress</Text.Small>
-          <HStack>
-            <Text.Small>
-              You are Off-Target of completing your Target Severity rating,
-              which is scheduled for the {displayDate(targetDate)}
-            </Text.Small>
-          </HStack>
+          <Text.Small bold>Favourite Indicator</Text.Small>
+          <Text.Small>
+            {likedPercentage}% of users have liked this resource
+          </Text.Small>
         </VStack>
 
         <HStack width="$full" justifyContent="flex-end">
-          <HStack style={{ width: 110 }}>
+          <HStack style={{ width: 150 }}>
             <Button.Outline
-              text="View"
+              text={getResourceButtonLabel(resourceType)}
               onPress={handleOnView}
               icon={ICONS.CHEVRON_RIGHT}
             ></Button.Outline>

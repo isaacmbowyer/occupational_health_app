@@ -18,6 +18,7 @@ export const resorcesAdapter: IResourcesAdapter = (props) => {
       details: data?.information,
       type: data?.type,
       companyName: data?.company,
+      companyDetails: data?.companyDetails,
       numberOfLikes: resourceLike?.numberOfLikes,
       isLiked: resourceLike?.isLiked,
     };

@@ -6,6 +6,9 @@ import { OverallProgressCard } from "../../components/modules/OverallProgressCar
 import { Accordion } from "../../components/atoms/Accordion";
 import { Select } from "../../components/atoms/Select";
 import { DatePicker } from "../../components/atoms/DatePicker";
+import { Chart } from "../../components/atoms/Chart";
+import { Text } from "../../components/atoms/Text";
+import { Button } from "../../components/atoms/Button";
 
 const SymptomGoal = () => {
   const { state, methods } = useSymptomGoalContext();
@@ -28,6 +31,26 @@ const SymptomGoal = () => {
           />
 
           <Divider my="$0.5" />
+
+          {state?.averageScores?.length ? (
+            <VStack>
+              <Accordion
+                title="Chart View"
+                hiddenSection={
+                  <VStack>
+                    <Chart scores={state?.averageScores} />
+                    <Text.Regular color="gray" fontStyle="italic">
+                      The chart plots data from the latest daily reports over
+                      the past four months, calculating the average severity
+                      rating for each month.
+                    </Text.Regular>
+                  </VStack>
+                }
+              />
+
+              <Divider my="$0.5" />
+            </VStack>
+          ) : null}
 
           <Accordion
             title="Options"
@@ -52,6 +75,13 @@ const SymptomGoal = () => {
                 />
               </VStack>
             }
+          />
+
+          <Divider my="$0.5" />
+
+          <Button.Solid
+            text="Track Symptom Progress"
+            onPress={methods.handleOnPress}
           />
         </VStack>
       }

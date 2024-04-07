@@ -12,6 +12,8 @@ import { useSymptomResources } from "../../../hooks/useSymptomResources";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { IOption } from "../../../entities/IOption";
 import { createSeverityOption } from "../../../utils/createSeverityOption";
+import { calculateAverageScores } from "../../../utils/calculateAverageScores";
+import { IScore } from "../../../entities/IScore";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
@@ -37,7 +39,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
   const SKIP = (state?.currentPage - 1) * LIMIT;
 
-  const { symptomRatings, isFetching: isFetchingRatings } = useSymptomRatings();
+  const { averageScores, isFetching: isFetchingRatings } = useSymptomRatings();
 
   const {
     symptomResources,
@@ -89,6 +91,10 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     }
   };
 
+  const handleOnTrackSymptom = () => {
+    console.log("Navigate");
+  };
+
   const isFetching = isFetchingRatings || isFetchingResources;
 
   return (
@@ -106,9 +112,11 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           totalPages: totalCount,
           limit: LIMIT,
           severityList: severityList,
+          averageScores: averageScores,
         },
         methods: {
           handleOnChange: handleOnChange,
+          handleOnPress: handleOnTrackSymptom,
         },
       }}
     >
@@ -134,12 +142,14 @@ interface ISymptomGoalContext {
     totalPages: number;
     limit: number;
     severityList: IOption[];
+    averageScores: IScore[];
   };
   methods: {
     handleOnChange: (
       key: ISymptomGoalStateKey,
       value: ISymptomGoalStateKeyValue
     ) => void;
+    handleOnPress: () => void;
   };
 }
 

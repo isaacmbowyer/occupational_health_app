@@ -12,7 +12,7 @@ export const symptomIdScoresAdapter: ISymptomIdScoresAdapter = (docs) => {
       id: doc?.id,
       symptomId: data?.symptomId,
       userId: data?.userId,
-      rating: data?.rating,
+      rating: Number(data?.rating),
       createdAt: createdAtTimestamp?.toDate(),
       comment: data?.comment,
     };

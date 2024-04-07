@@ -5,6 +5,8 @@ import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 import { ISymptomScore } from "../../entities/ISymptomScore";
 import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext";
+import { IScore } from "../../entities/IScore";
+import { calculateAverageScores } from "../../utils/calculateAverageScores";
 
 export const useSymptomRatings = (): IUseSymptomIdScoresResponse => {
   const { state } = useAuthenticationContext();
@@ -36,12 +38,12 @@ export const useSymptomRatings = (): IUseSymptomIdScoresResponse => {
   );
 
   return {
-    symptomRatings: data,
+    averageScores: calculateAverageScores(data),
     isFetching,
   };
 };
 
 interface IUseSymptomIdScoresResponse {
-  symptomRatings: ISymptomScore[];
+  averageScores: IScore[];
   isFetching: boolean;
 }

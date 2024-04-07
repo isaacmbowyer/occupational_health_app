@@ -2,9 +2,8 @@ import { HStack, VStack } from "@gluestack-ui/themed";
 import { Skeleton, SkeletonContainer } from "react-native-skeleton-component";
 import { colors } from "../../../data/colors";
 import { SkeletonText } from "../../atoms/SkeletonText";
-import { ICONS } from "../../../data/icons";
 
-export const UserSymptomSkeleton = () => {
+export const SymptomSkeleton = () => {
   return (
     <SkeletonContainer>
       <VStack

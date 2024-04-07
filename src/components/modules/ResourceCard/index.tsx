@@ -8,7 +8,7 @@ import { Button } from "../../atoms/Button";
 import { ICONS } from "../../../data/icons";
 import { displayDate } from "../../../utils/displayDate";
 
-interface IUserSymptomCardProps {
+interface ISymptomCardProps {
   label: string;
   severityType: ISeverityType;
   imageUri: string;
@@ -17,14 +17,14 @@ interface IUserSymptomCardProps {
   handleOnView: () => void;
 }
 
-export const UserSymptomCard = ({
+export const SymptomCard = ({
   label,
   severityType,
   imageUri,
   targetDate,
   handleOnDelete,
   handleOnView,
-}: IUserSymptomCardProps) => {
+}: ISymptomCardProps) => {
   return (
     <VStack
       borderColor={colors.gray}
@@ -44,11 +44,10 @@ export const UserSymptomCard = ({
       >
         <Image
           size="md"
-          borderRadius={10}
+          borderRadius={0}
           source={require("../../../../assets/symptom.jpg")}
-          alt="Symptom Image"
+          alt="Resource Logo Image"
         />
-        <DeleteIcon handleOnPress={handleOnDelete} />
       </HStack>
       <VStack width="$full" space="sm">
         <VStack space="xs">

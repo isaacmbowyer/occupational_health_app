@@ -2,13 +2,13 @@ import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { TrackedSymptomsProvider, useTrackedSymptomsContext } from "./context";
-import { UserSymptomSkeleton } from "../../components/organisms/UserSymptomSkeleton";
-import { UserSymptomsContainer } from "../../components/organisms/UserSymptomsContainer";
 import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
 import { HeaderWithSearch } from "../../components/organisms/HeaderWithSearch";
 import { SubHeader } from "../../components/modules/SubHeader";
+import { SymptomSkeleton } from "../../components/modules/SymptomSkeleton";
+import { SymptomContainer } from "../../components/organisms/SymptomContainer";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();
@@ -61,14 +61,14 @@ const Symptoms = () => {
 
           {state.isFetching ? (
             <VStack space="md">
-              <UserSymptomSkeleton />
-              <UserSymptomSkeleton />
+              <SymptomSkeleton />
+              <SymptomSkeleton />
             </VStack>
           ) : null}
 
           {state?.symptoms?.length && !state?.isFetching ? (
             <>
-              <UserSymptomsContainer
+              <SymptomContainer
                 items={state?.symptoms}
                 handleOnDelete={methods?.handleOnDelete}
                 handleOnView={methods.handleOnPress}

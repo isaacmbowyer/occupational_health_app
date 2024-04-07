@@ -1,22 +1,22 @@
 import { VStack } from "@gluestack-ui/themed";
 import { IUserSymptom } from "../../../entities/IUserSymptom";
-import { UserSymptomCard } from "../../modules/UserSymptomCard";
+import { SymptomCard } from "../../modules/SymptomCard";
 
-interface IUserSymptomsContainer {
+interface ISymptomContainer {
   items: IUserSymptom[];
   handleOnView: (symptom: IUserSymptom) => void;
   handleOnDelete: (id: string) => void;
 }
 
-export const UserSymptomsContainer = ({
+export const SymptomContainer = ({
   items,
   handleOnView,
   handleOnDelete,
-}: IUserSymptomsContainer) => {
+}: ISymptomContainer) => {
   return (
     <VStack space="md" width="$full">
       {items?.map((item) => (
-        <UserSymptomCard
+        <SymptomCard
           key={item?.id}
           label={item?.name}
           severityType={item?.severityType}

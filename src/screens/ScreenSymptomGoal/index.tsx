@@ -21,6 +21,7 @@ const SymptomGoal = () => {
           <MainHeader title={state?.title} isFetching={state?.isFetching} />
           <Accordion
             title="Overall Progress"
+            isDisabled={state?.isFetching}
             hiddenSection={
               <OverallProgressCard
                 currentSeverity={state?.currentSeverity}
@@ -36,6 +37,7 @@ const SymptomGoal = () => {
             <VStack>
               <Accordion
                 title="Chart View"
+                isDisabled={state?.isFetching}
                 hiddenSection={
                   <VStack>
                     <Chart scores={state?.averageScores} />
@@ -54,6 +56,7 @@ const SymptomGoal = () => {
 
           <Accordion
             title="Options"
+            isDisabled={state?.isFetching}
             hiddenSection={
               <VStack width="$full" space="xl">
                 <Select
@@ -77,7 +80,7 @@ const SymptomGoal = () => {
             }
           />
 
-          <Divider my="$0.5" />
+          <Divider mt="$0.5" mb="$8" />
 
           <Button.Solid
             text="Track Symptom Progress"

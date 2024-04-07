@@ -13,9 +13,14 @@ import { ICONS } from "../../../data/icons";
 interface IAccordion {
   title: string;
   hiddenSection: ReactNode;
+  isDisabled?: boolean;
 }
 
-export const Accordion = ({ title, hiddenSection }: IAccordion) => {
+export const Accordion = ({
+  title,
+  hiddenSection,
+  isDisabled = false,
+}: IAccordion) => {
   return (
     <GluestackAccordion
       m="$0"
@@ -24,6 +29,7 @@ export const Accordion = ({ title, hiddenSection }: IAccordion) => {
       variant="unfilled"
       type="single"
       isCollapsible={true}
+      isDisabled={isDisabled}
     >
       <AccordionItem value="a">
         <AccordionHeader>

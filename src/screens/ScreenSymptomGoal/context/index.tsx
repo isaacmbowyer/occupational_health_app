@@ -51,6 +51,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     source: state?.source,
   });
 
+  console.log(symptomResources);
+
   // ACTION METHODS
   const handleOnChange = (
     key: ISymptomGoalStateKey,

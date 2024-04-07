@@ -3,6 +3,7 @@ import { getSymptomIdResources } from "./get-symptom-id-resources";
 import { getSymptomIdScores } from "./get-symptom-id-scores";
 import { getSymptoms } from "./get-symptoms";
 import { getTrackedSymptoms } from "./get-trackedSymptoms";
+import { getUsers } from "./get-users";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
@@ -19,6 +20,7 @@ export const services = {
     trackedSymptoms: getTrackedSymptoms,
     symptomIdScores: getSymptomIdScores,
     symptomResources: getSymptomIdResources,
+    users: getUsers,
   },
   delete: {
     trackedSymptomId: deleteSymptomId,

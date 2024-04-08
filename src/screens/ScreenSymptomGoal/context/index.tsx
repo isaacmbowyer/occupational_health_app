@@ -21,7 +21,7 @@ import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
-const TAGS = ["All", "Website", "Video", "Liked"];
+const TAGS = ["All", "Website", "Video"];
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();

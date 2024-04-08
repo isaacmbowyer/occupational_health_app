@@ -7,6 +7,7 @@ import { getResourceLikePercentage } from "../../../utils/getResourceLikePercent
 import { ICONS } from "../../../data/icons";
 import { getResourceButtonLabel } from "../../../utils/getResourceButtonLabel";
 import { IconButton } from "../../atoms/IconButton";
+import { displayFavouriteIndicatorMessage } from "../../../utils/displayFavouriteIndicatorMessage";
 
 interface IUserCardProps {
   companyName: string;
@@ -50,13 +51,13 @@ export const ResourceCard = ({
     >
       <HStack
         width="$full"
-        justifyContent="space-between"
         alignItems="flex-start"
+        space="lg"
         minHeight="$10"
         marginBottom="$4"
       >
         <Image
-          size="md"
+          size="lg"
           borderRadius={0}
           source={{
             uri: imageUri,
@@ -64,7 +65,7 @@ export const ResourceCard = ({
           alt="Resource Logo Image"
         />
 
-        <VStack space="xs">
+        <VStack space="xs" width={150}>
           <Text.Small bold>{companyName}</Text.Small>
           <Text.Small>{companyDescription}</Text.Small>
         </VStack>
@@ -72,7 +73,6 @@ export const ResourceCard = ({
         <IconButton.Large
           icon={ICONS.HEART}
           color="sky_blue"
-          fill={isLiked ? "sky_blue" : null}
           handleOnPress={handleOnLike}
         />
       </HStack>
@@ -90,12 +90,12 @@ export const ResourceCard = ({
         <VStack space="xs">
           <Text.Small bold>Favourite Indicator</Text.Small>
           <Text.Small>
-            {likedPercentage}% of users have liked this resource
+            {displayFavouriteIndicatorMessage(likedPercentage)}
           </Text.Small>
         </VStack>
 
         <HStack width="$full" justifyContent="flex-end">
-          <HStack style={{ width: 150 }}>
+          <HStack style={{ width: 200 }}>
             <Button.Outline
               text={getResourceButtonLabel(resourceType)}
               onPress={handleOnView}

@@ -9,6 +9,7 @@ import { Chart } from "../../components/atoms/Chart";
 import { Text } from "../../components/atoms/Text";
 import { Button } from "../../components/atoms/Button";
 import { OverallProgressCard } from "../../components/organisms/OverallProgressCard";
+import { SymptomResourcesSection } from "./components/SymptomResourcesSection";
 
 const SymptomGoal = () => {
   const { state, methods } = useSymptomGoalContext();
@@ -53,6 +54,33 @@ const SymptomGoal = () => {
               <Divider my="$0.5" />
             </VStack>
           ) : null}
+
+          <Accordion
+            title="Symptom Resources"
+            isDisabled={state?.isFetching}
+            hiddenSection={
+              state?.resources?.length ? (
+                <SymptomResourcesSection
+                  totalPages={state?.totalPages}
+                  currentPage={state?.currentPage}
+                  count={state?.count}
+                  limit={state?.limit}
+                  numberOfUsers={state?.numberOfUsers}
+                  resources={state?.resources}
+                  isFetching={state?.isFetching}
+                  handleOnChange={methods.handleOnChange}
+                  handleOnLike={methods.handleOnLike}
+                  handleOnView={methods.handleOnView}
+                />
+              ) : (
+                <Text.Regular color="gray">
+                  There is no resources currently available for this symptom
+                </Text.Regular>
+              )
+            }
+          />
+
+          <Divider my="$0.5" />
 
           <Accordion
             title="Options"

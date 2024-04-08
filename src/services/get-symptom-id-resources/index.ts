@@ -1,9 +1,11 @@
 import {
   collection,
+  endAt,
   getDocs,
   limit,
   orderBy,
   query,
+  startAfter,
   startAt,
   where,
 } from "firebase/firestore";
@@ -22,6 +24,14 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
     where("symptomId", "==", props?.symptomId)
   );
 
+  if (props?.source !== "All") {
+    collectionQuery = query(
+      resourcesRef,
+      where("symptomId", "==", props?.symptomId),
+      where("type", "==", props?.source)
+    );
+  }
+
   const totalSnapshot = await getDocs(collectionQuery);
   const totalResources = totalSnapshot.size;
 
@@ -29,8 +39,7 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
     resourcesRef,
     where("symptomId", "==", props?.symptomId),
     orderBy("createdAt"),
-    startAt(props?.skip),
-    limit(props?.pageLimit)
+    limit(props?.limit)
   );
 
   if (props?.source !== "All") {
@@ -39,27 +48,55 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
       where("symptomId", "==", props?.symptomId),
       where("type", "==", props?.source),
       orderBy("createdAt"),
-      startAt(props?.skip),
-      limit(props?.pageLimit)
+      limit(props?.limit)
     );
   }
 
-  const { docs: resourceDocs } = await getDocs(collectionQuery);
+  let resourceSnapshot = await getDocs(collectionQuery);
+
+  if (props?.currentPage > 1) {
+    const lastVisible =
+      resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
+
+    if (props?.source === "All")
+      collectionQuery = query(
+        resourcesRef,
+        where("symptomId", "==", props?.symptomId),
+        orderBy("createdAt"),
+        startAfter(lastVisible),
+        limit(props?.limit)
+      );
+    else {
+      collectionQuery = query(
+        resourcesRef,
+        where("symptomId", "==", props?.symptomId),
+        where("type", "==", props?.source),
+        orderBy("createdAt"),
+        startAfter(lastVisible),
+        limit(props?.limit)
+      );
+    }
+
+    resourceSnapshot = await getDocs(collectionQuery);
+  }
 
   try {
-    const resourceLikesPromises = resourceDocs?.map(async (doc) => {
+    const resourceLikesPromises = resourceSnapshot.docs?.map(async (doc) => {
       const { docs: likesDocs } = await getDocs(
         query(likesRef, where("resourceId", "==", doc?.id))
       );
 
-      const isLiked = likesDocs?.find(
+      const foundDocument = likesDocs?.find(
         (doc) => doc?.data()?.userId === props?.userId
       );
+
+      const isLiked = !!foundDocument;
 
       return {
         resourceId: doc?.id,
         numberOfLikes: likesDocs?.length || 0,
-        isLiked: !!isLiked,
+        isLiked: isLiked,
+        likedId: isLiked ? foundDocument?.id : "",
       };
     });
 
@@ -69,12 +106,11 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
       count: totalResources,
       results: resorcesAdapter({
         userId: props?.userId,
-        resourceDocs: resourceDocs,
+        resourceDocs: resourceSnapshot.docs,
         likes: resourceLikes,
       }),
     };
   } catch (error) {
-    console.error("Error fetching or processing data:", error);
     throw new Error("Error fetching data");
   }
 };
@@ -83,8 +119,8 @@ interface IPayload {
   symptomId: string;
   userId: string;
   source: string;
-  skip: number;
-  pageLimit: number;
+  limit: number;
+  currentPage: number;
 }
 
 interface IGetSymptomIdResourcesService {

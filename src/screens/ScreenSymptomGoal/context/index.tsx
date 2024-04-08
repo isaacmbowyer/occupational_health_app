@@ -1,7 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import { IProviderProps } from "../../../entities/IProviderProps";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { getDaysLeft } from "../../../utils/getDaysLeft";
 import { useCustomToast } from "../../../hooks/useCustomToast";
@@ -14,11 +12,16 @@ import { IOption } from "../../../entities/IOption";
 import { createSeverityOption } from "../../../utils/createSeverityOption";
 import { IScore } from "../../../entities/IScore";
 import { useUsersContext } from "../../../contexts/useUsersContext";
+import { IResource } from "../../../entities/IResource";
+import { auth } from "../../../config/firebase";
+import { Linking } from "react-native";
+import { ISymptomGoalStateKey } from "../../../entities/ISymptomGoalStateKey";
+import { ISymptomGoalStateKeyValue } from "../../../entities/ISymptomGoalStateKeyValue";
+import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
   const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
@@ -32,7 +35,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     targetDate: currentSymptom?.targetDate,
     currentPage: 1,
     isLoading: false,
-    source: "Website",
+    source: "All",
   };
 
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
@@ -42,30 +45,15 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const { averageScores, isFetching: isFetchingRatings } = useSymptomRatings();
 
-  const {
-    symptomResources,
-    totalCount,
-    isFetching: isFetchingResources,
-  } = useSymptomResources({
-    limit: LIMIT,
-    skip: SKIP,
-    source: state?.source,
-  });
+  const { state: resourcesState, methods: resourcesMethods } =
+    useSymptomResources({
+      limit: LIMIT,
+      skip: SKIP,
+      source: state?.source,
+      currentPage: state?.currentPage,
+    });
 
   // ACTION METHODS
-  const handleOnChange = (
-    key: ISymptomGoalStateKey,
-    value: ISymptomGoalStateKeyValue
-  ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-
-    if (key === "targetDate")
-      return _handleOnEdit(value as Date, state?.targetSeverity);
-
-    if (key === "targetSeverity")
-      return _handleOnEdit(state?.targetDate, value as IOption);
-  };
-
   const _handleSetLoading = (bool: boolean) => {
     setState((prev) => ({ ...prev, isLoading: bool }));
   };
@@ -92,12 +80,56 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     }
   };
 
+  const handleOnChange = (
+    key: ISymptomGoalStateKey,
+    value: ISymptomGoalStateKeyValue
+  ) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+
+    if (key === "targetDate")
+      return _handleOnEdit(value as Date, state?.targetSeverity);
+
+    if (key === "targetSeverity")
+      return _handleOnEdit(state?.targetDate, value as IOption);
+  };
+
+  const handleOnLikeResource = async (resource: IResource) => {
+    const isLiked = resource?.isLiked;
+
+    try {
+      _handleSetLoading(true);
+
+      await services.update.symptomResourceId({
+        id: resource?.likedId,
+        resourceId: resource?.id,
+        userId: auth?.currentUser?.uid,
+      });
+
+      toast.successToast(
+        `Successfuly ${isLiked ? "unliked" : "liked"} the symptom resource`
+      );
+    } catch (e: any) {
+      toast.errorToast(
+        `Unable to ${isLiked ? "unlike" : "like"} the symptom resource.`
+      );
+    } finally {
+      _handleSetLoading(false);
+      resourcesMethods.handleOnRefetch();
+    }
+  };
+
+  const handleOnViewResource = (link: string) => {
+    Linking.openURL(link).catch((err) =>
+      toast.errorToast("Unable to open this resource link")
+    );
+  };
+
   const handleOnTrackSymptom = () => {
     console.log("Navigate");
   };
 
   const isFetching =
-    isFetchingRatings || isFetchingResources || isFetchingUsers;
+    isFetchingRatings || resourcesState.isFetching || isFetchingUsers;
 
   return (
     <SymptomGoalContext.Provider
@@ -110,16 +142,19 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           daysLeft: getDaysLeft(state?.targetDate),
           isFetching: isFetching,
           currentPage: state?.currentPage,
-          count: symptomResources?.length,
-          totalPages: totalCount,
+          count: resourcesState.totalCount,
+          totalPages: resourcesState.totalPages,
           limit: LIMIT,
           severityList: severityList,
           averageScores: averageScores,
           numberOfUsers: users?.count,
+          resources: resourcesState?.symptomResources,
         },
         methods: {
           handleOnChange: handleOnChange,
           handleOnPress: handleOnTrackSymptom,
+          handleOnLike: handleOnLikeResource,
+          handleOnView: handleOnViewResource,
         },
       }}
     >
@@ -147,6 +182,7 @@ interface ISymptomGoalContext {
     severityList: IOption[];
     averageScores: IScore[];
     numberOfUsers: number;
+    resources: IResource[];
   };
   methods: {
     handleOnChange: (
@@ -154,16 +190,7 @@ interface ISymptomGoalContext {
       value: ISymptomGoalStateKeyValue
     ) => void;
     handleOnPress: () => void;
+    handleOnLike: (item: IResource) => void;
+    handleOnView: (link: string) => void;
   };
 }
-
-interface ISymptomGoalState {
-  targetSeverity: IOption;
-  targetDate: Date;
-  currentPage: number;
-  isLoading: boolean;
-  source: string;
-}
-
-type ISymptomGoalStateKey = keyof ISymptomGoalState;
-type ISymptomGoalStateKeyValue = IOption | Date;

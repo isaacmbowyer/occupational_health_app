@@ -7,6 +7,8 @@ import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext"
 import { IResource } from "../../entities/IResource";
 import { ISourcePageProps } from "../../entities/ISourcePageProps";
 import { IResourceResponse } from "../../entities/IResourceResponse";
+import { calculateNumberOfPages } from "../../utils/calculateNumberOfPages";
+import { getLimit } from "../../utils/getLimit";
 
 const INITAL_DATA: IResourceResponse = {
   count: 0,
@@ -21,15 +23,15 @@ export const useSymptomResources = (
 
   const toast = useCustomToast();
 
-  const { data, isFetching } = useQuery(
-    ["/resources"],
+  const { data, isFetching, refetch } = useQuery(
+    ["/resources", props?.limit, props?.skip, props?.source],
     async () => {
       const data = await services.get.symptomResources({
         userId: auth?.currentUser?.uid,
         symptomId: currentSymptom?.symptomId,
         source: props?.source,
-        pageLimit: props?.limit,
-        skip: props?.skip,
+        limit: getLimit(props?.limit, props?.currentPage),
+        currentPage: props?.currentPage,
       });
 
       return data;
@@ -47,15 +49,34 @@ export const useSymptomResources = (
     }
   );
 
+  const resourcesCount = data?.count;
+  const totalPages = calculateNumberOfPages(resourcesCount);
+
+  const handleOnRefetch = () => {
+    refetch();
+  };
+
   return {
-    totalCount: data?.count,
-    symptomResources: data.results,
-    isFetching,
+    state: {
+      totalCount: resourcesCount,
+      totalPages: totalPages,
+      symptomResources: data.results,
+      isFetching: isFetching,
+    },
+    methods: {
+      handleOnRefetch: handleOnRefetch,
+    },
   };
 };
 
 interface ISymptomResourcesResponse {
-  totalCount: number;
-  symptomResources: IResource[];
-  isFetching: boolean;
+  state: {
+    totalCount: number;
+    totalPages: number;
+    symptomResources: IResource[];
+    isFetching: boolean;
+  };
+  methods: {
+    handleOnRefetch: () => void;
+  };
 }

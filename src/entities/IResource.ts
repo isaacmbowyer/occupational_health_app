@@ -10,5 +10,6 @@ export interface IResource {
   companyName: string;
   companyDetails: string;
   isLiked: boolean;
+  likedId: string;
   numberOfLikes: number;
 }

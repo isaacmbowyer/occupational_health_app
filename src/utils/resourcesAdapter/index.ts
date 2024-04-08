@@ -21,6 +21,7 @@ export const resorcesAdapter: IResourcesAdapter = (props) => {
       companyDetails: data?.companyDetails,
       numberOfLikes: resourceLike?.numberOfLikes,
       isLiked: resourceLike?.isLiked,
+      likedId: resourceLike?.likedId,
     };
   });
 

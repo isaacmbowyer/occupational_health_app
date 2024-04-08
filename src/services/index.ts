@@ -8,6 +8,7 @@ import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
 import { updateSymptomId } from "./update-symptom-id";
+import { updateSymptomIdResource } from "./update-symptom-id-resources";
 
 export const services = {
   post: {
@@ -27,5 +28,6 @@ export const services = {
   },
   update: {
     trackedSymptomId: updateSymptomId,
+    symptomResourceId: updateSymptomIdResource,
   },
 };

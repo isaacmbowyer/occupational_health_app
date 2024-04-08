@@ -9,7 +9,7 @@ interface IResourceContainer {
   handleOnLike: (item: IResource) => void;
 }
 
-export const SymptomContainer = ({
+export const ResourceContainer = ({
   items,
   numberOfUsers,
   handleOnView,

@@ -21,6 +21,8 @@ import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
+const TAGS = ["All", "Website", "Video", "Liked"];
+
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const severityList = useSeverityRatings();
@@ -91,6 +93,9 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
     if (key === "targetSeverity")
       return _handleOnEdit(state?.targetDate, value as IOption);
+
+    if (key === "source")
+      return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
   const handleOnLikeResource = async (resource: IResource) => {
@@ -140,6 +145,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           currentSeverity: currentSymptom?.currentSeverity,
           targetSeverity: state?.targetSeverity,
           targetDate: state?.targetDate,
+          activeSource: state?.source,
           daysLeft: getDaysLeft(state?.targetDate),
           isFetching: isFetching,
           currentPage: state?.currentPage,
@@ -150,6 +156,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           averageScores: averageScores,
           numberOfUsers: users?.count,
           resources: resourcesState?.symptomResources,
+          tagList: TAGS,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -175,6 +182,7 @@ interface ISymptomGoalContext {
     targetSeverity: IOption;
     targetDate: Date;
     daysLeft: number;
+    activeSource: string;
     isFetching: boolean;
     currentPage: number;
     count: number;
@@ -184,6 +192,7 @@ interface ISymptomGoalContext {
     averageScores: IScore[];
     numberOfUsers: number;
     resources: IResource[];
+    tagList: string[];
   };
   methods: {
     handleOnChange: (

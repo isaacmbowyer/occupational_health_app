@@ -54,6 +54,9 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
 
   let resourceSnapshot = await getDocs(collectionQuery);
 
+  console.log("snap", resourceSnapshot);
+  console.log("props", props?.currentPage, props?.source);
+
   if (props?.currentPage > 1) {
     const lastVisible =
       resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
@@ -101,6 +104,14 @@ export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
     });
 
     const resourceLikes = await Promise.all(resourceLikesPromises);
+
+    console.log(
+      resorcesAdapter({
+        userId: props?.userId,
+        resourceDocs: resourceSnapshot.docs,
+        likes: resourceLikes,
+      })
+    );
 
     return {
       count: totalResources,

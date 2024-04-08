@@ -1,16 +1,12 @@
 import { VStack } from "@gluestack-ui/themed";
 import { Text } from "../../../../components/atoms/Text";
-import { Input } from "../../../../components/atoms/Input";
-import { Select } from "../../../../components/atoms/Select";
-import { IOption } from "../../../../entities/IOption";
-import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
-import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
 import { IResource } from "../../../../entities/IResource";
-import { SubHeader } from "../../../../components/modules/SubHeader";
 import { ResourceContainer } from "../../../../components/organisms/ResourceContainer";
 import { ISymptomGoalStateKey } from "../../../../entities/ISymptomGoalStateKey";
 import { ISymptomGoalStateKeyValue } from "../../../../entities/ISymptomGoalStateKeyValue";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
+import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
+import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
 
 interface ISymptomResourcesSectionProps {
   totalPages: number;
@@ -20,6 +16,8 @@ interface ISymptomResourcesSectionProps {
   numberOfUsers: number;
   resources: IResource[];
   isFetching: boolean;
+  tagList: string[];
+  source: string;
   handleOnView: (link: string) => void;
   handleOnLike: (item: IResource) => void;
   handleOnChange: (
@@ -36,34 +34,55 @@ export const SymptomResourcesSection = ({
   numberOfUsers,
   resources,
   isFetching,
+  tagList,
+  source,
   handleOnView,
   handleOnLike,
   handleOnChange,
 }: ISymptomResourcesSectionProps) => {
+  if (!resources.length && !isFetching)
+    return (
+      <Text.Regular color="gray">
+        There are no resources currently available for this symptom
+      </Text.Regular>
+    );
+
   return (
     <VStack>
-      <SubHeader
+      <SubHeaderWithTags
         pageCount={totalPages}
         currentPage={currentPage}
         entriesCount={count}
         currentEntries={resources.length}
         isFetching={isFetching}
         label="resources"
+        tagList={tagList}
+        activeSource={source}
+        handleOnChange={(val) => handleOnChange("source", val)}
       />
 
-      <ResourceContainer
-        numberOfUsers={numberOfUsers}
-        items={resources}
-        handleOnView={handleOnView}
-        handleOnLike={handleOnLike}
-      />
+      {isFetching ? (
+        <VStack space="md">
+          <ResourceSkeleton />
+          <ResourceSkeleton />
+        </VStack>
+      ) : (
+        <>
+          <ResourceContainer
+            numberOfUsers={numberOfUsers}
+            items={resources}
+            handleOnView={handleOnView}
+            handleOnLike={handleOnLike}
+          />
 
-      <Pagination
-        totalItems={count}
-        pageSize={limit}
-        currentPage={currentPage}
-        onPageChange={(newPage) => handleOnChange("currentPage", newPage)}
-      />
+          <Pagination
+            totalItems={count}
+            pageSize={limit}
+            currentPage={currentPage}
+            onPageChange={(newPage) => handleOnChange("currentPage", newPage)}
+          />
+        </>
+      )}
     </VStack>
   );
 };

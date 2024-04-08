@@ -6,9 +6,9 @@ import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
 import { HeaderWithSearch } from "../../components/organisms/HeaderWithSearch";
-import { SubHeader } from "../../components/modules/SubHeader";
 import { SymptomSkeleton } from "../../components/modules/SymptomSkeleton";
 import { SymptomContainer } from "../../components/organisms/SymptomContainer";
+import { SubHeaderWithTags } from "../../components/modules/SubHeaderWithTags";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();
@@ -25,12 +25,7 @@ const Symptoms = () => {
               isSearchActive: state?.isSearchActive,
               handleOnSearch: methods.handleToggleSearch,
             }}
-            symptomSource={{
-              active: state?.source,
-              handleOnChange: (val) => methods.handleOnChange("source", val),
-            }}
             isFetching={state?.isFetching}
-            tagList={state?.tagList}
           />
 
           {state?.isSearchActive ? (
@@ -50,13 +45,16 @@ const Symptoms = () => {
             />
           ) : null}
 
-          <SubHeader
+          <SubHeaderWithTags
             pageCount={state?.totalPages}
             currentPage={state?.currentPage}
             entriesCount={state?.count}
             currentEntries={state?.symptoms?.length}
             isFetching={state?.isFetching}
             label="symptoms"
+            activeSource={state?.source}
+            handleOnChange={(val) => methods.handleOnChange("source", val)}
+            tagList={state?.tagList}
           />
 
           {state.isFetching ? (
@@ -102,3 +100,4 @@ export const SymptomsScreen = ({ navigation }) => {
     </TrackedSymptomsProvider>
   );
 };
+6;

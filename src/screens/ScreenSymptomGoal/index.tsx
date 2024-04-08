@@ -57,26 +57,21 @@ const SymptomGoal = () => {
 
           <Accordion
             title="Symptom Resources"
-            isDisabled={state?.isFetching}
             hiddenSection={
-              state?.resources?.length ? (
-                <SymptomResourcesSection
-                  totalPages={state?.totalPages}
-                  currentPage={state?.currentPage}
-                  count={state?.count}
-                  limit={state?.limit}
-                  numberOfUsers={state?.numberOfUsers}
-                  resources={state?.resources}
-                  isFetching={state?.isFetching}
-                  handleOnChange={methods.handleOnChange}
-                  handleOnLike={methods.handleOnLike}
-                  handleOnView={methods.handleOnView}
-                />
-              ) : (
-                <Text.Regular color="gray">
-                  There is no resources currently available for this symptom
-                </Text.Regular>
-              )
+              <SymptomResourcesSection
+                totalPages={state?.totalPages}
+                currentPage={state?.currentPage}
+                count={state?.count}
+                limit={state?.limit}
+                numberOfUsers={state?.numberOfUsers}
+                resources={state?.resources}
+                isFetching={state?.isFetching}
+                tagList={state?.tagList}
+                source={state.activeSource}
+                handleOnChange={methods.handleOnChange}
+                handleOnLike={methods.handleOnLike}
+                handleOnView={methods.handleOnView}
+              />
             }
           />
 

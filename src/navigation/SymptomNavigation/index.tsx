@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SymptomsScreen } from "../../screens/ScreenAppSymptoms";
-import { SymptomGoalScreen } from "../../screens/ScreenSymptomGoal";
 import { SymptomsProvider } from "../../contexts/useSymptomsContext";
+import { SymptomGoalScreen } from "../../screens/ScreenAppSymptomGoal";
 
 export const SymptomNavigation = () => {
   const SymptomStack = createNativeStackNavigator();

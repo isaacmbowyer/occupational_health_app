@@ -5,7 +5,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { SERVICES_LIMITS } from "../../../config/services";
-import { useGetTrackedSymptoms } from "../../../hooks/useGetTrackedSymptoms";
 import { services } from "../../../services";
 import { formatUserSymptoms } from "../../../utils/formatUserSymptoms";
 import { IUserSymptom } from "../../../entities/IUserSymptom";
@@ -16,6 +15,8 @@ import { IOption } from "../../../entities/IOption";
 import { createDropdownOptions } from "../../../utils/createDropdownOptions";
 import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateKey";
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
+import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -47,6 +48,7 @@ const INITAL_SEARCH: IAdvancedSearch = {
 export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
+  const { setCurrentSymptom } = useCurrentEntityContext();
 
   const [state, setState] = useState<ITrackedSymptomsState>(INITAL_STATE);
   const [searchState, setSearchState] =
@@ -55,14 +57,22 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
   const SKIP = (state?.currentPage - 1) * LIMIT;
 
+  // DATA
   const { data: symptomList, isFetching: isFetchingSymptoms } =
     useSymptomsContext();
+
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
-    useGetTrackedSymptoms({
+    useTrackedSymptoms({
       limit: LIMIT,
       skip: SKIP,
       source: state?.source,
+      currentPage: state?.currentPage,
     });
+
+  const userSymptoms = formatUserSymptoms({
+    symptoms: symptomList,
+    trackedSymptoms: trackedSymptomsState.trackedSymptoms,
+  });
 
   const severityTypeList = useSeverityTypes();
   const ratingList = createDropdownOptions(NUMBERS);
@@ -103,25 +113,20 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
 
       trackedSymptomsMethods.handleOnRefetch();
     } catch (e: any) {
-      console.log(e);
       toast.errorToast("Failed to delete this tracked symptom.");
     } finally {
       _handleSetLoading(false);
     }
   };
 
-  const handleNavigateToTrackedSymptom = (symptomId: string) => {
-    console.log("Navigate");
+  const handleNavigateToTrackedSymptom = (symptom: IUserSymptom) => {
+    setCurrentSymptom(symptom);
+    navigation.navigate("Symptom Goal");
   };
 
   const handleAddTrackedSymptom = () => {
     console.log("Add");
   };
-
-  const userSymptoms = formatUserSymptoms({
-    symptoms: symptomList,
-    trackedSymptoms: trackedSymptomsState.trackedSymptoms,
-  });
 
   const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;
 
@@ -186,7 +191,7 @@ interface ITrackedSymptomsContext {
   };
   methods: {
     handleOnDelete: (symptomId: string) => void;
-    handleOnPress: (symptomId: string) => void;
+    handleOnPress: (symptom: IUserSymptom) => void;
     handleOnAdd: () => void;
     handleOnChange: (
       key: IAppSymptomsStateKey,

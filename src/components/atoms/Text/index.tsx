@@ -8,6 +8,7 @@ interface ITextProps {
   color?: IColor;
   bold?: boolean;
   textAlign?: "left" | "right" | "center";
+  fontStyle?: "normal" | "italic";
 }
 
 const TextExtraSmall = ({
@@ -15,12 +16,14 @@ const TextExtraSmall = ({
   color = "black",
   bold,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="2xs"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >
@@ -34,12 +37,14 @@ const TextSmall = ({
   color = "black",
   bold,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="sm"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >
@@ -53,12 +58,14 @@ const TextRegular = ({
   color = "black",
   bold,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="md"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >
@@ -72,12 +79,14 @@ const TextSubHeader = ({
   color = "black",
   bold,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="xl"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >
@@ -91,12 +100,14 @@ const TextHeader = ({
   color = "black",
   bold = true,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="2xl"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >
@@ -110,12 +121,14 @@ const TextTitle = ({
   color = "black",
   bold = true,
   textAlign = "left",
+  fontStyle = "normal",
 }: ITextProps) => {
   return (
     <GluestackText
       color={colors[color]}
       size="3xl"
       fontFamily="sans-serif"
+      fontStyle={fontStyle}
       bold={bold}
       textAlign={textAlign}
     >

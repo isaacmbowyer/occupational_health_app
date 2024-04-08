@@ -10,6 +10,8 @@ import {
   SearchIcon,
   TrashIcon,
   ChevronRightIcon,
+  ChevronUpIcon,
+  FavouriteIcon,
 } from "@gluestack-ui/themed";
 import { AddIcon } from "@gluestack-ui/themed";
 
@@ -24,6 +26,8 @@ export const ICONS = {
   CALANDER: CalendarDaysIcon,
   CHEVRON_DOWN: ChevronDownIcon,
   CHEVRON_RIGHT: ChevronRightIcon,
+  CHEVRON_UP: ChevronUpIcon,
   SEARCH: SearchIcon,
   DELETE: TrashIcon,
+  HEART: FavouriteIcon,
 };

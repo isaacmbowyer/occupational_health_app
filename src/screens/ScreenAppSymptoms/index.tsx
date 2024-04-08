@@ -1,14 +1,14 @@
 import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
-import { Header } from "../../components/organisms/Header";
-import { SubHeader } from "../../components/organisms/SubHeader";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { TrackedSymptomsProvider, useTrackedSymptomsContext } from "./context";
-import { UserSymptomSkeleton } from "../../components/organisms/UserSymptomSkeleton";
-import { UserSymptomsContainer } from "../../components/modules/UserSymptomsContainer";
 import { ICONS } from "../../data/icons";
 import { Button } from "../../components/atoms/Button";
 import { AdvancedSearch } from "../../components/organisms/AdvancedSearch";
+import { HeaderWithSearch } from "../../components/organisms/HeaderWithSearch";
+import { SymptomSkeleton } from "../../components/modules/SymptomSkeleton";
+import { SymptomContainer } from "../../components/organisms/SymptomContainer";
+import { SubHeaderWithTags } from "../../components/modules/SubHeaderWithTags";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();
@@ -18,19 +18,14 @@ const Symptoms = () => {
       scrollable
       mainSection={
         <VStack>
-          <Header
+          <HeaderWithSearch
             title="Long-Covid Symptoms"
             count={4}
             search={{
               isSearchActive: state?.isSearchActive,
               handleOnSearch: methods.handleToggleSearch,
             }}
-            symptomSource={{
-              active: state?.source,
-              handleOnChange: (val) => methods.handleOnChange("source", val),
-            }}
             isFetching={state?.isFetching}
-            tagList={state?.tagList}
           />
 
           {state?.isSearchActive ? (
@@ -50,25 +45,28 @@ const Symptoms = () => {
             />
           ) : null}
 
-          <SubHeader
+          <SubHeaderWithTags
             pageCount={state?.totalPages}
             currentPage={state?.currentPage}
             entriesCount={state?.count}
             currentEntries={state?.symptoms?.length}
             isFetching={state?.isFetching}
             label="symptoms"
+            activeSource={state?.source}
+            handleOnChange={(val) => methods.handleOnChange("source", val)}
+            tagList={state?.tagList}
           />
 
           {state.isFetching ? (
             <VStack space="md">
-              <UserSymptomSkeleton />
-              <UserSymptomSkeleton />
+              <SymptomSkeleton />
+              <SymptomSkeleton />
             </VStack>
           ) : null}
 
-          {state.count && !state?.isFetching ? (
+          {state?.symptoms?.length && !state?.isFetching ? (
             <>
-              <UserSymptomsContainer
+              <SymptomContainer
                 items={state?.symptoms}
                 handleOnDelete={methods?.handleOnDelete}
                 handleOnView={methods.handleOnPress}
@@ -102,3 +100,4 @@ export const SymptomsScreen = ({ navigation }) => {
     </TrackedSymptomsProvider>
   );
 };
+6;

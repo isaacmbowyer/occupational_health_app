@@ -125,7 +125,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   };
 
   const handleAddTrackedSymptom = () => {
-    console.log("Add");
+    navigation.navigate("Add Symptom");
   };
 
   const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;

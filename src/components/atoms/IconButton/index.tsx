@@ -1,22 +1,28 @@
 import { Icon, Pressable } from "@gluestack-ui/themed";
 import { IColor } from "../../../entities/IColor";
+import { colors } from "../../../data/colors";
 
 interface IIconButtonProps {
   handleOnPress: () => void;
   icon: any;
   color?: IColor;
-  fill?: IColor;
+  isFilled?: boolean;
 }
 
 const Medium = ({
   handleOnPress,
   icon,
   color = "black",
-  fill,
+  isFilled = false,
 }: IIconButtonProps) => {
   return (
     <Pressable onPress={handleOnPress}>
-      <Icon as={icon} size="md" color={color} fill={fill} />
+      <Icon
+        as={icon}
+        size="md"
+        color={colors[color]}
+        fill={isFilled ? colors[color] : "#fff"}
+      />
     </Pressable>
   );
 };
@@ -25,11 +31,16 @@ const Large = ({
   handleOnPress,
   icon,
   color = "black",
-  fill,
+  isFilled = false,
 }: IIconButtonProps) => {
   return (
     <Pressable onPress={handleOnPress}>
-      <Icon as={icon} size="lg" color={color} fill={fill} />
+      <Icon
+        as={icon}
+        size="lg"
+        color={colors[color]}
+        fill={isFilled ? colors[color] : "#fff"}
+      />
     </Pressable>
   );
 };

@@ -13,7 +13,7 @@ export const HeaderTags = ({
   tagList,
 }: IHeaderTagsProps) => {
   return (
-    <HStack space="md">
+    <HStack space="md" flexWrap="wrap">
       {tagList.map((tag) => (
         <Tag
           key={tag}

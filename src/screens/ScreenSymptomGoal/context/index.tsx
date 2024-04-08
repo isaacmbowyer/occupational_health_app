@@ -109,6 +109,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
         `Successfuly ${isLiked ? "unliked" : "liked"} the symptom resource`
       );
     } catch (e: any) {
+      console.log("ERROR", e);
       toast.errorToast(
         `Unable to ${isLiked ? "unlike" : "like"} the symptom resource.`
       );

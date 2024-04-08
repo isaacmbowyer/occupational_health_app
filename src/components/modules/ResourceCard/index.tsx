@@ -74,6 +74,7 @@ export const ResourceCard = ({
           icon={ICONS.HEART}
           color="sky_blue"
           handleOnPress={handleOnLike}
+          isFilled={isLiked}
         />
       </HStack>
       <VStack width="$full" space="sm">

@@ -9,6 +9,7 @@ import { IAddSymptomStateKey } from "../../../entities/IAddSymptomStateKey";
 import { IAddSymptomStateKeyValue } from "../../../entities/IAddSymptomStateKeyValue";
 import { IOption } from "../../../entities/IOption";
 import { filterSymptoms } from "../../../utils/filterSymptoms";
+import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -28,6 +29,7 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const { data: symptoms, isFetching: isFetchingSymptoms } =
     useSymptomsContext();
+  const severityList = useSeverityRatings();
 
   const [state, setState] = useState<IAddSymptomState>(INITAL_STATE);
 
@@ -66,12 +68,19 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const handleOnSubmit = async () => {
     try {
       _handleSetLoading(true);
+      console.log("Add");
     } catch (e: any) {
       toast.errorToast("Failed to add the symptom");
     } finally {
       _handleSetLoading(false);
     }
   };
+
+  const isDisabled =
+    !state.currentSeverity?.id ||
+    !state?.targetSeverity ||
+    !state?.targetDate ||
+    !state.selectedSymptom?.id;
 
   return (
     <AddSymptomContext.Provider
@@ -85,6 +94,8 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
           targetDate: state?.targetDate,
           isFetching: isFetchingSymptoms,
           isLoading: state?.isLoading,
+          isDisabled: isDisabled,
+          severityList: severityList,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -112,6 +123,8 @@ interface IAddSymptomContext {
     targetDate: Date;
     isLoading: boolean;
     isFetching: boolean;
+    isDisabled: boolean;
+    severityList: IOption[];
   };
   methods: {
     handleOnChange: (

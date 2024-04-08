@@ -4,6 +4,7 @@ import { colors } from "../../../data/colors";
 import { VStack } from "@gluestack-ui/themed";
 import { Text } from "../../atoms/Text";
 import { Pressable } from "@gluestack-ui/themed";
+import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
 
 interface IAddSymptomCardProps {
   name: string;
@@ -20,9 +21,21 @@ export const AddSymptomCard = ({
   isSelected,
   handleOnPress,
 }: IAddSymptomCardProps) => {
-  const borderColor = isSelected ? colors.sky_blue : colors.gray;
-  const circleBorderColor = isSelected ? colors.sky_blue : colors.black;
-  const circleBackgroundColor = isSelected ? colors.sky_blue : colors.white;
+  const borderColor = validateOptionsBasedOnBoolean(
+    isSelected,
+    colors.sky_blue,
+    colors.gray
+  );
+  const circleBorderColor = validateOptionsBasedOnBoolean(
+    isSelected,
+    colors.sky_blue,
+    colors.black
+  );
+  const circleBackgroundColor = validateOptionsBasedOnBoolean(
+    isSelected,
+    colors.sky_blue,
+    colors.white
+  );
 
   return (
     <HStack

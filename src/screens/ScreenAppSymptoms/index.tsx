@@ -58,7 +58,7 @@ const Symptoms = () => {
           />
 
           {state.isFetching ? (
-            <VStack space="md">
+            <VStack space="md" mb="$8">
               <SymptomSkeleton />
               <SymptomSkeleton />
             </VStack>

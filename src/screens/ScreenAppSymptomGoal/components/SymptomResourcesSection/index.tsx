@@ -42,9 +42,23 @@ export const SymptomResourcesSection = ({
 }: ISymptomResourcesSectionProps) => {
   if (!resources.length && !isFetching)
     return (
-      <Text.Regular color="gray">
-        There are no resources currently available for this symptom
-      </Text.Regular>
+      <>
+        <SubHeaderWithTags
+          pageCount={totalPages}
+          currentPage={currentPage}
+          entriesCount={count}
+          currentEntries={resources.length}
+          isFetching={isFetching}
+          label="resources"
+          tagList={tagList}
+          activeSource={source}
+          handleOnChange={(val) => handleOnChange("source", val)}
+        />
+
+        <Text.Regular color="gray">
+          There are no resources currently available for this symptom
+        </Text.Regular>
+      </>
     );
 
   return (

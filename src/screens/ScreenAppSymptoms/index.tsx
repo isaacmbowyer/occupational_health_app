@@ -20,7 +20,7 @@ const Symptoms = () => {
         <VStack>
           <HeaderWithSearch
             title="Long-Covid Symptoms"
-            count={4}
+            count={state?.count}
             search={{
               isSearchActive: state?.isSearchActive,
               handleOnSearch: methods.handleToggleSearch,
@@ -58,7 +58,7 @@ const Symptoms = () => {
           />
 
           {state.isFetching ? (
-            <VStack space="md">
+            <VStack space="md" mb="$8">
               <SymptomSkeleton />
               <SymptomSkeleton />
             </VStack>

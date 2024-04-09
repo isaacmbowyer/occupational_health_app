@@ -23,25 +23,36 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
   const totalSnapshot = await getDocs(collectionRef);
   const totalDocuments = totalSnapshot.size;
 
-  let dateCriteria;
+  let collectionQuery;
 
   if (source === "current") {
     // Retrieve future dates (after today)
-    dateCriteria = where("targetDate", ">", new Date());
+    collectionQuery = query(
+      collectionRef,
+      where("userId", "==", userId),
+      where("targetDate", ">", new Date()),
+      orderBy("createdAt"),
+      startAt(skip),
+      limit(pageLimit)
+    );
   } else if (source === "past") {
     // Retrieve past dates (before today)
-    dateCriteria = where("targetDate", "<", new Date());
+    collectionQuery = query(
+      collectionRef,
+      where("userId", "==", userId),
+      where("targetDate", "<", new Date()),
+      orderBy("createdAt"),
+      startAt(skip),
+      limit(pageLimit)
+    );
+  } else {
+    // Retrieve all documents
+    collectionQuery = query(
+      collectionRef,
+      where("userId", "==", userId),
+      orderBy("createdAt")
+    );
   }
-
-  // Fetch documents for the requested query
-  const collectionQuery = query(
-    collectionRef,
-    where("userId", "==", userId),
-    dateCriteria,
-    orderBy("createdAt"),
-    startAt(skip),
-    limit(pageLimit)
-  );
 
   const { docs } = await getDocs(collectionQuery);
 

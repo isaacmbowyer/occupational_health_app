@@ -13,10 +13,12 @@ import { useEffect, useState } from "react";
 interface IInputProps {
   label: string;
   value: string;
+  type?: "underlined" | "rounded" | "outline";
   onChange?: (e: any) => void;
   isDisabled?: boolean;
   icon?: any;
   helpText?: string;
+  placeholder?: string;
 }
 
 export const Input = ({
@@ -26,6 +28,8 @@ export const Input = ({
   icon,
   helpText,
   isDisabled = false,
+  type = "underlined",
+  placeholder = "",
 }: IInputProps) => {
   const [isTouched, setIsTouched] = useState(false);
 
@@ -46,10 +50,15 @@ export const Input = ({
   return (
     <VStack space="xs">
       <FormControl isReadOnly={isDisabled} isInvalid={!!helpText}>
-        <Label>{label}</Label>
+        {!placeholder ? <Label>{label}</Label> : null}
 
-        <GluestackInput variant="underlined" size="sm">
-          <InputField type="text" value={value} onChange={handleOnChange} />
+        <GluestackInput variant={type} size="sm">
+          <InputField
+            type="text"
+            value={value}
+            onChange={handleOnChange}
+            placeholder={placeholder}
+          />
 
           {icon && (
             <InputSlot pr="$3">

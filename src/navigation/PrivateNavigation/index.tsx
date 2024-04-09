@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../../data/colors";
 import { SettingsScreen } from "../../screens/ScreenAppSettings";
 import Icon from "react-native-vector-icons/Ionicons";
-import { SymptomsProvider } from "../../contexts/useSymptomsContext";
 import { SymptomNavigation } from "../SymptomNavigation";
 import { CurrentEntityProvider } from "../../contexts/useCurrentEntityContext";
 import { UsersProvider } from "../../contexts/useUsersContext";

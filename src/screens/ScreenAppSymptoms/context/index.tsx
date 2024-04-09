@@ -17,6 +17,9 @@ import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateK
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
+import { auth } from "../../../config/firebase";
+import { ISymptom } from "../../../entities/ISymptom";
+import { P } from "@expo/html-elements";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -103,12 +106,15 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   };
 
   // ACTION METHODS
-  const handleDeleteTrackedSymptom = async (symptomId: string) => {
+  const handleDeleteTrackedSymptom = async (symptom: IUserSymptom) => {
     try {
       _handleSetLoading(true);
 
-      await services.delete.trackedSymptomId({
-        id: symptomId,
+      await services.delete.trackedSymptomId(symptom?.id);
+
+      await services.delete.symptomScores({
+        userId: auth.currentUser.uid,
+        symptomId: symptom?.symptomId,
       });
 
       trackedSymptomsMethods.handleOnRefetch();
@@ -125,7 +131,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   };
 
   const handleAddTrackedSymptom = () => {
-    console.log("Add");
+    navigation.navigate("Add Symptom");
   };
 
   const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;
@@ -190,7 +196,7 @@ interface ITrackedSymptomsContext {
     severityType: IOption;
   };
   methods: {
-    handleOnDelete: (symptomId: string) => void;
+    handleOnDelete: (symptom: IUserSymptom) => void;
     handleOnPress: (symptom: IUserSymptom) => void;
     handleOnAdd: () => void;
     handleOnChange: (

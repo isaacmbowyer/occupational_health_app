@@ -3,7 +3,6 @@ import { useCustomToast } from "../useCustomToast";
 import { services } from "../../services";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import { ISymptomScore } from "../../entities/ISymptomScore";
 import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext";
 import { IScore } from "../../entities/IScore";
 import { calculateAverageScores } from "../../utils/calculateAverageScores";

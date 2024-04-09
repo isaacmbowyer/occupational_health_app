@@ -1,6 +1,8 @@
 import { ISymptom } from "../../entities/ISymptom";
 
 export const filterSymptoms: IFilterSymptomsUtil = (search, symptoms) => {
+  if (!search) return symptoms;
+
   const lowerCaseSearch = search?.toLowerCase();
 
   return symptoms?.filter((symptom) =>

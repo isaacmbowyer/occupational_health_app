@@ -7,6 +7,7 @@ import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 import { ISourcePageProps } from "../../entities/ISourcePageProps";
+import { SERVICES_LIMITS } from "../../config/services";
 
 const INIITAL_DATA: ITrackedSymptomsResponse = {
   count: 0,
@@ -14,9 +15,9 @@ const INIITAL_DATA: ITrackedSymptomsResponse = {
 };
 
 export const useTrackedSymptoms = ({
-  skip,
-  limit,
-  source,
+  skip = 0,
+  limit = SERVICES_LIMITS.UNLIMITED,
+  source = "all",
 }: ISourcePageProps): IUseTrackedSymptomsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
@@ -42,7 +43,8 @@ export const useTrackedSymptoms = ({
         console.log("SUCCESS", "Loaded your tracked symptoms successfully");
       },
       initialData: INIITAL_DATA,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
     }
   );
 

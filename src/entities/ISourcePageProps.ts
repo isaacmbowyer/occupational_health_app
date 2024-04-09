@@ -1,6 +1,6 @@
 export interface ISourcePageProps {
-  limit: number;
-  skip: number;
-  source: string;
-  currentPage: number;
+  limit?: number;
+  skip?: number;
+  source?: string;
+  currentPage?: number;
 }

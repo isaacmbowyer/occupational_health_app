@@ -4,96 +4,142 @@ import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { ISymptom } from "../../../entities/ISymptom";
 import { INITAL_OPTION, INITAL_SYMPTOM } from "../../../data/defaultValues";
-import { IAddSymptomState } from "../../../entities/IAddSymptomState";
+import { IAddSymptomFormState } from "../../../entities/IAddSymptomFormState";
 import { IAddSymptomStateKey } from "../../../entities/IAddSymptomStateKey";
 import { IAddSymptomStateKeyValue } from "../../../entities/IAddSymptomStateKeyValue";
 import { IOption } from "../../../entities/IOption";
 import { filterSymptoms } from "../../../utils/filterSymptoms";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
+import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
+import { retrieveUnusedSymptoms } from "../../../utils/retrieveUnusedSymptoms";
+import { services } from "../../../services";
+import { auth } from "../../../config/firebase";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ISymptomState } from "../../../entities/ISymptomState";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
-const INITAL_STATE: IAddSymptomState = {
+const DEBOUNCE_TIME = 250;
+
+const INITAL_FORM_STATE: IAddSymptomFormState = {
   selectedSymptom: INITAL_SYMPTOM,
   currentSeverity: INITAL_OPTION,
   targetSeverity: INITAL_OPTION,
-  filteredSymptoms: [],
   targetDate: null,
   search: "",
   isLoading: false,
 };
 
-const DEBOUNCE_TIME = 250;
+const INITAL_SYMPTOM_STATE: ISymptomState = {
+  filteredSymptoms: [],
+};
 
 export const AddSymptomProvider = ({ children }: IProviderProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
   const { data: symptoms, isFetching: isFetchingSymptoms } =
     useSymptomsContext();
   const severityList = useSeverityRatings();
+  const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
+    useTrackedSymptoms({});
 
-  const [state, setState] = useState<IAddSymptomState>(INITAL_STATE);
+  const [symptomState, setSymptomState] =
+    useState<ISymptomState>(INITAL_SYMPTOM_STATE);
+  const [formState, setFormState] =
+    useState<IAddSymptomFormState>(INITAL_FORM_STATE);
+
+  const symptomList = retrieveUnusedSymptoms(
+    symptoms,
+    trackedSymptomsState?.trackedSymptoms
+  );
+
+  useEffect(() => {
+    setSymptomState({
+      filteredSymptoms: symptomList,
+    });
+  }, [symptomList.length]);
 
   // STATE METHODS
   useEffect(() => {
     const debounce = setTimeout(() => {
-      const filteredSymptoms = filterSymptoms(state?.search, symptoms);
+      const filteredSymptoms = filterSymptoms(formState?.search, symptomList);
 
-      setState((prev) => ({ ...prev, filteredSymptoms: filteredSymptoms }));
+      setSymptomState((prev) => ({
+        ...prev,
+        filteredSymptoms: filteredSymptoms,
+      }));
     }, DEBOUNCE_TIME);
 
     return () => {
       clearTimeout(debounce);
     };
-  }, [state?.search]);
+  }, [formState?.search]);
 
   const handleOnChange = (
     key: IAddSymptomStateKey,
     value: IAddSymptomStateKeyValue
   ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
+    setFormState((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleOnSelect = (item: ISymptom) => {
-    if (state?.selectedSymptom?.id === item?.id)
-      return setState((prev) => ({ ...prev, selectedSymptom: INITAL_SYMPTOM }));
+    if (formState?.selectedSymptom?.id === item?.id)
+      return setFormState((prev) => ({
+        ...prev,
+        selectedSymptom: INITAL_SYMPTOM,
+      }));
 
-    setState((prev) => ({ ...prev, selectedSymptom: item }));
+    setFormState((prev) => ({ ...prev, selectedSymptom: item }));
   };
 
   const _handleSetLoading = (boolean: boolean) => {
-    setState((prev) => ({ ...prev, isLoading: boolean }));
+    setFormState((prev) => ({ ...prev, isLoading: boolean }));
   };
 
   // ACTION METHODS
   const handleOnSubmit = async () => {
     try {
       _handleSetLoading(true);
-      console.log("Add");
+      await services.post.symptom({
+        userId: auth?.currentUser?.uid,
+        symptomId: formState?.selectedSymptom?.id,
+        targetDate: formState?.targetDate,
+        targetSeverity: formState?.targetSeverity,
+        currentSeverity: formState?.currentSeverity,
+      });
+
+      setFormState(INITAL_FORM_STATE);
+
+      toast.successToast("Successfully added the new symptom");
+      navigation.navigate("User Symptoms");
     } catch (e: any) {
-      toast.errorToast("Failed to add the symptom");
+      toast.errorToast("Failed to add the symptom. Try again later.");
     } finally {
-      _handleSetLoading(false);
+      trackedSymptomsMethods.handleOnRefetch();
     }
   };
 
   const isDisabled =
-    !state.currentSeverity?.id ||
-    !state?.targetSeverity ||
-    !state?.targetDate ||
-    !state.selectedSymptom?.id;
+    !formState.currentSeverity?.id ||
+    !formState?.targetSeverity ||
+    !formState?.targetDate ||
+    !formState.selectedSymptom?.id;
+
+  const isFetching = isFetchingSymptoms || trackedSymptomsState.isFetching;
 
   return (
     <AddSymptomContext.Provider
       value={{
         state: {
-          symptomList: state?.filteredSymptoms,
-          selectedSymptom: state?.selectedSymptom,
-          currentSeverity: state?.currentSeverity,
-          targetSeverity: state?.targetSeverity,
-          search: state?.search,
-          targetDate: state?.targetDate,
-          isFetching: isFetchingSymptoms,
-          isLoading: state?.isLoading,
+          symptomList: symptomState?.filteredSymptoms,
+          selectedSymptom: formState?.selectedSymptom,
+          currentSeverity: formState?.currentSeverity,
+          targetSeverity: formState?.targetSeverity,
+          search: formState?.search,
+          targetDate: formState?.targetDate,
+          isFetching: isFetching,
+          isLoading: formState?.isLoading,
           isDisabled: isDisabled,
           severityList: severityList,
         },

@@ -5,6 +5,7 @@ import { DatePicker } from "../../../../components/atoms/DatePicker";
 import { IOption } from "../../../../entities/IOption";
 import { Select } from "../../../../components/atoms/Select";
 import { colors } from "../../../../data/colors";
+import { createSeverityList } from "../../../../utils/createSeverityList";
 
 interface IRatingSymptomSectionProps {
   targetDate: Date;
@@ -33,14 +34,14 @@ export const RatingSymptomSection = ({
       <Select
         selectedOption={currentSeverity}
         label="Current Severity"
-        items={severityList}
+        items={createSeverityList(severityList, targetSeverity)}
         onChange={(value) => handleOnChange("currentSeverity", value)}
       />
 
       <Select
         selectedOption={targetSeverity}
         label="Target Severity"
-        items={severityList}
+        items={createSeverityList(severityList, currentSeverity)}
         onChange={(value) => handleOnChange("targetSeverity", value)}
       />
 

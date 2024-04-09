@@ -10,7 +10,7 @@ export const HeaderWithSearchSkeleton = ({
 }: IHeaderWithSearchSkeletonProps) => {
   return (
     <SkeletonContainer>
-      <HStack width="$full" justifyContent="space-between">
+      <HStack width="$full" justifyContent="space-between" mb="$1">
         <Skeleton
           style={{
             height: 30,

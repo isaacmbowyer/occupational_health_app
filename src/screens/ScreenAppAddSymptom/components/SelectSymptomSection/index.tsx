@@ -6,6 +6,7 @@ import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomStateK
 import { Input } from "../../../../components/atoms/Input";
 import { ICONS } from "../../../../data/icons";
 import { AddSymptomContainer } from "../../../../components/organisms/AddSymptomContainer";
+import { Text } from "../../../../components/atoms/Text";
 
 interface ISelectSymptomSectionProps {
   symptoms: ISymptom[];
@@ -43,11 +44,17 @@ export const SelectSymptomSection = ({
               onChange={(e) => handleOnChange("search", e.nativeEvent.text)}
             />
 
-            <AddSymptomContainer
-              symptoms={symptoms}
-              selectedSymptom={selectedSymptom}
-              handleOnSelect={handleOnSelect}
-            />
+            {!symptoms?.length ? (
+              <Text.Regular color="gray">
+                No symptoms match this search criteria
+              </Text.Regular>
+            ) : (
+              <AddSymptomContainer
+                symptoms={symptoms}
+                selectedSymptom={selectedSymptom}
+                handleOnSelect={handleOnSelect}
+              />
+            )}
           </VStack>
         }
       />

@@ -37,7 +37,12 @@ export const HeaderWithSearch = ({
   }
 
   return (
-    <HStack width="$full" justifyContent="space-between" alignItems="center">
+    <HStack
+      width="$full"
+      justifyContent="space-between"
+      alignItems="center"
+      mb="$1"
+    >
       <Text.SubHeader bold color="sky_blue">
         {formattedTitle}
       </Text.SubHeader>

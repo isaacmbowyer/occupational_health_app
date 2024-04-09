@@ -5,7 +5,7 @@ import { SymptomCard } from "../../modules/SymptomCard";
 interface ISymptomContainer {
   items: IUserSymptom[];
   handleOnView: (symptom: IUserSymptom) => void;
-  handleOnDelete: (id: string) => void;
+  handleOnDelete: (symptom: IUserSymptom) => void;
 }
 
 export const SymptomContainer = ({
@@ -22,7 +22,7 @@ export const SymptomContainer = ({
           severityType={item?.severityType}
           imageUri={item?.imageUri}
           targetDate={item?.targetDate}
-          handleOnDelete={() => handleOnDelete(item?.id)}
+          handleOnDelete={() => handleOnDelete(item)}
           handleOnView={() => handleOnView(item)}
         />
       ))}

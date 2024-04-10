@@ -9,6 +9,7 @@ import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
 import { postSymptom } from "./post-symptom";
+import { postSymptomProgress } from "./post-symptom-progress";
 import { updateSymptomId } from "./update-symptom-id";
 import { updateSymptomIdResource } from "./update-symptom-id-resources";
 
@@ -18,6 +19,7 @@ export const services = {
     authLogout: postAuthLogout,
     authRegistration: postAuthRegistration,
     symptom: postSymptom,
+    symptomProgress: postSymptomProgress,
   },
   get: {
     symptoms: getSymptoms,

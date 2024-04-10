@@ -17,7 +17,7 @@ export const postSymptom: IPostSymptomService = async (props) => {
     symptomId: props?.symptomId,
     createdAt: new Date(),
     comment: "Added First Severity Rating",
-    rating: props?.currentSeverity,
+    rating: Number(props?.currentSeverity),
   });
 };
 

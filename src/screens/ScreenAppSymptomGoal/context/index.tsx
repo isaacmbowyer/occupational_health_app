@@ -18,12 +18,15 @@ import { Linking } from "react-native";
 import { ISymptomGoalStateKey } from "../../../entities/ISymptomGoalStateKey";
 import { ISymptomGoalStateKeyValue } from "../../../entities/ISymptomGoalStateKeyValue";
 import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 const TAGS = ["All", "Website", "Video"];
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
   const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
@@ -67,14 +70,14 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
-      await services.update.trackedSymptomId({
+      await services.update.trackedSymptom({
         id: currentSymptom?.id,
         currentSeverity: currentSymptom?.currentSeverity,
         targetSeverity: +newTargetSeverity?.name,
         targetDate: newTargetDate,
       });
 
-      toast.successToast("Successfully updated the Symptom details");
+      toast.successToast("Successfully updated the symptom's details");
     } catch (e: any) {
       toast.errorToast("Unable to update the symptom. Try again later");
     } finally {
@@ -104,7 +107,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
-      await services.update.symptomResourceId({
+      await services.composition.symptomResourceLike({
         id: resource?.likedId,
         resourceId: resource?.id,
         userId: auth?.currentUser?.uid,
@@ -131,7 +134,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   };
 
   const handleOnTrackSymptom = () => {
-    console.log("Navigate");
+    navigation.navigate("Symptom Progress");
   };
 
   const isFetching =

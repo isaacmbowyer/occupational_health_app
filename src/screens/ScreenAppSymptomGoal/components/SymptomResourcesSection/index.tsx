@@ -7,6 +7,7 @@ import { ISymptomGoalStateKeyValue } from "../../../../entities/ISymptomGoalStat
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
 import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
+import { IllustrationStateEmpty } from "../../../../components/modules/IllustrationState.Empty";
 
 interface ISymptomResourcesSectionProps {
   totalPages: number;
@@ -55,9 +56,7 @@ export const SymptomResourcesSection = ({
           handleOnChange={(val) => handleOnChange("source", val)}
         />
 
-        <Text.Regular color="gray">
-          There are no resources currently available for this symptom
-        </Text.Regular>
+        <IllustrationStateEmpty message="There are no resources available for this symptom yet." />
       </>
     );
 

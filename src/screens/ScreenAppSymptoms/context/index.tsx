@@ -110,9 +110,9 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
-      await services.delete.trackedSymptomId(symptom?.id);
+      await services.delete.trackedSymptom(symptom?.id);
 
-      await services.delete.symptomScores({
+      await services.delete.scores({
         userId: auth.currentUser.uid,
         symptomId: symptom?.symptomId,
       });
@@ -121,12 +121,13 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     } catch (e: any) {
       toast.errorToast("Failed to delete this tracked symptom.");
     } finally {
-      _handleSetLoading(false);
+      setState(INITAL_STATE);
     }
   };
 
   const handleNavigateToTrackedSymptom = (symptom: IUserSymptom) => {
     setCurrentSymptom(symptom);
+    setState(INITAL_STATE);
     navigation.navigate("Symptom Goal");
   };
 

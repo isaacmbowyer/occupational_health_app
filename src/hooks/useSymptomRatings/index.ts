@@ -16,7 +16,7 @@ export const useSymptomRatings = (): IUseSymptomIdScoresResponse => {
   const { data, isFetching } = useQuery(
     ["/scores"],
     async () => {
-      const data = await services.get.symptomIdScores({
+      const data = await services.get.scores({
         userId: auth?.currentUser?.uid,
         symptomId: currentSymptom?.symptomId,
       });

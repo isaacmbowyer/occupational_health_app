@@ -1,39 +1,45 @@
-import { deleteSymptomId } from "./delete-symptom-id";
+import { compositionSymptomResourcesLike } from "./composition-symptom-resources-like";
+import { deleteSymptomResourcesLike } from "./delete-symptom-resources-like";
 import { deleteSymptomScores } from "./delete-symptom-scores";
-import { getSymptomIdResources } from "./get-symptom-id-resources";
-import { getSymptomIdScores } from "./get-symptom-id-scores";
+import { deleteTrackedSymptom } from "./delete-tracked-symptom";
+import { getSymptomResources } from "./get-symptom-resources";
+import { getSymptomScores } from "./get-symptom-scores";
 import { getSymptoms } from "./get-symptoms";
-import { getTrackedSymptoms } from "./get-trackedSymptoms";
+import { getTrackedSymptoms } from "./get-tracked-symptoms";
 import { getUsers } from "./get-users";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
-import { postSymptom } from "./post-symptom";
-import { postSymptomProgress } from "./post-symptom-progress";
-import { updateSymptomId } from "./update-symptom-id";
-import { updateSymptomIdResource } from "./update-symptom-id-resources";
+import { postSymptomResourceLike } from "./post-symptom-resource-like";
+import { postSymptomScore } from "./post-symptom-score";
+import { postTrackedSymptom } from "./post-tracked-symptom";
+import { updateTrackedSymptom } from "./update-tracked-symptom";
 
 export const services = {
   post: {
     authLogin: postAuthLogin,
     authLogout: postAuthLogout,
     authRegistration: postAuthRegistration,
-    symptom: postSymptom,
-    symptomProgress: postSymptomProgress,
+    trackedSymptom: postTrackedSymptom,
+    score: postSymptomScore,
+    resourceLike: postSymptomResourceLike,
   },
   get: {
     symptoms: getSymptoms,
     trackedSymptoms: getTrackedSymptoms,
-    symptomIdScores: getSymptomIdScores,
-    symptomResources: getSymptomIdResources,
+    scores: getSymptomScores,
+    resources: getSymptomResources,
     users: getUsers,
   },
   delete: {
-    trackedSymptomId: deleteSymptomId,
-    symptomScores: deleteSymptomScores,
+    trackedSymptom: deleteTrackedSymptom,
+    scores: deleteSymptomScores,
+    resourceLike: deleteSymptomResourcesLike,
   },
   update: {
-    trackedSymptomId: updateSymptomId,
-    symptomResourceId: updateSymptomIdResource,
+    trackedSymptom: updateTrackedSymptom,
+  },
+  composition: {
+    symptomResourceLike: compositionSymptomResourcesLike,
   },
 };

@@ -11,8 +11,8 @@ import { db } from "../../config/firebase";
 import { symptomIdScoresAdapter } from "../../utils/symptomIdScoresAdapter";
 import { IUserIdWithSymptomId } from "../../entities/IUserIdWithSymptomId";
 
-export const getSymptomIdScores: IGetSymptomIdScoresService = async (props) => {
-  const collectionRef = collection(db, "scores");
+export const getSymptomScores: IGetSymptomScoresService = async (props) => {
+  const collectionRef = collection(db, "symptom_scores");
 
   const fourMonthsAgo = new Date();
   fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 3);
@@ -35,6 +35,6 @@ export const getSymptomIdScores: IGetSymptomIdScoresService = async (props) => {
   return symptomIdScoresAdapter(docs);
 };
 
-interface IGetSymptomIdScoresService {
+interface IGetSymptomScoresService {
   (payload: IUserIdWithSymptomId): Promise<ISymptomScore[]>;
 }

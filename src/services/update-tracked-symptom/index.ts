@@ -1,8 +1,9 @@
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import { IOption } from "../../entities/IOption";
 
-export const updateSymptomId: IUpdateSymptomIdService = async (props) => {
+export const updateTrackedSymptom: IUpdateTrackedSymptomService = async (
+  props
+) => {
   const docRef = doc(db, "tracked_symptoms", props?.id);
 
   await updateDoc(docRef, {
@@ -19,6 +20,6 @@ interface IPayload {
   targetDate: Date;
 }
 
-interface IUpdateSymptomIdService {
+interface IUpdateTrackedSymptomService {
   (props: IPayload): Promise<any>;
 }

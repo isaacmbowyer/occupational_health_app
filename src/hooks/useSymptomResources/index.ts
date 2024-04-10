@@ -26,7 +26,7 @@ export const useSymptomResources = (
   const { data, isFetching, refetch } = useQuery(
     ["/resources", props?.limit, props?.skip, props?.source],
     async () => {
-      const data = await services.get.symptomResources({
+      const data = await services.get.resources({
         userId: auth?.currentUser?.uid,
         symptomId: currentSymptom?.symptomId,
         source: props?.source,

@@ -13,7 +13,7 @@ import { db } from "../../config/firebase";
 import { resorcesAdapter } from "../../utils/resourcesAdapter";
 import { IResourceResponse } from "../../entities/IResourceResponse";
 
-export const getSymptomIdResources: IGetSymptomIdResourcesService = async (
+export const getSymptomResources: IGetSymptomResourcesService = async (
   props
 ) => {
   const resourcesRef = collection(db, "symptom_resources");
@@ -123,6 +123,6 @@ interface IPayload {
   currentPage: number;
 }
 
-interface IGetSymptomIdResourcesService {
+interface IGetSymptomResourcesService {
   (props: IPayload): Promise<IResourceResponse>;
 }

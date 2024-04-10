@@ -14,7 +14,7 @@ export const Chart = ({ scores }: IChart) => {
         }),
         datasets: [
           {
-            data: scores?.map((data) => data.averageScore),
+            data: scores?.map((data) => Number(data.averageScore)),
           },
         ],
       }}

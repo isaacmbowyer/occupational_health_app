@@ -34,7 +34,7 @@ const SymptomGoal = () => {
 
           <Divider my="$0.5" />
 
-          {state?.averageScores?.length ? (
+          {state?.averageScores?.length > 1 ? (
             <VStack>
               <Accordion
                 title="Chart View"

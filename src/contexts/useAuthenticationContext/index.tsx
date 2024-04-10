@@ -65,6 +65,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       // RESET STATE
       handleSetLoginData({ email: "", password: "" });
       setUser(null);
+      toast.successToast("Successfuly logged out of the application");
     } catch (error: any) {
       toast.errorToast("Unable to logout. Try again later");
     } finally {

@@ -11,7 +11,7 @@ interface IHorizitonalCardProps {
   description: string;
   image: any;
   icon?: any;
-  isLoading?: boolean
+  isLoading?: boolean;
   handleOnPress: () => void;
 }
 
@@ -21,7 +21,7 @@ export const HorizitonalCard = ({
   image,
   buttonLabel,
   icon,
-  isLoading = false
+  isLoading = false,
   handleOnPress,
 }: IHorizitonalCardProps) => {
   return (

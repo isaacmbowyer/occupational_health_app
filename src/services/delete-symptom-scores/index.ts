@@ -1,7 +1,6 @@
 import {
   collection,
   deleteDoc,
-  doc,
   getDocs,
   query,
   where,
@@ -13,7 +12,7 @@ export const deleteSymptomScores: IDeleteSymptomScoresService = async ({
   symptomId,
 }) => {
   const collectionQuery = query(
-    collection(db, "scores"),
+    collection(db, "symptom_scores"),
     where("userId", "==", userId),
     where("symptomId", "==", symptomId)
   );

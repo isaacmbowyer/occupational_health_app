@@ -1,12 +1,14 @@
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
-export const updateSymptomId: IUpdateSymptomIdService = async (props) => {
+export const updateTrackedSymptom: IUpdateTrackedSymptomService = async (
+  props
+) => {
   const docRef = doc(db, "tracked_symptoms", props?.id);
 
   await updateDoc(docRef, {
-    ["currentSeverity"]: props?.currentSeverity,
-    ["targetSeverity"]: props?.targetSeverity,
+    ["currentSeverity"]: Number(props?.currentSeverity),
+    ["targetSeverity"]: Number(props?.targetSeverity),
     ["targetDate"]: props?.targetDate,
   });
 };
@@ -18,6 +20,6 @@ interface IPayload {
   targetDate: Date;
 }
 
-interface IUpdateSymptomIdService {
+interface IUpdateTrackedSymptomService {
   (props: IPayload): Promise<any>;
 }

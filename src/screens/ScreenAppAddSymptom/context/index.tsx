@@ -101,12 +101,19 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const handleOnSubmit = async () => {
     try {
       _handleSetLoading(true);
-      await services.post.symptom({
+      await services.post.trackedSymptom({
         userId: auth?.currentUser?.uid,
         symptomId: formState?.selectedSymptom?.id,
         targetDate: formState?.targetDate,
         targetSeverity: formState?.targetSeverity,
         currentSeverity: formState?.currentSeverity,
+      });
+
+      await services.post.score({
+        userId: auth?.currentUser?.uid,
+        symptomId: formState?.selectedSymptom?.id,
+        currentSeverity: formState?.currentSeverity,
+        comment: "Added First Severity Rating",
       });
 
       setFormState(INITAL_FORM_STATE);
@@ -115,8 +122,6 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
       navigation.navigate("User Symptoms");
     } catch (e: any) {
       toast.errorToast("Failed to add the symptom. Try again later.");
-    } finally {
-      trackedSymptomsMethods.handleOnRefetch();
     }
   };
 

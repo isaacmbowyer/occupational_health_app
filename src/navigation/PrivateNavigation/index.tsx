@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../../data/colors";
-import { SettingsScreen } from "../../screens/ScreenAppSettings";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SymptomNavigation } from "../SymptomNavigation";
 import { CurrentEntityProvider } from "../../contexts/useCurrentEntityContext";
 import { UsersProvider } from "../../contexts/useUsersContext";
+import { SettingsNavigation } from "../SettingsNavigation";
 
 export const PrivateNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -36,7 +36,7 @@ export const PrivateNavigation = () => {
           })}
         >
           <Tab.Screen name="Symptoms" component={SymptomNavigation} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="Settings" component={SettingsNavigation} />
         </Tab.Navigator>
       </CurrentEntityProvider>
     </UsersProvider>

@@ -1,7 +1,9 @@
 import { compositionSymptomResourcesLike } from "./composition-symptom-resources-like";
-import { deleteSymptomResourcesLike } from "./delete-symptom-resources-like";
+import { deleteSymptomResourceLike } from "./delete-resource-like";
 import { deleteSymptomScores } from "./delete-symptom-scores";
 import { deleteTrackedSymptom } from "./delete-tracked-symptom";
+import { getResourceCategories } from "./get-resource-categories";
+import { getResourceTypes } from "./get-resource-types";
 import { getSymptomResources } from "./get-symptom-resources";
 import { getSymptomScores } from "./get-symptom-scores";
 import { getSymptoms } from "./get-symptoms";
@@ -30,11 +32,13 @@ export const services = {
     scores: getSymptomScores,
     resources: getSymptomResources,
     users: getUsers,
+    types: getResourceTypes,
+    categories: getResourceCategories,
   },
   delete: {
     trackedSymptom: deleteTrackedSymptom,
     scores: deleteSymptomScores,
-    resourceLike: deleteSymptomResourcesLike,
+    resourceLike: deleteSymptomResourceLike,
   },
   update: {
     trackedSymptom: updateTrackedSymptom,

@@ -17,19 +17,19 @@ const WORK_RESOURCES: IWorkResource[] = [
     label: "Workplace Adjustments",
     description:
       "Discover ways to modify the workplace to accommodate employees with long COVID.",
-    image: require("../../../assets/workplace-adjustments.png"),
+    image: require("../../../assets/workplace-adjustments.jpg"),
   },
   {
     label: "Disibility Entitlements",
     description:
       "Explore benefits and entitlements available to individuals with long COVID-related disabilities.",
-    image: require("../../../assets/disability-entitlements.png"),
+    image: require("../../../assets/disability-entitlements.jpg"),
   },
   {
     label: "Mental Health Support",
     description:
       "Find resources and guidance for coping with mental health challenges related to long COVID.",
-    image: require("../../../assets/mental-health-support.png"),
+    image: require("../../../assets/mental-health-support.jpg"),
   },
   {
     label: "Financial Support",

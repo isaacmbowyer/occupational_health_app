@@ -8,6 +8,7 @@ import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
 import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
 import { IllustrationStateEmpty } from "../../../../components/modules/IllustrationState.Empty";
+import { IOption } from "../../../../entities/IOption";
 
 interface ISymptomResourcesSectionProps {
   totalPages: number;
@@ -19,6 +20,7 @@ interface ISymptomResourcesSectionProps {
   isFetching: boolean;
   tagList: string[];
   source: string;
+  types: IOption[];
   handleOnView: (link: string) => void;
   handleOnLike: (item: IResource) => void;
   handleOnChange: (
@@ -37,6 +39,7 @@ export const SymptomResourcesSection = ({
   isFetching,
   tagList,
   source,
+  types,
   handleOnView,
   handleOnLike,
   handleOnChange,
@@ -84,6 +87,7 @@ export const SymptomResourcesSection = ({
           <ResourceContainer
             numberOfUsers={numberOfUsers}
             items={resources}
+            types={types}
             handleOnView={handleOnView}
             handleOnLike={handleOnLike}
           />

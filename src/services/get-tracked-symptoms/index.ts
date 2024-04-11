@@ -10,6 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import { IOption } from "../../entities/IOption";
 
 export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
   userId,
@@ -25,7 +26,7 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
 
   let collectionQuery;
 
-  if (source === "current") {
+  if (source?.name === "current") {
     // Retrieve future dates (after today)
     collectionQuery = query(
       collectionRef,
@@ -35,7 +36,7 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
       startAt(skip),
       limit(pageLimit)
     );
-  } else if (source === "past") {
+  } else if (source?.name === "past") {
     // Retrieve past dates (before today)
     collectionQuery = query(
       collectionRef,
@@ -70,5 +71,5 @@ interface IPayload {
   userId: string;
   skip: number;
   pageLimit: number;
-  source: string;
+  source: IOption;
 }

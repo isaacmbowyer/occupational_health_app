@@ -68,6 +68,7 @@ const SymptomGoal = () => {
                 isFetching={state?.isFetching}
                 tagList={state?.tagList}
                 source={state.activeSource}
+                types={state?.resourceTypes}
                 handleOnChange={methods.handleOnChange}
                 handleOnLike={methods.handleOnLike}
                 handleOnView={methods.handleOnView}

@@ -9,7 +9,6 @@ import { SERVICES_LIMITS } from "../../../config/services";
 import { useSymptomResources } from "../../../hooks/useSymptomResources";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { IOption } from "../../../entities/IOption";
-import { createSeverityOption } from "../../../utils/createSeverityOption";
 import { IScore } from "../../../entities/IScore";
 import { useUsersContext } from "../../../contexts/useUsersContext";
 import { IResource } from "../../../entities/IResource";
@@ -20,10 +19,12 @@ import { ISymptomGoalStateKeyValue } from "../../../entities/ISymptomGoalStateKe
 import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
+import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
+import { findOption } from "../../../utils/findOption";
+import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
-const TAGS = ["All", "Website", "Video"];
+const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -31,10 +32,13 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
   const { data: users, isFetching: isFetchingUsers } = useUsersContext();
+  const { data: resourceTypes, isFetching: isFetchingTypes } =
+    useResourceTypesContext();
 
   const INITIAL_STATE: ISymptomGoalState = {
-    targetSeverity: createSeverityOption(
+    targetSeverity: findOption(
       severityList,
+      "name",
       String(currentSymptom?.targetSeverity)
     ),
     targetDate: currentSymptom?.targetDate,
@@ -54,7 +58,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     useSymptomResources({
       limit: LIMIT,
       skip: SKIP,
-      source: state?.source,
+      source: findOption(resourceTypes, "name", state?.source),
       currentPage: state?.currentPage,
     });
 
@@ -159,6 +163,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           averageScores: averageScores,
           numberOfUsers: users?.count,
           resources: resourcesState?.symptomResources,
+          resourceTypes: resourceTypes,
           tagList: TAGS,
         },
         methods: {
@@ -195,6 +200,7 @@ interface ISymptomGoalContext {
     averageScores: IScore[];
     numberOfUsers: number;
     resources: IResource[];
+    resourceTypes: IOption[];
     tagList: string[];
   };
   methods: {

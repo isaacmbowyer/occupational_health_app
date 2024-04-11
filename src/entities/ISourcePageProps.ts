@@ -1,6 +1,8 @@
+import { IOption } from "./IOption";
+
 export interface ISourcePageProps {
   limit?: number;
   skip?: number;
-  source?: string;
+  source?: IOption;
   currentPage?: number;
 }

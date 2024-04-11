@@ -17,7 +17,7 @@ const INIITAL_DATA: ITrackedSymptomsResponse = {
 export const useTrackedSymptoms = ({
   skip = 0,
   limit = SERVICES_LIMITS.UNLIMITED,
-  source = "all",
+  source = { id: "0", name: "All" },
 }: ISourcePageProps): IUseTrackedSymptomsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
@@ -25,7 +25,6 @@ export const useTrackedSymptoms = ({
   const { data, isFetching, refetch } = useQuery(
     ["/tracked_symptoms", source, limit, skip],
     async () => {
-      console.log("FETCHING DATA...");
       const data = await services.get.trackedSymptoms({
         userId: auth?.currentUser?.uid,
         skip: skip,
@@ -33,7 +32,6 @@ export const useTrackedSymptoms = ({
         source: source,
       });
 
-      console.log(data);
       return data;
     },
     {

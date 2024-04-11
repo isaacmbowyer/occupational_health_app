@@ -23,8 +23,10 @@ export const useSymptomResources = (
 
   const toast = useCustomToast();
 
+  console.log("PROPS", props);
+
   const { data, isFetching, refetch } = useQuery(
-    ["/resources", props?.limit, props?.skip, props?.source],
+    ["/resources", props?.limit, props?.skip, props?.source?.name],
     async () => {
       const data = await services.get.resources({
         userId: auth?.currentUser?.uid,

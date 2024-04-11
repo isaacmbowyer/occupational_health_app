@@ -1,17 +1,15 @@
-import { IResourceCategory } from "./IResourceCategory";
-import { IResourceType } from "./IResourceType";
-
 export interface IResource {
   id: string;
-  symptomId: string;
+  symptomId?: string;
+  categoryId?: string;
+  typeId: string;
   link: string;
-  logoUri: string;
-  details: string;
-  type: IResourceType;
+  information: string;
   companyName: string;
   companyDetails: string;
+  companyLogo: string;
+  createdAt: Date;
   isLiked: boolean;
   likedId: string;
   numberOfLikes: number;
-  category: IResourceCategory;
 }

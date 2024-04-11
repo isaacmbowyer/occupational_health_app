@@ -12,23 +12,24 @@ import {
 import { db } from "../../config/firebase";
 import { resorcesAdapter } from "../../utils/resourcesAdapter";
 import { IResourceResponse } from "../../entities/IResourceResponse";
+import { IOption } from "../../entities/IOption";
 
 export const getSymptomResources: IGetSymptomResourcesService = async (
   props
 ) => {
   const resourcesRef = collection(db, "symptom_resources");
-  const likesRef = collection(db, "symptom_resources_likes");
+  const likesRef = collection(db, "resource_likes");
 
   let collectionQuery = query(
     resourcesRef,
     where("symptomId", "==", props?.symptomId)
   );
 
-  if (props?.source !== "All") {
+  if (props?.source?.name !== "All") {
     collectionQuery = query(
       resourcesRef,
       where("symptomId", "==", props?.symptomId),
-      where("type", "==", props?.source)
+      where("typeId", "==", props?.source?.id)
     );
   }
 
@@ -42,11 +43,11 @@ export const getSymptomResources: IGetSymptomResourcesService = async (
     limit(props?.limit)
   );
 
-  if (props?.source !== "All") {
+  if (props?.source?.name !== "All") {
     collectionQuery = query(
       resourcesRef,
       where("symptomId", "==", props?.symptomId),
-      where("type", "==", props?.source),
+      where("typeId", "==", props?.source?.id),
       orderBy("createdAt"),
       limit(props?.limit)
     );
@@ -58,7 +59,7 @@ export const getSymptomResources: IGetSymptomResourcesService = async (
     const lastVisible =
       resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
 
-    if (props?.source === "All")
+    if (props?.source?.name === "All")
       collectionQuery = query(
         resourcesRef,
         where("symptomId", "==", props?.symptomId),
@@ -70,7 +71,7 @@ export const getSymptomResources: IGetSymptomResourcesService = async (
       collectionQuery = query(
         resourcesRef,
         where("symptomId", "==", props?.symptomId),
-        where("type", "==", props?.source),
+        where("typeId", "==", props?.source?.id),
         orderBy("createdAt"),
         startAfter(lastVisible),
         limit(props?.limit)
@@ -118,7 +119,7 @@ export const getSymptomResources: IGetSymptomResourcesService = async (
 interface IPayload {
   symptomId: string;
   userId: string;
-  source: string;
+  source: IOption;
   limit: number;
   currentPage: number;
 }

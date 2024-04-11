@@ -1,4 +1,8 @@
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import {
+  DocumentData,
+  QueryDocumentSnapshot,
+  Timestamp,
+} from "firebase/firestore";
 import { IResource } from "../../entities/IResource";
 import { IResourceLike } from "../../entities/IResourceLike";
 
@@ -10,15 +14,18 @@ export const resorcesAdapter: IResourcesAdapter = (props) => {
       (item) => item?.resourceId === doc?.id
     );
 
+    const createdAtTimestamp: Timestamp = data?.createdAt;
+
     return {
       id: doc?.id,
       symptomId: data?.symptomId,
+      typeId: data?.typeId,
       link: data?.link,
-      logoUri: data?.logo,
-      details: data?.information,
-      type: data?.type,
-      companyName: data?.company,
+      information: data?.information,
+      companyName: data?.companyName,
       companyDetails: data?.companyDetails,
+      companyLogo: data?.companyLogo,
+      createdAt: createdAtTimestamp?.toDate(),
       numberOfLikes: resourceLike?.numberOfLikes,
       isLiked: resourceLike?.isLiked,
       likedId: resourceLike?.likedId,

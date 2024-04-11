@@ -1,9 +1,12 @@
 import { VStack } from "@gluestack-ui/themed";
 import { IResource } from "../../../entities/IResource";
 import { ResourceCard } from "../../modules/ResourceCard";
+import { IOption } from "../../../entities/IOption";
+import { findOption } from "../../../utils/findOption";
 
 interface IResourceContainer {
   items: IResource[];
+  types: IOption[];
   numberOfUsers: number;
   handleOnView: (link: string) => void;
   handleOnLike: (item: IResource) => void;
@@ -11,6 +14,7 @@ interface IResourceContainer {
 
 export const ResourceContainer = ({
   items,
+  types,
   numberOfUsers,
   handleOnView,
   handleOnLike,
@@ -22,9 +26,9 @@ export const ResourceContainer = ({
           key={item?.id}
           companyName={item?.companyName}
           companyDescription={item?.companyDetails}
-          imageUri={item?.logoUri}
-          resourceType={item?.type}
-          resourceInformation={item?.details}
+          imageUri={item?.companyLogo}
+          resourceType={findOption(types, "id", item?.typeId)?.name}
+          resourceInformation={item?.information}
           numberOfUsers={numberOfUsers}
           numberOfLikes={item?.numberOfLikes}
           isLiked={item?.isLiked}

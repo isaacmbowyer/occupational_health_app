@@ -15,8 +15,8 @@ import { IResourceResponse } from "../../entities/IResourceResponse";
 import { IResourceCategory } from "../../entities/IResourceCategory";
 
 export const getSResources: IGetResourcesService = async (props) => {
-  const resourcesRef = collection(db, "resources");
-  const likesRef = collection(db, "resources_likes");
+  const resourcesRef = collection(db, "symptom_resources");
+  const likesRef = collection(db, "resource_likes");
 
   let collectionQuery = query(
     resourcesRef,

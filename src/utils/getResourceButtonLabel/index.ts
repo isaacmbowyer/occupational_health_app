@@ -1,4 +1,4 @@
-import { IResourceType } from "../../entities/IResourceType";
+import { IResourceType } from "../../entities/IResourceTypeTag";
 
 export const getResourceButtonLabel = (resourceType) => {
   if (resourceType === "Website") return "Go To Website";

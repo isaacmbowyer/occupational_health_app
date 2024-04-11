@@ -1,4 +1,5 @@
-export type IWorkResourceType =
+export type IResourceCategory =
+  | "Symptom"
   | "Employee Rights"
   | "Employer Rights"
   | "Workplace Adjustments"

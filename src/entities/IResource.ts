@@ -1,3 +1,4 @@
+import { IResourceCategory } from "./IResourceCategory";
 import { IResourceType } from "./IResourceType";
 
 export interface IResource {
@@ -12,4 +13,5 @@ export interface IResource {
   isLiked: boolean;
   likedId: string;
   numberOfLikes: number;
+  category: IResourceCategory;
 }

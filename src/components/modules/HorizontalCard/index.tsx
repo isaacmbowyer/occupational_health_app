@@ -43,7 +43,7 @@ export const HorizitonalCard = ({
         alt={`${label} Card Image`}
       />
 
-      <VStack space="xs" width={200}>
+      <VStack space="xs" width={190}>
         <Text.Small bold>{label}</Text.Small>
         <Text.Small color="gray">{description}</Text.Small>
         <HStack justifyContent="flex-end" marginRight="$8">

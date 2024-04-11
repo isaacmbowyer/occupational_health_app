@@ -5,6 +5,7 @@ import { SymptomNavigation } from "../SymptomNavigation";
 import { CurrentEntityProvider } from "../../contexts/useCurrentEntityContext";
 import { UsersProvider } from "../../contexts/useUsersContext";
 import { SettingsNavigation } from "../SettingsNavigation";
+import { WorkResourceNavigation } from "../WorkResourceNavigation";
 
 export const PrivateNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -21,6 +22,8 @@ export const PrivateNavigation = () => {
                 iconName = "accessibility-outline";
               } else if (route.name === "Settings") {
                 iconName = "settings";
+              } else if (route.name === "Work Resources") {
+                iconName = "book-outline";
               }
 
               // You can return any component that you like here!
@@ -36,6 +39,10 @@ export const PrivateNavigation = () => {
           })}
         >
           <Tab.Screen name="Symptoms" component={SymptomNavigation} />
+          <Tab.Screen
+            name="Work Resources"
+            component={WorkResourceNavigation}
+          />
           <Tab.Screen name="Settings" component={SettingsNavigation} />
         </Tab.Navigator>
       </CurrentEntityProvider>

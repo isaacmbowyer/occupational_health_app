@@ -1,4 +1,4 @@
-export interface ICreateAccountValidationError {
+export interface IPersonalAccountValidationError {
   firstName: string;
   lastName: string;
   email: string;

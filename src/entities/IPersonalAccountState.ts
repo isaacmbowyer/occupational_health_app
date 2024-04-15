@@ -1,6 +1,6 @@
 import { IOption } from "./IOption";
 
-export interface ICreateAccountState {
+export interface IPersonalAccountState {
   isLoading: boolean;
   firstName: string;
   lastName: string;

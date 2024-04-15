@@ -1,10 +1,10 @@
 import { VStack } from "@gluestack-ui/themed";
-import { Text } from "../../../../components/atoms/Text";
-import { Input } from "../../../../components/atoms/Input";
-import { Select } from "../../../../components/atoms/Select";
-import { IOption } from "../../../../entities/IOption";
-import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
-import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
+import { Text } from "../../atoms/Text";
+import { Input } from "../../atoms/Input";
+import { Select } from "../../atoms/Select";
+import { IOption } from "../../../entities/IOption";
+import { IPersonalAccountStateKeyValue } from "../../../entities/IPersonalAccountStateKeyValue";
+import { IPersonalAccountStateKey } from "../../../entities/IPersonalAccountStateKey";
 
 interface ICompanyDetailsProps {
   name: string;
@@ -14,8 +14,8 @@ interface ICompanyDetailsProps {
   countryOptions: IOption[];
   industryOptions: IOption[];
   handleOnChange: (
-    key: ICreateAccountStateKey,
-    value: ICreateAccountStateKeyValue
+    key: IPersonalAccountStateKey,
+    value: IPersonalAccountStateKeyValue
   ) => void;
 }
 

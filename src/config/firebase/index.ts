@@ -1,15 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection } from "firebase/firestore/lite";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCtcMcuCwo1RfAww9DJ5txmB_Q_5NB8yww",
-  authDomain: "occupational-health-2bcb0.firebaseapp.com",
-  projectId: "occupational-health-2bcb0",
-  storageBucket: "occupational-health-2bcb0.appspot.com",
-  messagingSenderId: "666221959216",
-  appId: "1:666221959216:web:f909b8e1d6ad3058d7f5f5",
-  measurementId: "G-GRHE1VWZD5",
+  apiKey: "AIzaSyAm5LBqHT60zb0yfkbfx4Bu7iWHmS2M6i0",
+  authDomain: "occupational-health-b555f.firebaseapp.com",
+  projectId: "occupational-health-b555f",
+  storageBucket: "occupational-health-b555f.appspot.com",
+  messagingSenderId: "997033588545",
+  appId: "1:997033588545:web:ed934368b69403cb0793c0",
+  measurementId: "G-TMNL8M1V6F",
 };
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+initializeApp(firebaseConfig);
+
+export const db = getFirestore();
+export const auth = getAuth();

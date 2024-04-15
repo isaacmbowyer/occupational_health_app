@@ -65,9 +65,9 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useTrackedSymptoms({
       limit: LIMIT,
-      skip: SKIP,
       source: state?.source,
       currentPage: state?.currentPage,
+      skip: SKIP,
     });
 
   const userSymptoms = formatUserSymptoms({

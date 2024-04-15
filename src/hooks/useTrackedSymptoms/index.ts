@@ -27,9 +27,9 @@ export const useTrackedSymptoms = ({
     async () => {
       const data = await services.get.trackedSymptoms({
         userId: auth?.currentUser?.uid,
-        skip: skip,
-        pageLimit: limit,
         source: source,
+        currentPage: currentPage,
+        limit: limit,
       });
 
       return data;

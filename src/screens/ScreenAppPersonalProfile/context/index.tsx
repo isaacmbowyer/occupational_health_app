@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useCountries } from "../../../hooks/useCountries";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useGenders } from "../../../hooks/useGenders";
@@ -12,16 +12,16 @@ import { validateCreateAccountState } from "../../../utils/validateCreateAccount
 import { IOption } from "../../../entities/IOption";
 import { IProviderProps } from "../../../entities/IProviderProps";
 import { services } from "../../../services";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { INITAL_OPTION } from "../../../data/defaultValues";
 import { IPersonalAccountState } from "../../../entities/IPersonalAccountState";
 import { IPersonalAccountStateKey } from "../../../entities/IPersonalAccountStateKey";
 import { IPersonalAccountStateKeyValue } from "../../../entities/IPersonalAccountStateKeyValue";
-import { IPersonalAccountValidationError } from "../../../entities/IPersonalAccountValidationError";
+import { IPersonalAccountStateValidationError } from "../../../entities/IPersonalAccountStateValidationError";
+import { auth } from "../../../config/firebase";
+import { INITAL_OPTION } from "../../../data/defaultValues";
+import { findOption } from "../../../utils/findOption";
+import { validateUpdatePassword } from "../../../utils/validateUpdatePassword";
 
-const INITAL_STATE: IPersonalAccountState = {
-  isLoading: false,
+const INITIAL_DATA: IPersonalAccountState = {
   firstName: "",
   lastName: "",
   email: "",
@@ -31,29 +31,65 @@ const INITAL_STATE: IPersonalAccountState = {
   country: INITAL_OPTION,
   industry: INITAL_OPTION,
   gender: INITAL_OPTION,
-  birthDate: null,
+  birthDate: new Date(),
+  id: "",
 };
 
-const CreateAccountContext = createContext({} as ICreateAccountContext);
+const PersonalProfileContext = createContext({} as IPersonalProfileContext);
 
-export const CreateAccountProvider = ({ children }: IProviderProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+export const PersonalProfileProvider = ({ children }: IProviderProps) => {
   const industries = useIndustries();
   const countries = useCountries();
   const genders = useGenders();
   const toast = useCustomToast();
-
   const [formState, setFormState] =
-    useState<IPersonalAccountState>(INITAL_STATE);
+    useState<IPersonalAccountState>(INITIAL_DATA);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   // STATE METHODS
   const _handleSetLoading = (boolean: boolean) => {
-    setFormState((prev) => ({ ...prev, isLoading: boolean }));
+    setIsLoading(boolean);
   };
 
-  const _handleResetState = () => {
-    setFormState(INITAL_STATE);
+  const _handleSetFetching = (boolean: boolean) => {
+    setIsFetching(boolean);
   };
+
+  useEffect(() => {
+    (async () => {
+      _handleSetFetching(true);
+
+      try {
+        const user = await services.get.user({
+          userId: auth.currentUser.uid,
+        });
+
+        setFormState({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: auth.currentUser.email,
+          password: "",
+          confirmPassword: "",
+          companyName: user.companyName,
+          country: findOption(countries, "name", user.country),
+          industry: findOption(industries, "name", user.industry),
+          gender: findOption(genders, "name", user.gender),
+          birthDate: user.birthDate,
+          id: user.id,
+        });
+
+        console.log("SUCCESS", "Loaded your personal details successfully");
+      } catch (error: any) {
+        toast.errorToast(
+          "Failed to load your personal details. Try again later"
+        );
+      } finally {
+        _handleSetFetching(false);
+      }
+    })();
+  }, [auth.currentUser.uid]);
 
   // ACTION METHODS
   const handleOnChange = (
@@ -67,33 +103,34 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
-      const user = await services.post.authRegistration({
-        email: formState?.email,
-        password: formState?.password,
+      await services.composition.user({
+        id: formState?.id,
         firstName: formState?.firstName,
         lastName: formState?.lastName,
+        email: formState?.email,
+        password: formState?.password,
+        confirmPassword: formState?.confirmPassword,
         companyName: formState?.companyName,
-        dateOfBirth: formState?.birthDate,
-        gender: formState?.gender,
         industry: formState?.industry,
         country: formState?.country,
+        gender: formState?.gender,
+        birthDate: formState?.birthDate,
       });
 
-      toast.successToast("Account created. You can now Log In");
-      navigation.navigate("Log In");
-      _handleResetState();
+      toast.successToast("Successfully edited your personal details");
     } catch (e: any) {
-      toast.errorToast("Unable to create account. Try again later");
+      console.log("ERROR", e);
+      toast.errorToast("Unable to edit account details. Try again later");
     } finally {
       _handleSetLoading(false);
     }
   };
 
-  const validationError: IPersonalAccountValidationError = {
+  const validationError: IPersonalAccountStateValidationError = {
     firstName: validateText(formState.firstName) ? "" : VALIDATION_ERRORS.NAME,
     lastName: validateText(formState.lastName) ? "" : VALIDATION_ERRORS.NAME,
     email: validateEmail(formState.email) ? "" : VALIDATION_ERRORS.EMAIL,
-    password: validatePassword(formState.password)
+    password: validateUpdatePassword(formState.password)
       ? ""
       : VALIDATION_ERRORS.PASSWORD,
     confirmPassword: compareValues(
@@ -116,9 +153,11 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
   });
 
   return (
-    <CreateAccountContext.Provider
+    <PersonalProfileContext.Provider
       value={{
         state: {
+          isLoading: isLoading,
+          isFetching: isFetching,
           isDisabled: isDisabled,
           validationError: validationError,
           industryOptions: industries,
@@ -133,18 +172,20 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
       }}
     >
       {children}
-    </CreateAccountContext.Provider>
+    </PersonalProfileContext.Provider>
   );
 };
 
-export const useCreateAccountContext = () => {
-  return useContext(CreateAccountContext);
+export const usePersonalProfile = () => {
+  return useContext(PersonalProfileContext);
 };
 
-interface ICreateAccountContext {
+interface IPersonalProfileContext {
   state: {
     isDisabled: boolean;
-    validationError: IPersonalAccountValidationError;
+    isFetching: boolean;
+    isLoading: boolean;
+    validationError: IPersonalAccountStateValidationError;
     industryOptions: IOption[];
     countryOptions: IOption[];
     genderOptions: IOption[];

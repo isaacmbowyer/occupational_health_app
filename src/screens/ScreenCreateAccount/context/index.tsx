@@ -18,10 +18,9 @@ import { INITAL_OPTION } from "../../../data/defaultValues";
 import { IPersonalAccountState } from "../../../entities/IPersonalAccountState";
 import { IPersonalAccountStateKey } from "../../../entities/IPersonalAccountStateKey";
 import { IPersonalAccountStateKeyValue } from "../../../entities/IPersonalAccountStateKeyValue";
-import { IPersonalAccountValidationError } from "../../../entities/IPersonalAccountValidationError";
+import { IPersonalAccountStateValidationError } from "../../../entities/IPersonalAccountStateValidationError";
 
 const INITAL_STATE: IPersonalAccountState = {
-  isLoading: false,
   firstName: "",
   lastName: "",
   email: "",
@@ -45,10 +44,11 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
 
   const [formState, setFormState] =
     useState<IPersonalAccountState>(INITAL_STATE);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // STATE METHODS
   const _handleSetLoading = (boolean: boolean) => {
-    setFormState((prev) => ({ ...prev, isLoading: boolean }));
+    setIsLoading(boolean);
   };
 
   const _handleResetState = () => {
@@ -89,7 +89,7 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const validationError: IPersonalAccountValidationError = {
+  const validationError: IPersonalAccountStateValidationError = {
     firstName: validateText(formState.firstName) ? "" : VALIDATION_ERRORS.NAME,
     lastName: validateText(formState.lastName) ? "" : VALIDATION_ERRORS.NAME,
     email: validateEmail(formState.email) ? "" : VALIDATION_ERRORS.EMAIL,
@@ -120,6 +120,7 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
       value={{
         state: {
           isDisabled: isDisabled,
+          isLoading: isLoading,
           validationError: validationError,
           industryOptions: industries,
           countryOptions: countries,
@@ -144,7 +145,8 @@ export const useCreateAccountContext = () => {
 interface ICreateAccountContext {
   state: {
     isDisabled: boolean;
-    validationError: IPersonalAccountValidationError;
+    isLoading: boolean;
+    validationError: IPersonalAccountStateValidationError;
     industryOptions: IOption[];
     countryOptions: IOption[];
     genderOptions: IOption[];

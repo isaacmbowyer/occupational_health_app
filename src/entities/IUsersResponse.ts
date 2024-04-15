@@ -1,4 +1,4 @@
 import { IResultsWithCount } from "./IResultsWithCount";
-import { IUser } from "./IUser";
+import { IUser } from "./IPersonalAccountState";
 
 export type IUsersResponse = IResultsWithCount<IUser>;

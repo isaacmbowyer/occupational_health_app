@@ -1,4 +1,4 @@
-import { ICreateAccountValidationError } from "../../entities/ICreateAccountValidationError";
+import { ICreateAccountValidationError } from "../../entities/IPersonalAccountStateValidationError";
 import { IOption } from "../../entities/IOption";
 
 export const validateCreateAccountState: IValidateCreateAccountStateUtil = ({

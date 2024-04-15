@@ -18,13 +18,11 @@ import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchS
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 import { auth } from "../../../config/firebase";
-import { ISymptom } from "../../../entities/ISymptom";
-import { P } from "@expo/html-elements";
+import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
 const TAGS = ["current", "past"];
-const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
 interface ITrackedSymptomsState {
   isLoading: boolean;
@@ -67,9 +65,9 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useTrackedSymptoms({
       limit: LIMIT,
-      skip: SKIP,
       source: state?.source,
       currentPage: state?.currentPage,
+      skip: SKIP,
     });
 
   const userSymptoms = formatUserSymptoms({
@@ -78,7 +76,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   });
 
   const severityTypeList = useSeverityTypes();
-  const ratingList = createDropdownOptions(NUMBERS);
+  const severityRatingsList = useSeverityRatings();
 
   // STATE METHODS
   const _handleSetLoading = (boolean: boolean) => {
@@ -149,7 +147,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
           symptoms: userSymptoms,
           tagList: TAGS,
           severityTypeOptions: severityTypeList,
-          ratingOptions: ratingList,
+          ratingOptions: severityRatingsList,
           source: state?.source,
           isSearchActive: state?.isSearchActive,
           symptom: searchState?.symptom,

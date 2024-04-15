@@ -1,9 +1,7 @@
-import { HStack, VStack } from "@gluestack-ui/themed";
+import { HStack, VStack, Image } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
-import { Image } from "@gluestack-ui/themed";
 import { Text } from "../../atoms/Text";
 import { Button } from "../../atoms/Button";
-import { ICONS } from "../../../data/icons";
 
 interface IHorizitonalCardProps {
   label: string;

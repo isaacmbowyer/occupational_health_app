@@ -1,6 +1,4 @@
 import { VStack } from "@gluestack-ui/themed";
-import { Text } from "../../../../components/atoms/Text";
-import { IResource } from "../../../../entities/IResource";
 import { ResourceContainer } from "../../../../components/organisms/ResourceContainer";
 import { ISymptomGoalStateKey } from "../../../../entities/ISymptomGoalStateKey";
 import { ISymptomGoalStateKeyValue } from "../../../../entities/ISymptomGoalStateKeyValue";
@@ -8,6 +6,9 @@ import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
 import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
 import { IllustrationStateEmpty } from "../../../../components/modules/IllustrationState.Empty";
+import { IOption } from "../../../../entities/IOption";
+import { IResourceWithLike } from "../../../../entities/IResourceWithLike";
+import { IllustrationInvalidSearch } from "../../../../components/modules/IllustrationState.InvalidSearch";
 
 interface ISymptomResourcesSectionProps {
   totalPages: number;
@@ -15,12 +16,13 @@ interface ISymptomResourcesSectionProps {
   count: number;
   limit: number;
   numberOfUsers: number;
-  resources: IResource[];
+  resources: IResourceWithLike[];
   isFetching: boolean;
   tagList: string[];
   source: string;
+  types: IOption[];
   handleOnView: (link: string) => void;
-  handleOnLike: (item: IResource) => void;
+  handleOnLike: (item: IResourceWithLike) => void;
   handleOnChange: (
     key: ISymptomGoalStateKey,
     value: ISymptomGoalStateKeyValue
@@ -37,6 +39,7 @@ export const SymptomResourcesSection = ({
   isFetching,
   tagList,
   source,
+  types,
   handleOnView,
   handleOnLike,
   handleOnChange,
@@ -56,7 +59,13 @@ export const SymptomResourcesSection = ({
           handleOnChange={(val) => handleOnChange("source", val)}
         />
 
-        <IllustrationStateEmpty message="There are no resources available for this symptom yet." />
+        {source == "All" ? (
+          <IllustrationStateEmpty
+            message={`There are no resources available for this symptom yet`}
+          />
+        ) : (
+          <IllustrationInvalidSearch loadWhat="resources" />
+        )}
       </>
     );
 
@@ -84,6 +93,7 @@ export const SymptomResourcesSection = ({
           <ResourceContainer
             numberOfUsers={numberOfUsers}
             items={resources}
+            types={types}
             handleOnView={handleOnView}
             handleOnLike={handleOnLike}
           />

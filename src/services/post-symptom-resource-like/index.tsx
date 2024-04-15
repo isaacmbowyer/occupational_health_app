@@ -4,7 +4,7 @@ import { db } from "../../config/firebase";
 export const postSymptomResourceLike: IPostSymptomResourceLikeService = async (
   props
 ) => {
-  const collectionRef = collection(db, "symptom_resources_likes");
+  const collectionRef = collection(db, "resource_likes");
 
   return await addDoc(collectionRef, {
     createdAt: new Date(),

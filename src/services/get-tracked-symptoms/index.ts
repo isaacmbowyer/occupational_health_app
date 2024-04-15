@@ -6,59 +6,69 @@ import {
   limit,
   orderBy,
   query,
+  startAfter,
   startAt,
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
-export const getTrackedSymptoms: IGetTrackedSymptomsService = async ({
-  userId,
-  skip,
-  pageLimit,
-  source,
-}) => {
+export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
   const collectionRef = collection(db, "tracked_symptoms");
+  const sign = props?.source === "current" ? ">" : "<";
 
-  // Get total document count
-  const totalSnapshot = await getDocs(collectionRef);
-  const totalDocuments = totalSnapshot.size;
-
+  let totalDocuments;
   let collectionQuery;
+  let resourceSnapshot;
 
-  if (source === "current") {
-    // Retrieve future dates (after today)
+  if (props?.source !== "all") {
     collectionQuery = query(
       collectionRef,
-      where("userId", "==", userId),
-      where("targetDate", ">", new Date()),
-      orderBy("createdAt"),
-      startAt(skip),
-      limit(pageLimit)
+      where("userId", "==", props?.userId),
+      where("targetDate", sign, new Date())
     );
-  } else if (source === "past") {
-    // Retrieve past dates (before today)
+
+    // Get total document count
+    const totalSnapshot = await getDocs(collectionQuery);
+    totalDocuments = totalSnapshot.size;
+
     collectionQuery = query(
       collectionRef,
-      where("userId", "==", userId),
-      where("targetDate", "<", new Date()),
+      where("userId", "==", props?.userId),
+      where("targetDate", sign, new Date()),
       orderBy("createdAt"),
-      startAt(skip),
-      limit(pageLimit)
+      limit(props?.limit)
     );
+
+    resourceSnapshot = await getDocs(collectionQuery);
+
+    if (props?.currentPage > 1) {
+      const lastVisible =
+        resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
+
+      collectionQuery = query(
+        collectionRef,
+        where("userId", "==", props?.userId),
+        where("targetDate", sign, new Date()),
+        orderBy("createdAt"),
+        startAfter(lastVisible),
+        limit(props?.limit)
+      );
+
+      resourceSnapshot = await getDocs(collectionQuery);
+    }
   } else {
-    // Retrieve all documents
     collectionQuery = query(
       collectionRef,
-      where("userId", "==", userId),
-      orderBy("createdAt")
+      where("userId", "==", props?.userId)
     );
-  }
 
-  const { docs } = await getDocs(collectionQuery);
+    resourceSnapshot = await getDocs(collectionQuery);
+    totalDocuments = resourceSnapshot.size;
+  }
 
   return {
     count: totalDocuments,
-    results: trackedSymptomsAdapter(docs),
+    results: trackedSymptomsAdapter(resourceSnapshot.docs),
   };
 };
 
@@ -68,7 +78,7 @@ interface IGetTrackedSymptomsService {
 
 interface IPayload {
   userId: string;
-  skip: number;
-  pageLimit: number;
+  limit: number;
+  currentPage: number;
   source: string;
 }

@@ -1,19 +1,19 @@
 import { HStack, Image, VStack } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
-import { IResourceType } from "../../../entities/IResourceType";
-import { Text } from "../../atoms/Text";
 import { Button } from "../../atoms/Button";
 import { getResourceLikePercentage } from "../../../utils/getResourceLikePercentage";
 import { ICONS } from "../../../data/icons";
 import { getResourceButtonLabel } from "../../../utils/getResourceButtonLabel";
 import { IconButton } from "../../atoms/IconButton";
 import { displayFavouriteIndicatorMessage } from "../../../utils/displayFavouriteIndicatorMessage";
+import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
+import { Text } from "../../atoms/Text";
 
 interface IUserCardProps {
   companyName: string;
   companyDescription: string;
   imageUri: string;
-  resourceType: IResourceType;
+  resourceType: string;
   resourceInformation: string;
   numberOfUsers: number;
   numberOfLikes: number;

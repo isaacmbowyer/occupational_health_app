@@ -6,13 +6,10 @@ import { useCustomToast } from "../../../hooks/useCustomToast";
 import { services } from "../../../services";
 import { useSymptomRatings } from "../../../hooks/useSymptomRatings";
 import { SERVICES_LIMITS } from "../../../config/services";
-import { useSymptomResources } from "../../../hooks/useSymptomResources";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { IOption } from "../../../entities/IOption";
-import { createSeverityOption } from "../../../utils/createSeverityOption";
 import { IScore } from "../../../entities/IScore";
 import { useUsersContext } from "../../../contexts/useUsersContext";
-import { IResource } from "../../../entities/IResource";
 import { auth } from "../../../config/firebase";
 import { Linking } from "react-native";
 import { ISymptomGoalStateKey } from "../../../entities/ISymptomGoalStateKey";
@@ -20,10 +17,14 @@ import { ISymptomGoalStateKeyValue } from "../../../entities/ISymptomGoalStateKe
 import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
+import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
+import { findOption } from "../../../utils/findOption";
+import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
+import { IResourceWithLike } from "../../../entities/IResourceWithLike";
+import { useResources } from "../../../hooks/useResources";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
-const TAGS = ["All", "Website", "Video"];
+const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -31,10 +32,13 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const severityList = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
   const { data: users, isFetching: isFetchingUsers } = useUsersContext();
+  const { data: resourceTypes, isFetching: isFetchingTypes } =
+    useResourceTypesContext();
 
   const INITIAL_STATE: ISymptomGoalState = {
-    targetSeverity: createSeverityOption(
+    targetSeverity: findOption(
       severityList,
+      "name",
       String(currentSymptom?.targetSeverity)
     ),
     targetDate: currentSymptom?.targetDate,
@@ -50,13 +54,14 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const { averageScores, isFetching: isFetchingRatings } = useSymptomRatings();
 
-  const { state: resourcesState, methods: resourcesMethods } =
-    useSymptomResources({
-      limit: LIMIT,
-      skip: SKIP,
-      source: state?.source,
-      currentPage: state?.currentPage,
-    });
+  const { state: resourcesState, methods: resourcesMethods } = useResources({
+    limit: LIMIT,
+    skip: SKIP,
+    source: findOption(resourceTypes, "name", state?.source),
+    currentPage: state?.currentPage,
+    name: "symptom",
+    refId: currentSymptom?.symptomId,
+  });
 
   // ACTION METHODS
   const _handleSetLoading = (bool: boolean) => {
@@ -101,13 +106,13 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
       return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
-  const handleOnLikeResource = async (resource: IResource) => {
+  const handleOnLikeResource = async (resource: IResourceWithLike) => {
     const isLiked = resource?.isLiked;
 
     try {
       _handleSetLoading(true);
 
-      await services.composition.symptomResourceLike({
+      await services.composition.resourceLike({
         id: resource?.likedId,
         resourceId: resource?.id,
         userId: auth?.currentUser?.uid,
@@ -138,7 +143,10 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   };
 
   const isFetching =
-    isFetchingRatings || resourcesState.isFetching || isFetchingUsers;
+    isFetchingRatings ||
+    resourcesState.isFetching ||
+    isFetchingUsers ||
+    isFetchingTypes;
 
   return (
     <SymptomGoalContext.Provider
@@ -158,7 +166,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           severityList: severityList,
           averageScores: averageScores,
           numberOfUsers: users?.count,
-          resources: resourcesState?.symptomResources,
+          resources: resourcesState?.resources,
+          resourceTypes: resourceTypes,
           tagList: TAGS,
         },
         methods: {
@@ -194,7 +203,8 @@ interface ISymptomGoalContext {
     severityList: IOption[];
     averageScores: IScore[];
     numberOfUsers: number;
-    resources: IResource[];
+    resources: IResourceWithLike[];
+    resourceTypes: IOption[];
     tagList: string[];
   };
   methods: {
@@ -203,7 +213,7 @@ interface ISymptomGoalContext {
       value: ISymptomGoalStateKeyValue
     ) => void;
     handleOnPress: () => void;
-    handleOnLike: (item: IResource) => void;
+    handleOnLike: (item: IResourceWithLike) => void;
     handleOnView: (link: string) => void;
   };
 }

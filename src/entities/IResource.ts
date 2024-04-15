@@ -9,7 +9,4 @@ export interface IResource {
   companyDetails: string;
   companyLogo: string;
   createdAt: Date;
-  isLiked: boolean;
-  likedId: string;
-  numberOfLikes: number;
 }

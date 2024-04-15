@@ -6,7 +6,6 @@ import { ITrackedSymptomsResponse } from "../../entities/ITrackedSymptomsRespons
 import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import { ISourcePageProps } from "../../entities/ISourcePageProps";
 import { SERVICES_LIMITS } from "../../config/services";
 
 const INIITAL_DATA: ITrackedSymptomsResponse = {
@@ -17,8 +16,9 @@ const INIITAL_DATA: ITrackedSymptomsResponse = {
 export const useTrackedSymptoms = ({
   skip = 0,
   limit = SERVICES_LIMITS.UNLIMITED,
-  source = { id: "0", name: "All" },
-}: ISourcePageProps): IUseTrackedSymptomsResponse => {
+  source = "all",
+  currentPage = 1,
+}: IProps): IUseTrackedSymptomsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
 
@@ -79,4 +79,11 @@ interface IUseTrackedSymptomsResponse {
   methods: {
     handleOnRefetch: () => void;
   };
+}
+
+interface IProps {
+  skip?: number;
+  limit?: number;
+  source?: string;
+  currentPage?: number;
 }

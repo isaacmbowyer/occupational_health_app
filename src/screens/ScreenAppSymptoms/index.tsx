@@ -10,6 +10,7 @@ import { SymptomSkeleton } from "../../components/modules/SymptomSkeleton";
 import { SymptomContainer } from "../../components/organisms/SymptomContainer";
 import { SubHeaderWithTags } from "../../components/modules/SubHeaderWithTags";
 import { IllustrationStateEmpty } from "../../components/modules/IllustrationState.Empty";
+import { IllustrationInvalidSearch } from "../../components/modules/IllustrationState.InvalidSearch";
 
 const Symptoms = () => {
   const { state, methods } = useTrackedSymptomsContext();
@@ -65,8 +66,16 @@ const Symptoms = () => {
             </VStack>
           ) : null}
 
-          {!state?.symptoms?.length && !state.isFetching ? (
-            <IllustrationStateEmpty message="You are not tracking any symptoms yet." />
+          {!state?.symptoms?.length &&
+          !state.isFetching &&
+          state.source === "current" ? (
+            <IllustrationStateEmpty message="You are not tracking any symptoms yet" />
+          ) : null}
+
+          {!state?.symptoms?.length &&
+          !state.isFetching &&
+          (state.source !== "current" || state?.isSearchActive) ? (
+            <IllustrationInvalidSearch loadWhat="symptoms" />
           ) : null}
 
           {state?.symptoms?.length ? (

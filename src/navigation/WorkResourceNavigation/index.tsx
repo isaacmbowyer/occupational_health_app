@@ -18,7 +18,7 @@ export const WorkResourceNavigation = () => {
           component={WorkResourcesScreen}
         />
         <WorkResourceStack.Screen
-          name="Work Resouce"
+          name="Work Resource"
           component={WorkResourceScreen}
         />
       </WorkResourceStack.Navigator>

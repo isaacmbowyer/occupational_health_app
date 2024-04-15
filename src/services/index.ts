@@ -1,10 +1,12 @@
-import { compositionSymptomResourcesLike } from "./composition-symptom-resources-like";
+import { compositionResourceLike } from "./composition-resource-like";
+import { compositionResources } from "./composition-resources";
 import { deleteSymptomResourceLike } from "./delete-resource-like";
 import { deleteSymptomScores } from "./delete-symptom-scores";
 import { deleteTrackedSymptom } from "./delete-tracked-symptom";
 import { getResourceCategories } from "./get-resource-categories";
+import { getResourceLikes } from "./get-resource-likes";
 import { getResourceTypes } from "./get-resource-types";
-import { getSymptomResources } from "./get-symptom-resources";
+import { getResources } from "./get-resources";
 import { getSymptomScores } from "./get-symptom-scores";
 import { getSymptoms } from "./get-symptoms";
 import { getTrackedSymptoms } from "./get-tracked-symptoms";
@@ -30,8 +32,9 @@ export const services = {
     symptoms: getSymptoms,
     trackedSymptoms: getTrackedSymptoms,
     scores: getSymptomScores,
-    resources: getSymptomResources,
+    likes: getResourceLikes,
     users: getUsers,
+    resources: getResources,
     types: getResourceTypes,
     categories: getResourceCategories,
   },
@@ -44,6 +47,7 @@ export const services = {
     trackedSymptom: updateTrackedSymptom,
   },
   composition: {
-    symptomResourceLike: compositionSymptomResourcesLike,
+    resourceLike: compositionResourceLike,
+    resources: compositionResources,
   },
 };

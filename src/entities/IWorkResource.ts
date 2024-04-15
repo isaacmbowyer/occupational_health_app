@@ -1,7 +1,5 @@
-import { IResourceCategory } from "./IResourceCategory";
-
 export interface IWorkResource {
-  label: IResourceCategory;
+  label: string;
   description: string;
   image: any;
 }

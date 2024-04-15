@@ -3,13 +3,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBL5Nzpjb1OQehStjlGenJ9IGwgrmb_wLE",
-  authDomain: "occupational-health-30432.firebaseapp.com",
-  projectId: "occupational-health-30432",
-  storageBucket: "occupational-health-30432.appspot.com",
-  messagingSenderId: "906307519193",
-  appId: "1:906307519193:web:ba792ddc811271acf2f4c8",
-  measurementId: "G-YC2B1ZS73J",
+  apiKey: "AIzaSyAm5LBqHT60zb0yfkbfx4Bu7iWHmS2M6i0",
+  authDomain: "occupational-health-b555f.firebaseapp.com",
+  projectId: "occupational-health-b555f",
+  storageBucket: "occupational-health-b555f.appspot.com",
+  messagingSenderId: "997033588545",
+  appId: "1:997033588545:web:ed934368b69403cb0793c0",
+  measurementId: "G-TMNL8M1V6F",
 };
 
 initializeApp(firebaseConfig);

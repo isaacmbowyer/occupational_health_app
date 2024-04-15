@@ -1,16 +1,17 @@
 import { VStack } from "@gluestack-ui/themed";
-import { ResourceContainer } from "../../../../components/organisms/ResourceContainer";
-import { ISymptomGoalStateKey } from "../../../../entities/ISymptomGoalStateKey";
-import { ISymptomGoalStateKeyValue } from "../../../../entities/ISymptomGoalStateKeyValue";
-import Pagination from "@cherry-soft/react-native-basic-pagination";
-import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
-import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
 import { IllustrationStateEmpty } from "../../../../components/modules/IllustrationState.Empty";
+import { SubHeaderWithTags } from "../../../../components/modules/SubHeaderWithTags";
 import { IOption } from "../../../../entities/IOption";
 import { IResourceWithLike } from "../../../../entities/IResourceWithLike";
+import { IWorkResourceStateKey } from "../../../../entities/IWorkResourceStateKey";
+import { IWorkResourceStateKeyValue } from "../../../../entities/IWorkResourceStateKeyValue";
+import { ResourceSkeleton } from "../../../../components/modules/ResourceSkeleton";
+import { ResourceContainer } from "../../../../components/organisms/ResourceContainer";
+import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { IllustrationInvalidSearch } from "../../../../components/modules/IllustrationState.InvalidSearch";
 
-interface ISymptomResourcesSectionProps {
+interface IWorkResourcesSectionProps {
+  title: string;
   totalPages: number;
   currentPage: number;
   count: number;
@@ -24,12 +25,12 @@ interface ISymptomResourcesSectionProps {
   handleOnView: (link: string) => void;
   handleOnLike: (item: IResourceWithLike) => void;
   handleOnChange: (
-    key: ISymptomGoalStateKey,
-    value: ISymptomGoalStateKeyValue
+    key: IWorkResourceStateKey,
+    value: IWorkResourceStateKeyValue
   ) => void;
 }
 
-export const SymptomResourcesSection = ({
+export const WorkResourcesSection = ({
   totalPages,
   currentPage,
   count,
@@ -40,10 +41,11 @@ export const SymptomResourcesSection = ({
   tagList,
   source,
   types,
+  title,
   handleOnView,
   handleOnLike,
   handleOnChange,
-}: ISymptomResourcesSectionProps) => {
+}: IWorkResourcesSectionProps) => {
   if (!resources.length && !isFetching)
     return (
       <>
@@ -61,7 +63,7 @@ export const SymptomResourcesSection = ({
 
         {source == "All" ? (
           <IllustrationStateEmpty
-            message={`There are no resources available for this symptom yet`}
+            message={`There are no resources available for ${title} yet.`}
           />
         ) : (
           <IllustrationInvalidSearch loadWhat="resources" />

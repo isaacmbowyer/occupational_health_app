@@ -1,4 +1,4 @@
-export interface IResourceLike {
+export interface IUserLike {
   resourceId: string;
   numberOfLikes: number;
   isLiked: boolean;

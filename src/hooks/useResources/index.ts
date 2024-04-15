@@ -3,37 +3,33 @@ import { useCustomToast } from "../useCustomToast";
 import { services } from "../../services";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext";
-import { IResource } from "../../entities/IResource";
-import { ISourcePageProps } from "../../entities/ISourcePageProps";
 import { IResourceResponse } from "../../entities/IResourceResponse";
 import { calculateNumberOfPages } from "../../utils/calculateNumberOfPages";
 import { getLimit } from "../../utils/getLimit";
+import { IResourceWithLike } from "../../entities/IResourceWithLike";
+import { IResourceTypeTag } from "../../entities/IResourceTypeTag";
+import { IOption } from "../../entities/IOption";
 
 const INITAL_DATA: IResourceResponse = {
   count: 0,
   results: [],
 };
 
-export const useSymptomResources = (
-  props: ISourcePageProps
-): ISymptomResourcesResponse => {
+export const useResources = (props: IProps): IResourcesResponse => {
   const { state } = useAuthenticationContext();
-  const { currentSymptom } = useCurrentEntityContext();
 
   const toast = useCustomToast();
 
-  console.log("PROPS", props);
-
   const { data, isFetching, refetch } = useQuery(
-    ["/resources", props?.limit, props?.skip, props?.source?.name],
+    ["/resources", props?.limit, props?.skip, props?.source, props?.refId],
     async () => {
-      const data = await services.get.resources({
+      const data = await services.composition.resources({
         userId: auth?.currentUser?.uid,
-        symptomId: currentSymptom?.symptomId,
-        source: props?.source,
+        refId: props?.refId,
+        name: props?.name,
         limit: getLimit(props?.limit, props?.currentPage),
         currentPage: props?.currentPage,
+        type: props?.source,
       });
 
       return data;
@@ -41,10 +37,10 @@ export const useSymptomResources = (
     {
       enabled: state?.isAuthenticated,
       onError: (e) => {
-        toast.errorToast("Failed to load symptom resources");
+        toast.errorToast("Failed to load resources");
       },
       onSuccess: () => {
-        console.log("SUCCESS", "Loaded symptom resources successfully");
+        console.log("SUCCESS", "Loaded resources successfully");
       },
       initialData: INITAL_DATA,
       refetchOnWindowFocus: false,
@@ -62,7 +58,7 @@ export const useSymptomResources = (
     state: {
       totalCount: resourcesCount,
       totalPages: totalPages,
-      symptomResources: data.results,
+      resources: data.results,
       isFetching: isFetching,
     },
     methods: {
@@ -71,14 +67,23 @@ export const useSymptomResources = (
   };
 };
 
-interface ISymptomResourcesResponse {
+interface IResourcesResponse {
   state: {
     totalCount: number;
     totalPages: number;
-    symptomResources: IResource[];
+    resources: IResourceWithLike[];
     isFetching: boolean;
   };
   methods: {
     handleOnRefetch: () => void;
   };
+}
+
+interface IProps {
+  limit: number;
+  skip: number;
+  source: IOption;
+  currentPage?: number;
+  name: "work" | "symptom";
+  refId: string;
 }

@@ -14,6 +14,7 @@ import {
   FavouriteIcon,
   ThreeDotsIcon,
   BellIcon,
+  DownloadIcon,
 } from "@gluestack-ui/themed";
 import { AddIcon } from "@gluestack-ui/themed";
 
@@ -34,4 +35,5 @@ export const ICONS = {
   HEART: FavouriteIcon,
   DOTS: ThreeDotsIcon,
   BELL: BellIcon,
+  DOWNLOAD: DownloadIcon,
 };

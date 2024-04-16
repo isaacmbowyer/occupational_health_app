@@ -5,6 +5,7 @@ import { deleteNotification } from "./delete-notification";
 import { deleteSymptomResourceLike } from "./delete-resource-like";
 import { deleteSymptomScores } from "./delete-symptom-scores";
 import { deleteTrackedSymptom } from "./delete-tracked-symptom";
+import { getFile } from "./get-file";
 import { getNotifications } from "./get-notifications";
 import { getResourceCategories } from "./get-resource-categories";
 import { getResourceLikes } from "./get-resource-likes";
@@ -48,6 +49,7 @@ export const services = {
     types: getResourceTypes,
     categories: getResourceCategories,
     notifications: getNotifications,
+    file: getFile,
   },
   delete: {
     trackedSymptom: deleteTrackedSymptom,

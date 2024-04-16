@@ -13,7 +13,7 @@ interface ISymptomCardProps {
   severityType: ISeverityType;
   imageUri: string;
   targetDate: Date;
-  handleOnDelete: () => void;
+  handleOnOpen: () => void;
   handleOnView: () => void;
 }
 
@@ -22,7 +22,7 @@ export const SymptomCard = ({
   severityType,
   imageUri,
   targetDate,
-  handleOnDelete,
+  handleOnOpen,
   handleOnView,
 }: ISymptomCardProps) => {
   return (
@@ -48,7 +48,7 @@ export const SymptomCard = ({
           source={require("../../../../assets/symptom.jpg")}
           alt="Symptom Image"
         />
-        <DeleteIcon handleOnPress={handleOnDelete} />
+        <DeleteIcon handleOnPress={handleOnOpen} />
       </HStack>
       <VStack width="$full" space="sm">
         <VStack space="xs">

@@ -1,9 +1,11 @@
 import { compositionResourceLike } from "./composition-resource-like";
 import { compositionResources } from "./composition-resources";
 import { compositionUser } from "./composition-user";
+import { deleteNotification } from "./delete-notification";
 import { deleteSymptomResourceLike } from "./delete-resource-like";
 import { deleteSymptomScores } from "./delete-symptom-scores";
 import { deleteTrackedSymptom } from "./delete-tracked-symptom";
+import { getNotifications } from "./get-notifications";
 import { getResourceCategories } from "./get-resource-categories";
 import { getResourceLikes } from "./get-resource-likes";
 import { getResourceTypes } from "./get-resource-types";
@@ -16,10 +18,12 @@ import { getUsers } from "./get-users";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
+import { postNotification } from "./post-notification";
 import { postSymptomResourceLike } from "./post-symptom-resource-like";
 import { postSymptomScore } from "./post-symptom-score";
 import { postTrackedSymptom } from "./post-tracked-symptom";
 import { updateAuth } from "./update-auth";
+import { updateNotification } from "./update-notification";
 import { updateTrackedSymptom } from "./update-tracked-symptom";
 import { updateUser } from "./update-user";
 
@@ -31,6 +35,7 @@ export const services = {
     trackedSymptom: postTrackedSymptom,
     score: postSymptomScore,
     resourceLike: postSymptomResourceLike,
+    notification: postNotification,
   },
   get: {
     symptoms: getSymptoms,
@@ -42,16 +47,19 @@ export const services = {
     resources: getResources,
     types: getResourceTypes,
     categories: getResourceCategories,
+    notifications: getNotifications,
   },
   delete: {
     trackedSymptom: deleteTrackedSymptom,
     scores: deleteSymptomScores,
     resourceLike: deleteSymptomResourceLike,
+    notification: deleteNotification,
   },
   update: {
     trackedSymptom: updateTrackedSymptom,
     user: updateUser,
     auth: updateAuth,
+    notification: updateNotification,
   },
   composition: {
     resourceLike: compositionResourceLike,

@@ -17,6 +17,7 @@ import { auth } from "../../../config/firebase";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ISymptomState } from "../../../entities/ISymptomState";
+import { findOption } from "../../../utils/findOption";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -114,6 +115,12 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
         symptomId: formState?.selectedSymptom?.id,
         currentSeverity: formState?.currentSeverity,
         comment: "Added First Severity Rating",
+      });
+
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Added New Symptom",
+        subTitle: `You added “${formState?.selectedSymptom?.name}” to your Tracked Symptoms list`,
       });
 
       setFormState(INITAL_FORM_STATE);

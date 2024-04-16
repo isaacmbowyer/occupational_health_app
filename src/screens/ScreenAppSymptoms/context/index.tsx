@@ -67,7 +67,6 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       limit: LIMIT,
       source: state?.source,
       currentPage: state?.currentPage,
-      skip: SKIP,
     });
 
   const userSymptoms = formatUserSymptoms({
@@ -113,6 +112,12 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       await services.delete.scores({
         userId: auth.currentUser.uid,
         symptomId: symptom?.symptomId,
+      });
+
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Removed Symptom",
+        subTitle: `You removed “${symptom?.name}” from your Tracked Symptoms list`,
       });
 
       trackedSymptomsMethods.handleOnRefetch();

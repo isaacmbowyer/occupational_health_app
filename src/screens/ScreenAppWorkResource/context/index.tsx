@@ -44,11 +44,9 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<IWorkResourceState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
-  const SKIP = (state?.currentPage - 1) * LIMIT;
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
-    skip: SKIP,
     source: findOption(resourceTypes, "name", state?.source),
     currentPage: state?.currentPage,
     name: "work",

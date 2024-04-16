@@ -62,6 +62,12 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
         targetDate: currentSymptom?.targetDate,
       });
 
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Added Daily Severity",
+        subTitle: `You updated your daily progress for “${currentSymptom?.name}”`,
+      });
+
       setCurrentSymptom(null);
       setFormState(INITAL_FORM_STATE);
       toast.successToast("Successfully added the daily symptom severity");

@@ -6,6 +6,7 @@ import { useAuthenticationContext } from "../../contexts/useAuthenticationContex
 import { useCurrentEntityContext } from "../../contexts/useCurrentEntityContext";
 import { IScore } from "../../entities/IScore";
 import { calculateAverageScores } from "../../utils/calculateAverageScores";
+import { ISymptomScore } from "../../entities/ISymptomScore";
 
 export const useSymptomRatings = (): IUseSymptomIdScoresResponse => {
   const { state } = useAuthenticationContext();
@@ -37,12 +38,14 @@ export const useSymptomRatings = (): IUseSymptomIdScoresResponse => {
   );
 
   return {
+    scores: data,
     averageScores: calculateAverageScores(data),
     isFetching,
   };
 };
 
 interface IUseSymptomIdScoresResponse {
+  scores: ISymptomScore[];
   averageScores: IScore[];
   isFetching: boolean;
 }

@@ -82,6 +82,7 @@ const Symptoms = () => {
             <>
               <SymptomContainer
                 items={state?.symptoms}
+                isLoading={state?.isLoading}
                 handleOnDelete={methods?.handleOnDelete}
                 handleOnView={methods.handleOnPress}
               />

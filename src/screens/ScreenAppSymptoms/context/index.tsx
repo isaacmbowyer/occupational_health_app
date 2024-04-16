@@ -140,6 +140,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       value={{
         state: {
           isFetching: isFetching,
+          isLoading: state?.isLoading,
           currentPage: state?.currentPage,
           count: trackedSymptomsState?.count,
           totalPages: trackedSymptomsState?.totalPages,
@@ -178,6 +179,7 @@ export const useTrackedSymptomsContext = () => {
 interface ITrackedSymptomsContext {
   state: {
     isFetching: boolean;
+    isLoading: boolean;
     currentPage: number;
     count: number;
     totalPages: number;

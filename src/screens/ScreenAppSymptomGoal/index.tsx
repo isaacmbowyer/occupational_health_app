@@ -109,6 +109,7 @@ const SymptomGoal = () => {
           <Button.Solid
             text="Track Symptom Progress"
             onPress={methods.handleOnPress}
+            isDisabled={state?.isDisabled}
           />
         </VStack>
       }

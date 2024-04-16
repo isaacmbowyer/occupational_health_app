@@ -22,6 +22,8 @@ import { findOption } from "../../../utils/findOption";
 import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 import { IResourceWithLike } from "../../../entities/IResourceWithLike";
 import { useResources } from "../../../hooks/useResources";
+import { formatDate } from "../../../utils/formatDate";
+import { findTodaysDateInScores } from "../../../utils/findTodaysDateInScores";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
@@ -51,7 +53,11 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
 
-  const { averageScores, isFetching: isFetchingRatings } = useSymptomRatings();
+  const {
+    scores,
+    averageScores,
+    isFetching: isFetchingRatings,
+  } = useSymptomRatings();
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
@@ -130,8 +136,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const handleOnViewResource = (link: string) => {
-    Linking.openURL(link).catch((err) =>
+  const handleOnViewResource = (resource: IResourceWithLike) => {
+    Linking.openURL(resource?.link).catch((err) =>
       toast.errorToast("Unable to open this resource link")
     );
   };
@@ -139,6 +145,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const handleOnTrackSymptom = () => {
     navigation.navigate("Symptom Progress");
   };
+
+  const isDisabled = findTodaysDateInScores(scores);
 
   const isFetching =
     isFetchingRatings ||
@@ -157,6 +165,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           activeSource: state?.source,
           daysLeft: getDaysLeft(state?.targetDate),
           isFetching: isFetching,
+          isDisabled: isDisabled,
           currentPage: state?.currentPage,
           count: resourcesState.totalCount,
           totalPages: resourcesState.totalPages,
@@ -194,6 +203,7 @@ interface ISymptomGoalContext {
     daysLeft: number;
     activeSource: string;
     isFetching: boolean;
+    isDisabled: boolean;
     currentPage: number;
     count: number;
     totalPages: number;
@@ -212,6 +222,6 @@ interface ISymptomGoalContext {
     ) => void;
     handleOnPress: () => void;
     handleOnLike: (item: IResourceWithLike) => void;
-    handleOnView: (link: string) => void;
+    handleOnView: (item: IResourceWithLike) => void;
   };
 }

@@ -98,7 +98,7 @@ const SymptomGoal = () => {
                   onChange={(event, newDate) =>
                     methods.handleOnChange("targetDate", newDate)
                   }
-                  maxDate={new Date()}
+                  minDate={new Date()}
                 />
               </VStack>
             }

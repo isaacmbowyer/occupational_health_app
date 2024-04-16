@@ -7,6 +7,8 @@ interface ISymptomCardContainerProps {
   name: string;
   isLoading: boolean;
   severityType: ISeverityType;
+  currentSeverity: number;
+  targetSeverity: number;
   imageUri: string;
   targetDate: Date;
   handleOnDelete: () => void;
@@ -19,6 +21,8 @@ export const SymptomCardContainer = ({
   severityType,
   imageUri,
   targetDate,
+  targetSeverity,
+  currentSeverity,
   handleOnDelete,
   handleOnView,
 }: ISymptomCardContainerProps) => {
@@ -47,6 +51,8 @@ export const SymptomCardContainer = ({
         severityType={severityType}
         imageUri={imageUri}
         targetDate={targetDate}
+        currentSeverity={currentSeverity}
+        targetSeverity={targetSeverity}
         handleOnOpen={handleOnOpen}
         handleOnView={handleOnView}
       />

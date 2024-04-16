@@ -6,11 +6,13 @@ import { Text } from "../../atoms/Text";
 import { Image } from "@gluestack-ui/themed";
 import { Button } from "../../atoms/Button";
 import { ICONS } from "../../../data/icons";
-import { displayDate } from "../../../utils/displayDate";
+import { displaySymptomProgressMessage } from "../../../utils/displaySymptomProgressMessage";
 
 interface ISymptomCardProps {
   label: string;
   severityType: ISeverityType;
+  currentSeverity: number;
+  targetSeverity: number;
   imageUri: string;
   targetDate: Date;
   handleOnOpen: () => void;
@@ -21,6 +23,8 @@ export const SymptomCard = ({
   label,
   severityType,
   imageUri,
+  currentSeverity,
+  targetSeverity,
   targetDate,
   handleOnOpen,
   handleOnView,
@@ -70,8 +74,11 @@ export const SymptomCard = ({
           <Text.Small bold>Progress</Text.Small>
           <HStack>
             <Text.Small>
-              You are Off-Target of completing your Target Severity rating,
-              which is scheduled for the {displayDate(targetDate)}
+              {displaySymptomProgressMessage({
+                targetDate: targetDate,
+                currentSeverity: currentSeverity,
+                targetSeverity: targetSeverity,
+              })}
             </Text.Small>
           </HStack>
         </VStack>

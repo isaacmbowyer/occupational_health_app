@@ -21,6 +21,8 @@ export const SymptomContainer = ({
         <SymptomCardContainer
           key={item?.id}
           name={item?.name}
+          currentSeverity={item?.currentSeverity}
+          targetSeverity={item?.targetSeverity}
           isLoading={isLoading}
           severityType={item?.severityType}
           imageUri={item?.imageUri}

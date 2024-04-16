@@ -28,7 +28,11 @@ export const Menu = ({ title, items }: IMenuProps) => {
       }}
     >
       {items?.map((item) => (
-        <MenuItem key={item.title} textValue={item.title}>
+        <MenuItem
+          key={item.title}
+          textValue={item.title}
+          onPress={item?.handleOnPress}
+        >
           {item?.icon ? <Icon as={item?.icon} size="sm" mr="$2" /> : null}
           <MenuItemLabel size="sm">{item.title}</MenuItemLabel>
         </MenuItem>

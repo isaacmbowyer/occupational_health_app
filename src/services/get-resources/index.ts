@@ -7,7 +7,6 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import { IResourceTypeTag } from "../../entities/IResourceTypeTag";
 import { db } from "../../config/firebase";
 import { resourcesAdapter } from "../../utils/resourcesAdapter";
 import { IOption } from "../../entities/IOption";

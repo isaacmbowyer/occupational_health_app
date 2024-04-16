@@ -2,30 +2,30 @@ import { useQuery } from "@tanstack/react-query";
 import { useCustomToast } from "../useCustomToast";
 import { services } from "../../services";
 import { calculateNumberOfPages } from "../../utils/calculateNumberOfPages";
-import { ITrackedSymptomsResponse } from "../../entities/ITrackedSymptomsResponse";
-import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import { SERVICES_LIMITS } from "../../config/services";
+import { INotificationTag } from "../../entities/INotificationTag";
+import { INotificationResponse } from "../../entities/INotificationResponse";
+import { INotification } from "../../entities/INotification";
 import { getLimit } from "../../utils/getLimit";
 
-const INIITAL_DATA: ITrackedSymptomsResponse = {
+const INIITAL_DATA: INotificationResponse = {
   count: 0,
   results: [],
 };
 
-export const useTrackedSymptoms = ({
-  limit = SERVICES_LIMITS.UNLIMITED,
-  source = "all",
-  currentPage = 1,
-}: IProps): IUseTrackedSymptomsResponse => {
+export const useNotifications = ({
+  limit,
+  source,
+  currentPage,
+}: IProps): IUseNotificationsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
 
   const { data, isFetching, refetch } = useQuery(
     ["/tracked_symptoms", source, limit, currentPage],
     async () => {
-      const data = await services.get.trackedSymptoms({
+      const data = await services.get.notifications({
         userId: auth?.currentUser?.uid,
         source: source,
         currentPage: currentPage,
@@ -37,10 +37,10 @@ export const useTrackedSymptoms = ({
     {
       enabled: state?.isAuthenticated,
       onError: (e) => {
-        toast.errorToast("Failed to load your tracked symptoms");
+        toast.errorToast("Failed to load your notifications");
       },
       onSuccess: () => {
-        console.log("SUCCESS", "Loaded your tracked symptoms successfully");
+        console.log("SUCCESS", "Loaded your notifications successfully");
       },
       initialData: INIITAL_DATA,
       refetchOnWindowFocus: false,
@@ -52,14 +52,14 @@ export const useTrackedSymptoms = ({
     refetch();
   };
 
-  const trackedSymptoms = data?.results || [];
-  const trackedSymptomsCount = data?.count || 0;
-  const totalPages = calculateNumberOfPages(trackedSymptomsCount);
+  const trackedNotifications = data?.results || [];
+  const trackedNotificationCount = data?.count || 0;
+  const totalPages = calculateNumberOfPages(trackedNotificationCount);
 
   return {
     state: {
-      trackedSymptoms: trackedSymptoms,
-      count: trackedSymptomsCount,
+      notifications: trackedNotifications,
+      count: trackedNotificationCount,
       totalPages: totalPages,
       isFetching: isFetching,
     },
@@ -69,9 +69,9 @@ export const useTrackedSymptoms = ({
   };
 };
 
-interface IUseTrackedSymptomsResponse {
+interface IUseNotificationsResponse {
   state: {
-    trackedSymptoms: ITrackedSymptom[];
+    notifications: INotification[];
     count: number;
     totalPages: number;
     isFetching: boolean;
@@ -82,7 +82,7 @@ interface IUseTrackedSymptomsResponse {
 }
 
 interface IProps {
-  limit?: number;
-  source?: string;
-  currentPage?: number;
+  limit: number;
+  source: INotificationTag;
+  currentPage: number;
 }

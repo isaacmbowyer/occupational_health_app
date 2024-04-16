@@ -1,28 +1,41 @@
 import { HStack, VStack } from "@gluestack-ui/themed";
 import { colors } from "../../../data/colors";
-import { ICONS } from "../../../data/icons";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Text } from "../../atoms/Text";
 import { Menu } from "../../atoms/Menu";
-import { IMenuItem } from "../../../entities/IMenuItem";
 import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
 import { Banner } from "../../atoms/Banner";
+import { formatNotificationSubTitle } from "../../../utils/formatNotificationSubTitle";
 
 interface INotificationCardProps {
   title: string;
   subTitle: string;
   isRead: boolean;
+  createdAt: Date;
+  handleOnRemove: () => void;
+  handleOnMarkReadOrUnread: () => void;
 }
 
 export const NotificationCard = ({
   title,
   subTitle,
   isRead,
+  createdAt,
+  handleOnRemove,
+  handleOnMarkReadOrUnread,
 }: INotificationCardProps) => {
+  const formattedSubTitle = formatNotificationSubTitle(subTitle, createdAt);
+
   const readColor = validateOptionsBasedOnBoolean(
     isRead,
-    colors.sky_blue,
-    colors.gray
+    colors.gray,
+    colors.sky_blue
+  );
+
+  const markAsReadOrUnreadLabel = validateOptionsBasedOnBoolean(
+    isRead,
+    "Mark as Unread",
+    "Mark as Read"
   );
 
   return (
@@ -43,19 +56,25 @@ export const NotificationCard = ({
 
           <VStack space="xs" width={160}>
             <Text.Regular bold>{title}</Text.Regular>
-            <Text.Small color="gray">{subTitle}</Text.Small>
+            <Text.Small color="gray">{formattedSubTitle}</Text.Small>
           </VStack>
         </HStack>
 
         <Menu
           title="Notification Menu"
           items={[
-            { title: isRead ? "Unread" : "Read" },
-            { title: "Delete", icon: ICONS.DELETE },
+            {
+              title: markAsReadOrUnreadLabel,
+              handleOnPress: handleOnMarkReadOrUnread,
+            },
+            {
+              title: "Remove",
+              handleOnPress: handleOnRemove,
+            },
           ]}
         />
       </HStack>
-      {isRead ? <Banner /> : null}
+      {!isRead ? <Banner /> : null}
     </VStack>
   );
 };

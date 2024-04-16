@@ -15,21 +15,27 @@ const INITAL_DATA: IResourceResponse = {
   results: [],
 };
 
-export const useResources = (props: IProps): IResourcesResponse => {
+export const useResources = ({
+  limit,
+  source,
+  refId,
+  currentPage,
+  name,
+}: IProps): IResourcesResponse => {
   const { state } = useAuthenticationContext();
 
   const toast = useCustomToast();
 
   const { data, isFetching, refetch } = useQuery(
-    ["/resources", props?.limit, props?.skip, props?.source, props?.refId],
+    ["/resources", limit, source, refId, currentPage],
     async () => {
       const data = await services.composition.resources({
         userId: auth?.currentUser?.uid,
-        refId: props?.refId,
-        name: props?.name,
-        limit: getLimit(props?.limit, props?.currentPage),
-        currentPage: props?.currentPage,
-        type: props?.source,
+        refId: refId,
+        name: name,
+        limit: getLimit(limit, currentPage),
+        currentPage: currentPage,
+        type: source,
       });
 
       return data;
@@ -37,6 +43,7 @@ export const useResources = (props: IProps): IResourcesResponse => {
     {
       enabled: state?.isAuthenticated,
       onError: (e) => {
+        console.log("ERROR", e);
         toast.errorToast("Failed to load resources");
       },
       onSuccess: () => {
@@ -81,7 +88,6 @@ interface IResourcesResponse {
 
 interface IProps {
   limit: number;
-  skip: number;
   source: IOption;
   currentPage?: number;
   name: "work" | "symptom";

@@ -114,6 +114,12 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
         symptomId: symptom?.symptomId,
       });
 
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Removed Symptom",
+        subTitle: `You removed “${symptom?.name}” from your Tracked Symptoms list`,
+      });
+
       trackedSymptomsMethods.handleOnRefetch();
     } catch (e: any) {
       toast.errorToast("Failed to delete this tracked symptom.");

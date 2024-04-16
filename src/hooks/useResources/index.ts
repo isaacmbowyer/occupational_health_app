@@ -27,7 +27,7 @@ export const useResources = ({
   const toast = useCustomToast();
 
   const { data, isFetching, refetch } = useQuery(
-    ["/resources", limit, source, refId, currentPage],
+    ["/resources", limit, source, currentPage],
     async () => {
       const data = await services.composition.resources({
         userId: auth?.currentUser?.uid,

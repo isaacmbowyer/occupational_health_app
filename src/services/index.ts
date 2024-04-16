@@ -18,6 +18,7 @@ import { getUsers } from "./get-users";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
+import { postNotification } from "./post-notification";
 import { postSymptomResourceLike } from "./post-symptom-resource-like";
 import { postSymptomScore } from "./post-symptom-score";
 import { postTrackedSymptom } from "./post-tracked-symptom";
@@ -34,6 +35,7 @@ export const services = {
     trackedSymptom: postTrackedSymptom,
     score: postSymptomScore,
     resourceLike: postSymptomResourceLike,
+    notification: postNotification,
   },
   get: {
     symptoms: getSymptoms,

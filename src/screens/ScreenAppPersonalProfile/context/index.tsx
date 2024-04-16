@@ -117,6 +117,12 @@ export const PersonalProfileProvider = ({ children }: IProviderProps) => {
         birthDate: formState?.birthDate,
       });
 
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Updated Personal Profile",
+        subTitle: `You updated your personal details`,
+      });
+
       toast.successToast("Successfully edited your personal details");
     } catch (e: any) {
       console.log("ERROR", e);

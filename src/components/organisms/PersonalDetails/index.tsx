@@ -1,12 +1,12 @@
 import { VStack } from "@gluestack-ui/themed";
-import { Text } from "../../../../components/atoms/Text";
-import { Input } from "../../../../components/atoms/Input";
-import { DatePicker } from "../../../../components/atoms/DatePicker";
-import { Select } from "../../../../components/atoms/Select";
-import { ICONS } from "../../../../data/icons";
-import { IOption } from "../../../../entities/IOption";
-import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
-import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
+import { Text } from "../../atoms/Text";
+import { Input } from "../../atoms/Input";
+import { DatePicker } from "../../atoms/DatePicker";
+import { Select } from "../../atoms/Select";
+import { ICONS } from "../../../data/icons";
+import { IOption } from "../../../entities/IOption";
+import { IPersonalAccountStateKeyValue } from "../../../entities/IPersonalAccountStateKeyValue";
+import { IPersonalAccountStateKey } from "../../../entities/IPersonalAccountStateKey";
 
 interface IPersonalDetailsProps {
   firstName: string;
@@ -19,8 +19,8 @@ interface IPersonalDetailsProps {
   emailError: string;
   genderOptions: IOption[];
   handleOnChange: (
-    key: ICreateAccountStateKey,
-    value: ICreateAccountStateKeyValue
+    key: IPersonalAccountStateKey,
+    value: IPersonalAccountStateKeyValue
   ) => void;
 }
 

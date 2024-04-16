@@ -50,13 +50,11 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
-  const SKIP = (state?.currentPage - 1) * LIMIT;
 
   const { averageScores, isFetching: isFetchingRatings } = useSymptomRatings();
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
-    skip: SKIP,
     source: findOption(resourceTypes, "name", state?.source),
     currentPage: state?.currentPage,
     name: "symptom",

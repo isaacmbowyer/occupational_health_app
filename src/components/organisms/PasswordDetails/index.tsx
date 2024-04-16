@@ -1,8 +1,8 @@
 import { VStack } from "@gluestack-ui/themed";
-import { InputPassword } from "../../../../components/atoms/InputPassword";
-import { Text } from "../../../../components/atoms/Text";
-import { ICreateAccountStateKey } from "../../../../entities/ICreateAccountStateKey";
-import { ICreateAccountStateKeyValue } from "../../../../entities/ICreateAccountStateKeyValue";
+import { InputPassword } from "../../atoms/InputPassword";
+import { Text } from "../../atoms/Text";
+import { IPersonalAccountStateKeyValue } from "../../../entities/IPersonalAccountStateKeyValue";
+import { IPersonalAccountStateKey } from "../../../entities/IPersonalAccountStateKey";
 
 interface IPasswordDetailsProps {
   password: string;
@@ -10,8 +10,8 @@ interface IPasswordDetailsProps {
   passwordError: string;
   confirmPasswordError: string;
   handleOnChange: (
-    key: ICreateAccountStateKey,
-    value: ICreateAccountStateKeyValue
+    key: IPersonalAccountStateKey,
+    value: IPersonalAccountStateKeyValue
   ) => void;
 }
 

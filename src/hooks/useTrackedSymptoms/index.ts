@@ -7,6 +7,7 @@ import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 import { SERVICES_LIMITS } from "../../config/services";
+import { getLimit } from "../../utils/getLimit";
 
 const INIITAL_DATA: ITrackedSymptomsResponse = {
   count: 0,
@@ -14,7 +15,6 @@ const INIITAL_DATA: ITrackedSymptomsResponse = {
 };
 
 export const useTrackedSymptoms = ({
-  skip = 0,
   limit = SERVICES_LIMITS.UNLIMITED,
   source = "all",
   currentPage = 1,
@@ -23,13 +23,13 @@ export const useTrackedSymptoms = ({
   const toast = useCustomToast();
 
   const { data, isFetching, refetch } = useQuery(
-    ["/tracked_symptoms", source, limit, skip],
+    ["/tracked_symptoms", source, limit, currentPage],
     async () => {
       const data = await services.get.trackedSymptoms({
         userId: auth?.currentUser?.uid,
         source: source,
         currentPage: currentPage,
-        limit: limit,
+        limit: getLimit(limit, currentPage),
       });
 
       return data;
@@ -82,7 +82,6 @@ interface IUseTrackedSymptomsResponse {
 }
 
 interface IProps {
-  skip?: number;
   limit?: number;
   source?: string;
   currentPage?: number;

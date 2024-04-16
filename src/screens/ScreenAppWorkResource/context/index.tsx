@@ -22,7 +22,7 @@ import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceState
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
 
-const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
+const TAGS: IResourceTypeTag[] = ["All", "Website", "Video", "Document"];
 
 export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
@@ -38,8 +38,6 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
     isLoading: false,
     source: "All",
   };
-
-  console.log(resourceCategories);
 
   const [state, setState] = useState<IWorkResourceState>(INITIAL_STATE);
 
@@ -95,10 +93,23 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
       return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
-  const handleOnViewResource = (link: string) => {
-    Linking.openURL(link).catch((err) =>
-      toast.errorToast("Unable to open this resource link")
-    );
+  const handleOnViewResource = async (resource: IResourceWithLike) => {
+    console.log("HELLOOOO", resource);
+    const typeName = findOption(resourceTypes, "id", resource.typeId)?.name;
+
+    if (typeName !== "Document")
+      return Linking.openURL(resource.link).catch((err) =>
+        toast.errorToast("Unable to open this resource")
+      );
+
+    try {
+      const url = await services.get.file(resource.link);
+
+      Linking.openURL(url);
+    } catch (e: any) {
+      console.log("ERROR", e);
+      toast.errorToast("Unable to open this resource");
+    }
   };
   const isFetching =
     resourcesState.isFetching ||
@@ -154,7 +165,7 @@ interface IWorkResourcesContext {
   };
   methods: {
     handleOnLike: (item: IResourceWithLike) => void;
-    handleOnView: (link: string) => void;
+    handleOnView: (item: IResourceWithLike) => void;
     handleOnChange: (
       key: IWorkResourceStateKey,
       value: IWorkResourceStateKeyValue

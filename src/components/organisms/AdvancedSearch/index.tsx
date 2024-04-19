@@ -18,6 +18,8 @@ interface IAdvancedSearchProps {
 }
 
 export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
+  const isCurrent = state?.source === "current";
+
   return (
     <VStack
       width="$full"
@@ -61,6 +63,8 @@ export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
         onChange={(event, newDate) =>
           methods?.handleOnChange("targetDate", newDate)
         }
+        maxDate={isCurrent ? null : new Date()}
+        minDate={isCurrent ? new Date() : null}
       />
     </VStack>
   );

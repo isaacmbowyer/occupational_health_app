@@ -19,6 +19,7 @@ import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityConte
 import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 import { auth } from "../../../config/firebase";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
+import { createSearchConfig } from "../../../utils/createSearchConfig";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -65,8 +66,15 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useTrackedSymptoms({
       limit: LIMIT,
+      skip: SKIP,
       source: state?.source,
       currentPage: state?.currentPage,
+      config: createSearchConfig({
+        isSearchActive: state?.isSearchActive,
+        search: searchState,
+        symptoms: symptomList,
+      }),
+      symptomList: symptomList,
     });
 
   const userSymptoms = formatUserSymptoms({

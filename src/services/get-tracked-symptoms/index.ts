@@ -7,10 +7,12 @@ import {
   orderBy,
   query,
   startAfter,
-  startAt,
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import { ISymptom } from "../../entities/ISymptom";
+import { searchSymptomsAdapter } from "../../utils/searchSymptomsAdapter";
+import { formatDate } from "../../utils/formatDate";
 
 export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
   const collectionRef = collection(db, "tracked_symptoms");
@@ -24,37 +26,70 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
     collectionQuery = query(
       collectionRef,
       where("userId", "==", props?.userId),
-      where("targetDate", sign, new Date())
+      where("targetDate", sign, new Date()),
+      orderBy("createdAt")
     );
 
-    // Get total document count
     const totalSnapshot = await getDocs(collectionQuery);
     totalDocuments = totalSnapshot.size;
 
-    collectionQuery = query(
-      collectionRef,
-      where("userId", "==", props?.userId),
-      where("targetDate", sign, new Date()),
-      orderBy("createdAt"),
-      limit(props?.limit)
-    );
+    if (props?.config?.length) {
+      const symptoms = searchSymptomsAdapter(
+        totalSnapshot.docs,
+        props?.symptomList
+      );
 
-    resourceSnapshot = await getDocs(collectionQuery);
+      let filteredSymptoms = symptoms;
+      props?.config?.forEach((item) => {
+        filteredSymptoms = filteredSymptoms?.filter((symptom) => {
+          if (item.name == "targetDate") {
+            return formatDate(symptom.targetDate) === formatDate(item.value);
+          }
 
-    if (props?.currentPage > 1) {
-      const lastVisible =
-        resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
+          if (item.name === "name") {
+            const searchValue = item.value.toLowerCase();
+            return symptom.name.includes(searchValue);
+          }
 
+          return item.value === symptom[item.name];
+        });
+      });
+
+      totalDocuments = filteredSymptoms.length;
+
+      return {
+        count: totalDocuments,
+        results: filteredSymptoms.slice(
+          props?.skip,
+          props?.skip + props?.limit
+        ),
+      };
+    } else {
       collectionQuery = query(
         collectionRef,
         where("userId", "==", props?.userId),
         where("targetDate", sign, new Date()),
         orderBy("createdAt"),
-        startAfter(lastVisible),
         limit(props?.limit)
       );
 
       resourceSnapshot = await getDocs(collectionQuery);
+
+      if (props?.currentPage > 1) {
+        const lastVisible =
+          resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
+
+        collectionQuery = query(
+          collectionRef,
+          where("userId", "==", props?.userId),
+          where("targetDate", sign, new Date()),
+          orderBy("createdAt"),
+          startAfter(lastVisible),
+          limit(props?.limit)
+        );
+
+        resourceSnapshot = await getDocs(collectionQuery);
+      }
     }
   } else {
     collectionQuery = query(
@@ -77,8 +112,11 @@ interface IGetTrackedSymptomsService {
 }
 
 interface IPayload {
+  config: any[];
+  symptomList: ISymptom[];
   userId: string;
-  limit: number;
   currentPage: number;
   source: string;
+  skip: number;
+  limit: number;
 }

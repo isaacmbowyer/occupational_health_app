@@ -40,6 +40,7 @@ const Symptoms = () => {
                 targetDate: state?.targetDate,
                 ratingList: state?.ratingOptions,
                 severityList: state?.severityTypeOptions,
+                source: state?.source,
               }}
               methods={{
                 handleOnChange: methods.handleSetSearch,

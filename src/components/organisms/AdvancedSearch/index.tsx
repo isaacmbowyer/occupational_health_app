@@ -14,6 +14,7 @@ interface IAdvancedSearchProps {
       key: IAdvancedSearchStateKey,
       value: IAdvancedSearchStateKeyValue
     ) => void;
+    handleSetSymptomName: (value: string) => void;
   };
 }
 
@@ -33,7 +34,7 @@ export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
       <Input
         label="Symptom"
         value={state?.symptom}
-        onChange={(e) => methods?.handleOnChange("symptom", e.nativeEvent.text)}
+        onChange={(e) => methods?.handleSetSymptomName(e.nativeEvent.text)}
       />
 
       <Select

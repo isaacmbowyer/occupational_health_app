@@ -33,7 +33,7 @@ const Symptoms = () => {
           {state?.isSearchActive ? (
             <AdvancedSearch
               state={{
-                symptom: state?.symptom,
+                symptom: state?.symptomName,
                 severityType: state?.severityType,
                 targetRating: state?.targetRating,
                 currentRating: state?.currentRating,
@@ -44,6 +44,7 @@ const Symptoms = () => {
               }}
               methods={{
                 handleOnChange: methods.handleSetSearch,
+                handleSetSymptomName: methods.handleSetSymptomName,
               }}
             />
           ) : null}

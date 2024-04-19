@@ -12,7 +12,6 @@ import { IAdvancedSearch } from "../../../entities/IAdvancedSearch";
 import { INITAL_OPTION } from "../../../data/defaultValues";
 import { useSeverityTypes } from "../../../hooks/useSeverityTypes";
 import { IOption } from "../../../entities/IOption";
-import { createDropdownOptions } from "../../../utils/createDropdownOptions";
 import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateKey";
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
@@ -72,7 +71,6 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       config: createSearchConfig({
         isSearchActive: state?.isSearchActive,
         search: searchState,
-        symptoms: symptomList,
       }),
       symptomList: symptomList,
     });

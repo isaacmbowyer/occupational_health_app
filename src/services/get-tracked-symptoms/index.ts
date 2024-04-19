@@ -11,8 +11,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { ISymptom } from "../../entities/ISymptom";
-import { searchSymptomsAdapter } from "../../utils/searchSymptomsAdapter";
 import { formatDate } from "../../utils/formatDate";
+import { applyFilters } from "../../utils/applyFilters";
+import { sliceData } from "../../utils/sliceData";
 
 export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
   const collectionRef = collection(db, "tracked_symptoms");
@@ -22,10 +23,10 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
   let collectionQuery;
   let resourceSnapshot;
 
-  if (props?.source !== "all") {
+  if (props.source !== "all") {
     collectionQuery = query(
       collectionRef,
-      where("userId", "==", props?.userId),
+      where("userId", "==", props.userId),
       where("targetDate", sign, new Date()),
       orderBy("createdAt")
     );
@@ -33,69 +34,52 @@ export const getTrackedSymptoms: IGetTrackedSymptomsService = async (props) => {
     const totalSnapshot = await getDocs(collectionQuery);
     totalDocuments = totalSnapshot.size;
 
-    if (props?.config?.length) {
-      const symptoms = searchSymptomsAdapter(
-        totalSnapshot.docs,
-        props?.symptomList
-      );
-
-      let filteredSymptoms = symptoms;
-      props?.config?.forEach((item) => {
-        filteredSymptoms = filteredSymptoms?.filter((symptom) => {
-          if (item.name == "targetDate") {
-            return formatDate(symptom.targetDate) === formatDate(item.value);
-          }
-
-          if (item.name === "name") {
-            const searchValue = item.value.toLowerCase();
-            return symptom.name.includes(searchValue);
-          }
-
-          return item.value === symptom[item.name];
-        });
+    if (props.config.length) {
+      const filteredSymptoms = applyFilters({
+        docs: totalSnapshot.docs,
+        config: props.config,
+        symptomList: props.symptomList,
       });
 
       totalDocuments = filteredSymptoms.length;
 
       return {
         count: totalDocuments,
-        results: filteredSymptoms.slice(
-          props?.skip,
-          props?.skip + props?.limit
-        ),
+        results: sliceData({
+          data: filteredSymptoms,
+          skip: props.skip,
+          limit: props.limit,
+        }),
       };
     } else {
       collectionQuery = query(
         collectionRef,
-        where("userId", "==", props?.userId),
+        where("userId", "==", props.userId),
         where("targetDate", sign, new Date()),
         orderBy("createdAt"),
-        limit(props?.limit)
+        limit(props.limit)
       );
 
       resourceSnapshot = await getDocs(collectionQuery);
 
-      if (props?.currentPage > 1) {
+      if (props.currentPage > 1) {
         const lastVisible =
           resourceSnapshot.docs[resourceSnapshot.docs?.length - 1];
 
         collectionQuery = query(
           collectionRef,
-          where("userId", "==", props?.userId),
+          where("userId", "==", props.userId),
           where("targetDate", sign, new Date()),
           orderBy("createdAt"),
           startAfter(lastVisible),
-          limit(props?.limit)
+          limit(props.limit)
         );
 
         resourceSnapshot = await getDocs(collectionQuery);
       }
     }
   } else {
-    collectionQuery = query(
-      collectionRef,
-      where("userId", "==", props?.userId)
-    );
+    collectionQuery = query(collectionRef, where("userId", "==", props.userId));
 
     resourceSnapshot = await getDocs(collectionQuery);
     totalDocuments = resourceSnapshot.size;

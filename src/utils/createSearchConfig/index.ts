@@ -1,16 +1,13 @@
 import { IAdvancedSearch } from "../../entities/IAdvancedSearch";
-import { ISymptom } from "../../entities/ISymptom";
 
 export const createSearchConfig: ICreateSearchConfigUtil = ({
   isSearchActive,
   search,
-  symptoms,
 }) => {
   let conditions = [];
 
   if (!isSearchActive) return conditions;
 
-  // Construct the conditions based on provided criteria
   if (search?.currentRating?.name) {
     conditions.push({
       name: "currentSeverity",
@@ -49,7 +46,6 @@ export const createSearchConfig: ICreateSearchConfigUtil = ({
 interface IProps {
   isSearchActive: boolean;
   search: IAdvancedSearch;
-  symptoms: ISymptom[];
 }
 interface ICreateSearchConfigUtil {
   (props: IProps): any[];

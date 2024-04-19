@@ -8,6 +8,7 @@ import { auth } from "../../config/firebase";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
 import { SERVICES_LIMITS } from "../../config/services";
 import { getLimit } from "../../utils/getLimit";
+import { ISymptom } from "../../entities/ISymptom";
 
 const INIITAL_DATA: ITrackedSymptomsResponse = {
   count: 0,
@@ -18,18 +19,24 @@ export const useTrackedSymptoms = ({
   limit = SERVICES_LIMITS.UNLIMITED,
   source = "all",
   currentPage = 1,
+  skip = 0,
+  symptomList = [],
+  config = [],
 }: IProps): IUseTrackedSymptomsResponse => {
   const { state } = useAuthenticationContext();
   const toast = useCustomToast();
 
   const { data, isFetching, refetch } = useQuery(
-    ["/tracked_symptoms", source, limit, currentPage],
+    ["/tracked_symptoms", source, limit, currentPage, config],
     async () => {
       const data = await services.get.trackedSymptoms({
         userId: auth?.currentUser?.uid,
         source: source,
         currentPage: currentPage,
         limit: getLimit(limit, currentPage),
+        config: config,
+        skip: skip,
+        symptomList: symptomList,
       });
 
       return data;
@@ -83,6 +90,9 @@ interface IUseTrackedSymptomsResponse {
 
 interface IProps {
   limit?: number;
+  skip?: number;
   source?: string;
   currentPage?: number;
+  config?: any[];
+  symptomList?: ISymptom[];
 }

@@ -14,10 +14,13 @@ interface IAdvancedSearchProps {
       key: IAdvancedSearchStateKey,
       value: IAdvancedSearchStateKeyValue
     ) => void;
+    handleSetSymptomName: (value: string) => void;
   };
 }
 
 export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
+  const isCurrent = state?.source === "current";
+
   return (
     <VStack
       width="$full"
@@ -31,7 +34,7 @@ export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
       <Input
         label="Symptom"
         value={state?.symptom}
-        onChange={(e) => methods?.handleOnChange("symptom", e.nativeEvent.text)}
+        onChange={(e) => methods?.handleSetSymptomName(e.nativeEvent.text)}
       />
 
       <Select
@@ -61,6 +64,8 @@ export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
         onChange={(event, newDate) =>
           methods?.handleOnChange("targetDate", newDate)
         }
+        maxDate={isCurrent ? null : new Date()}
+        minDate={isCurrent ? new Date() : null}
       />
     </VStack>
   );

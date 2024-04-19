@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { IProviderProps } from "../../../entities/IProviderProps";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -12,17 +12,19 @@ import { IAdvancedSearch } from "../../../entities/IAdvancedSearch";
 import { INITAL_OPTION } from "../../../data/defaultValues";
 import { useSeverityTypes } from "../../../hooks/useSeverityTypes";
 import { IOption } from "../../../entities/IOption";
-import { createDropdownOptions } from "../../../utils/createDropdownOptions";
 import { IAdvancedSearchStateKey } from "../../../entities/IAdvancedSearchStateKey";
 import { IAdvancedSearchStateKeyValue } from "../../../entities/IAdvancedSearchStateKeyValue";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 import { auth } from "../../../config/firebase";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
+import { createSearchConfig } from "../../../utils/createSearchConfig";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
 const TAGS = ["current", "past"];
+
+const DEBOUNCE_TIME = 250;
 
 interface ITrackedSymptomsState {
   isLoading: boolean;
@@ -54,6 +56,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<ITrackedSymptomsState>(INITAL_STATE);
   const [searchState, setSearchState] =
     useState<IAdvancedSearch>(INITAL_SEARCH);
+  const [symptomName, setSymptomName] = useState<string>("");
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
   const SKIP = (state?.currentPage - 1) * LIMIT;
@@ -65,8 +68,14 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useTrackedSymptoms({
       limit: LIMIT,
+      skip: SKIP,
       source: state?.source,
       currentPage: state?.currentPage,
+      config: createSearchConfig({
+        isSearchActive: state?.isSearchActive,
+        search: searchState,
+      }),
+      symptomList: symptomList,
     });
 
   const userSymptoms = formatUserSymptoms({
@@ -96,9 +105,24 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     setSearchState((state) => ({ ...state, [key]: value }));
   };
 
+  const handleSetSymptomName = (value: string) => {
+    setSymptomName(value);
+  };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      handleSetSearch("symptom", symptomName);
+    }, DEBOUNCE_TIME);
+
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [symptomName]);
+
   // ACTION METHODS
   const handleToggleSearch = () => {
     setSearchState(INITAL_SEARCH);
+    setSymptomName("");
     handleOnChange("isSearchActive", !state?.isSearchActive);
   };
 
@@ -149,6 +173,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
           currentPage: state?.currentPage,
           count: trackedSymptomsState?.count,
           totalPages: trackedSymptomsState?.totalPages,
+          symptomName: symptomName,
           limit: LIMIT,
           symptoms: userSymptoms,
           tagList: TAGS,
@@ -169,6 +194,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
           handleOnChange: handleOnChange,
           handleToggleSearch: handleToggleSearch,
           handleSetSearch: handleSetSearch,
+          handleSetSymptomName: handleSetSymptomName,
         },
       }}
     >
@@ -186,6 +212,7 @@ interface ITrackedSymptomsContext {
     isFetching: boolean;
     isLoading: boolean;
     currentPage: number;
+    symptomName: string;
     count: number;
     totalPages: number;
     limit: number;
@@ -213,6 +240,7 @@ interface ITrackedSymptomsContext {
       key: IAdvancedSearchStateKey,
       value: IAdvancedSearchStateKeyValue
     ) => void;
+    handleSetSymptomName: (value: string) => void;
     handleToggleSearch: () => void;
   };
 }

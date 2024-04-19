@@ -69,7 +69,7 @@ export const LogInScreen = ({ navigation }) => {
               <Link.Small
                 bold
                 label="Reset Password"
-                screen="Home"
+                screen="Forgot Password"
               ></Link.Small>
             </HStack>
             <Link.Regular label="Return to Home" screen="Home"></Link.Regular>

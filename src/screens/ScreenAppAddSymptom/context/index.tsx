@@ -18,6 +18,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ISymptomState } from "../../../entities/ISymptomState";
 import { findOption } from "../../../utils/findOption";
+import { createSeverityList } from "../../../utils/createSeverityList";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -153,7 +154,16 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
           isFetching: isFetching,
           isLoading: formState?.isLoading,
           isDisabled: isDisabled,
-          severityList: severityList,
+          targetSeverityList: createSeverityList({
+            severityList: severityList,
+            selectedSeverity: Number(formState?.targetSeverity.name),
+            type: "current",
+          }),
+          currentSeverityList: createSeverityList({
+            severityList: severityList,
+            selectedSeverity: Number(formState?.currentSeverity.name),
+            type: "current",
+          }),
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -182,7 +192,8 @@ interface IAddSymptomContext {
     isLoading: boolean;
     isFetching: boolean;
     isDisabled: boolean;
-    severityList: IOption[];
+    targetSeverityList: IOption[];
+    currentSeverityList: IOption[];
   };
   methods: {
     handleOnChange: (

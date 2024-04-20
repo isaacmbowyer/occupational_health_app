@@ -11,7 +11,8 @@ interface IRatingSymptomSectionProps {
   targetDate: Date;
   currentSeverity: IOption;
   targetSeverity: IOption;
-  severityList: IOption[];
+  targetSeverityList: IOption[];
+  currentSeverityList: IOption[];
   handleOnChange: (
     key: IAddSymptomStateKey,
     value: IAddSymptomStateKeyValue
@@ -22,7 +23,8 @@ export const RatingSymptomSection = ({
   targetDate,
   currentSeverity,
   targetSeverity,
-  severityList,
+  currentSeverityList,
+  targetSeverityList,
   handleOnChange,
 }: IRatingSymptomSectionProps) => {
   return (
@@ -31,19 +33,31 @@ export const RatingSymptomSection = ({
         Rate the Severity of your Symptom
       </Text>
 
-      <Select
-        selectedOption={currentSeverity}
-        label="Current Severity"
-        items={createSeverityList(severityList, targetSeverity)}
-        onChange={(value) => handleOnChange("currentSeverity", value)}
-      />
+      <VStack space="md">
+        <Select
+          selectedOption={currentSeverity}
+          label="Current Severity"
+          items={currentSeverityList}
+          onChange={(value) => handleOnChange("currentSeverity", value)}
+        />
 
-      <Select
-        selectedOption={targetSeverity}
-        label="Target Severity"
-        items={createSeverityList(severityList, currentSeverity)}
-        onChange={(value) => handleOnChange("targetSeverity", value)}
-      />
+        <Text fontSize={15} color="gray" fontStyle="italic">
+          This value must be less than the Target Severity
+        </Text>
+      </VStack>
+
+      <VStack space="md">
+        <Select
+          selectedOption={targetSeverity}
+          label="Target Severity"
+          items={targetSeverityList}
+          onChange={(value) => handleOnChange("targetSeverity", value)}
+        />
+
+        <Text fontSize={15} color="gray" fontStyle="italic">
+          This value must be higher than the Current Severity
+        </Text>
+      </VStack>
 
       <DatePicker
         label="Date to acheieve Target Severity"

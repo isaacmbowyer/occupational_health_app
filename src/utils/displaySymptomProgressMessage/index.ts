@@ -15,6 +15,10 @@ export const displaySymptomProgressMessage: IDisplaySymptomProgressMessageUtil =
 
     const daysLeft = getDaysLeft(targetDate);
 
+    if (currentSeverity <= targetSeverity) {
+      return `You have met your Target Severity, with ${daysLeft} days remaining.`;
+    }
+
     const severityDifference = targetSeverity - currentSeverity;
 
     // Calculate the severity improvement rate per day

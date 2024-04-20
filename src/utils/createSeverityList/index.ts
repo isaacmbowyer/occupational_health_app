@@ -1,14 +1,24 @@
 import { IOption } from "../../entities/IOption";
 
-export const createSeverityList: ICreateSeverityListUtil = (
+export const createSeverityList: ICreateSeverityListUtil = ({
   severityList,
-  selectedSeverity
-) => {
-  return severityList?.filter(
-    (severity) => severity.id !== selectedSeverity.id
-  );
+  type,
+  selectedSeverity,
+}) => {
+  return severityList.filter((item) => {
+    if (type === "current") {
+      return Number(item.name) > Number(selectedSeverity.name);
+    }
+
+    return Number(item.name) < Number(selectedSeverity.name);
+  });
 };
 
+interface IProps {
+  severityList: IOption[];
+  selectedSeverity: IOption;
+  type: "current" | "target";
+}
 interface ICreateSeverityListUtil {
-  (severityList: IOption[], selectedSeverity: IOption): IOption[];
+  (props: IProps): IOption[];
 }

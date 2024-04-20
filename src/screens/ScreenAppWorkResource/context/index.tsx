@@ -19,6 +19,8 @@ import { useResourceCategoriesContext } from "../../../contexts/useResourceCateg
 import { IWorkResource } from "../../../entities/IWorkResource";
 import { IWorkResourceStateKey } from "../../../entities/IWorkResourceStateKey";
 import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceStateKeyValue";
+import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
+import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
 
@@ -94,7 +96,6 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   };
 
   const handleOnViewResource = async (resource: IResourceWithLike) => {
-    console.log("HELLOOOO", resource);
     const typeName = findOption(resourceTypes, "id", resource.typeId)?.name;
 
     if (typeName !== "Document")
@@ -111,11 +112,14 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
       toast.errorToast("Unable to open this resource");
     }
   };
-  const isFetching =
-    resourcesState.isFetching ||
-    isFetchingUsers ||
-    isFetchingTypes ||
-    isFetchingCategories;
+
+  const isInvalidSearch = state.source !== "All" && !resourcesState.totalCount;
+
+  const screenState = decideScreenStateToRender({
+    isFetching: resourcesState.isFetching,
+    isInvalidSearch: isInvalidSearch,
+    entriesLength: resourcesState.resources.length,
+  });
 
   return (
     <WorkResourcesContext.Provider
@@ -123,7 +127,7 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
         state: {
           currentResource: currentWorkResource,
           activeSource: state?.source,
-          isFetching: isFetching,
+          isFetching: resourcesState.isFetching,
           currentPage: state?.currentPage,
           count: resourcesState.totalCount,
           totalPages: resourcesState.totalPages,
@@ -132,6 +136,7 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
           resources: resourcesState?.resources,
           resourceTypes: resourceTypes,
           tagList: TAGS,
+          screenState: screenState,
         },
         methods: {
           handleOnLike: handleOnLikeResource,
@@ -162,6 +167,7 @@ interface IWorkResourcesContext {
     resources: IResourceWithLike[];
     resourceTypes: IOption[];
     tagList: string[];
+    screenState: IRenderOptionsOutput;
   };
   methods: {
     handleOnLike: (item: IResourceWithLike) => void;

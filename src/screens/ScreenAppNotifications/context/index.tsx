@@ -10,6 +10,8 @@ import { INotificationStateKeyValue } from "../../../entities/INotificationState
 import { useNotifications } from "../../../hooks/useNotifications";
 import { INotification } from "../../../entities/INotification";
 import { formatTitleWithCount } from "../../../utils/formatTitleWithCount";
+import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
+import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 
 const NotificationsContext = createContext({} as INotificationContext);
 
@@ -93,7 +95,13 @@ export const NotificationsProvider = ({ children }: IProviderProps) => {
       return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
-  const isFetching = notificationState.isFetching;
+  const isInvalidSearch = state.source !== "All" && !notificationState.count;
+
+  const screenState = decideScreenStateToRender({
+    isFetching: notificationState.isFetching,
+    isInvalidSearch: isInvalidSearch,
+    entriesLength: notificationState.notifications.length,
+  });
 
   return (
     <NotificationsContext.Provider
@@ -104,7 +112,8 @@ export const NotificationsProvider = ({ children }: IProviderProps) => {
             notificationState?.count
           ),
           activeSource: state?.source,
-          isFetching: isFetching,
+          isFetching: notificationState.isFetching,
+          screenState: screenState,
           isLoading: state?.isLoading,
           currentPage: state?.currentPage,
           count: notificationState.count,
@@ -135,6 +144,7 @@ interface INotificationContext {
     activeSource: INotificationTag;
     currentPage: number;
     isFetching: boolean;
+    screenState: IRenderOptionsOutput;
     isLoading: boolean;
     count: number;
     totalPages: number;

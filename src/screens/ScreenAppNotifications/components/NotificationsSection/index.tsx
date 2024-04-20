@@ -5,10 +5,10 @@ import Pagination from "@cherry-soft/react-native-basic-pagination";
 import { IllustrationInvalidSearch } from "../../../../components/modules/IllustrationState.InvalidSearch";
 import { INotification } from "../../../../entities/INotification";
 import { NotificationContainer } from "../../../../components/organisms/NotificationContainer";
-import { NotificationSkeleton } from "../../../../components/modules/NotificationSkeleton";
-
-type INotificationStateKey = "source" | "currentPage";
-type INotificationStateKeyValue = number | string;
+import { IllustrationStateLoading } from "../../../../components/modules/IllustrationState.Loading";
+import { INotificationStateKey } from "../../../../entities/INotificationStateKey";
+import { INotificationStateKeyValue } from "../../../../entities/INotificationStateKeyValue";
+import { IRenderOptionsOutput } from "../../../../entities/IRenderOptionsOutput";
 
 interface INotificationsSectionProps {
   totalPages: number;
@@ -19,6 +19,7 @@ interface INotificationsSectionProps {
   isFetching: boolean;
   tagList: string[];
   source: string;
+  screenState: IRenderOptionsOutput;
   handleOnRemove: (id: string) => void;
   handleOnMarkAsReadOrUnread: (id: string, isRead: boolean) => void;
   handleOnChange: (
@@ -36,37 +37,13 @@ export const NotificationsSection = ({
   tagList,
   source,
   notifications,
+  screenState,
   handleOnRemove,
   handleOnMarkAsReadOrUnread,
   handleOnChange,
 }: INotificationsSectionProps) => {
-  if (!notifications.length && !isFetching)
-    return (
-      <>
-        <SubHeaderWithTags
-          pageCount={totalPages}
-          currentPage={currentPage}
-          entriesCount={count}
-          currentEntries={notifications.length}
-          isFetching={isFetching}
-          label="notifications"
-          tagList={tagList}
-          activeSource={source}
-          handleOnChange={(val) => handleOnChange("source", val)}
-        />
-
-        {source == "All" ? (
-          <IllustrationStateEmpty
-            message={`You dont have any notifications yet.`}
-          />
-        ) : (
-          <IllustrationInvalidSearch loadWhat="notifications" />
-        )}
-      </>
-    );
-
   return (
-    <VStack>
+    <VStack w="$full">
       <SubHeaderWithTags
         pageCount={totalPages}
         currentPage={currentPage}
@@ -79,12 +56,19 @@ export const NotificationsSection = ({
         handleOnChange={(val) => handleOnChange("source", val)}
       />
 
-      {isFetching ? (
-        <VStack space="md">
-          <NotificationSkeleton />
-          <NotificationSkeleton />
-        </VStack>
-      ) : (
+      {screenState === "loading" ? (
+        <IllustrationStateLoading skeletonType="notification" />
+      ) : null}
+
+      {screenState === "empty" ? (
+        <IllustrationStateEmpty message="You dont have any notifications yet." />
+      ) : null}
+
+      {screenState === "invalidSearch" ? (
+        <IllustrationInvalidSearch loadWhat="notifications" />
+      ) : null}
+
+      {screenState === "results" ? (
         <>
           <NotificationContainer
             notifications={notifications}
@@ -99,7 +83,7 @@ export const NotificationsSection = ({
             onPageChange={(newPage) => handleOnChange("currentPage", newPage)}
           />
         </>
-      )}
+      ) : null}
     </VStack>
   );
 };

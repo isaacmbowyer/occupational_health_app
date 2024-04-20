@@ -24,6 +24,7 @@ import { IResourceWithLike } from "../../../entities/IResourceWithLike";
 import { useResources } from "../../../hooks/useResources";
 import { formatDate } from "../../../utils/formatDate";
 import { findTodaysDateInScores } from "../../../utils/findTodaysDateInScores";
+import { createSeverityList } from "../../../utils/createSeverityList";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
@@ -170,7 +171,11 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           count: resourcesState.totalCount,
           totalPages: resourcesState.totalPages,
           limit: LIMIT,
-          severityList: severityList,
+          severityList: createSeverityList({
+            severityList: severityList,
+            selectedSeverity: Number(currentSymptom?.currentSeverity),
+            type: "target",
+          }),
           averageScores: averageScores,
           numberOfUsers: users?.count,
           resources: resourcesState?.resources,

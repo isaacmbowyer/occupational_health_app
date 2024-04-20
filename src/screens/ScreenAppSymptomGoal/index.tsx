@@ -83,14 +83,20 @@ const SymptomGoal = () => {
             isDisabled={state?.isFetching}
             hiddenSection={
               <VStack width="$full" space="xl">
-                <Select
-                  selectedOption={state?.targetSeverity}
-                  label="Target Score"
-                  items={state?.severityList}
-                  onChange={(value) =>
-                    methods.handleOnChange("targetSeverity", value)
-                  }
-                />
+                <VStack space="md">
+                  <Select
+                    selectedOption={state?.targetSeverity}
+                    label="Target Severity"
+                    items={state.severityList}
+                    onChange={(value) =>
+                      methods.handleOnChange("targetSeverity", value)
+                    }
+                  />
+
+                  <Text.Regular color="gray" fontStyle="italic">
+                    This value must be higher than the Current Severity
+                  </Text.Regular>
+                </VStack>
 
                 <DatePicker
                   label="Target Date"

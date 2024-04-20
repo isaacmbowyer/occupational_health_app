@@ -11,7 +11,8 @@ interface IRatingSymptomSectionProps {
   targetDate: Date;
   currentSeverity: IOption;
   targetSeverity: IOption;
-  severityList: IOption[];
+  targetSeverityList: IOption[];
+  currentSeverityList: IOption[];
   handleOnChange: (
     key: IAddSymptomStateKey,
     value: IAddSymptomStateKeyValue
@@ -22,7 +23,8 @@ export const RatingSymptomSection = ({
   targetDate,
   currentSeverity,
   targetSeverity,
-  severityList,
+  currentSeverityList,
+  targetSeverityList,
   handleOnChange,
 }: IRatingSymptomSectionProps) => {
   return (
@@ -35,11 +37,7 @@ export const RatingSymptomSection = ({
         <Select
           selectedOption={currentSeverity}
           label="Current Severity"
-          items={createSeverityList({
-            severityList: severityList,
-            selectedSeverity: targetSeverity,
-            type: "current",
-          })}
+          items={currentSeverityList}
           onChange={(value) => handleOnChange("currentSeverity", value)}
         />
 
@@ -52,11 +50,7 @@ export const RatingSymptomSection = ({
         <Select
           selectedOption={targetSeverity}
           label="Target Severity"
-          items={createSeverityList({
-            severityList: severityList,
-            selectedSeverity: currentSeverity,
-            type: "target",
-          })}
+          items={targetSeverityList}
           onChange={(value) => handleOnChange("targetSeverity", value)}
         />
 

@@ -19,6 +19,7 @@ const Notifications = () => {
             currentPage={state?.currentPage}
             count={state?.count}
             limit={state?.limit}
+            screenState={state?.screenState}
             notifications={state?.notifications}
             isFetching={state?.isFetching}
             tagList={state?.tagList}

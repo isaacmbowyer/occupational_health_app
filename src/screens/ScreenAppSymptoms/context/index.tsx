@@ -20,6 +20,8 @@ import { auth } from "../../../config/firebase";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { createSearchConfig } from "../../../utils/createSearchConfig";
 import { ITrackedSymptomsState } from "../../../entities/ITrackedSymptomsState";
+import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
+import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -156,14 +158,21 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     navigation.navigate("Add Symptom");
   };
 
-  const isFetching = trackedSymptomsState.isFetching || isFetchingSymptoms;
+  const isInvalidSearch = state.isSearchActive && !trackedSymptomsState.count;
+
+  const screenState = decideScreenStateToRender({
+    isFetching: trackedSymptomsState.isFetching,
+    isInvalidSearch: isInvalidSearch,
+    entriesLength: trackedSymptomsState.trackedSymptoms.length,
+  });
 
   return (
     <TrackedSymptomsContext.Provider
       value={{
         state: {
-          isFetching: isFetching,
+          isFetching: trackedSymptomsState.isFetching,
           isLoading: state?.isLoading,
+          screenState: screenState,
           currentPage: state?.currentPage,
           count: trackedSymptomsState?.count,
           totalPages: trackedSymptomsState?.totalPages,
@@ -205,6 +214,7 @@ interface ITrackedSymptomsContext {
   state: {
     isFetching: boolean;
     isLoading: boolean;
+    screenState: IRenderOptionsOutput;
     currentPage: number;
     symptomName: string;
     count: number;

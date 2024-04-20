@@ -10,8 +10,6 @@ interface IOverallProgressCard {
   daysLeft: number;
 }
 
-const SEVERITY_RANGE = 10;
-
 export const OverallProgressCard = ({
   currentSeverity,
   targetSeverity,
@@ -19,10 +17,11 @@ export const OverallProgressCard = ({
 }: IOverallProgressCard) => {
   // Calculate the progress percentage
   const progressPercentage = calculateProgressPercentage({
-    severityRange: SEVERITY_RANGE,
     targetSeverity: targetSeverity,
     currentSeverity: currentSeverity,
   });
+
+  console.log("PROGRES VALUE", progressPercentage);
 
   return (
     <VStack

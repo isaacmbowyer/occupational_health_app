@@ -6,6 +6,7 @@ import { DatePicker } from "../../atoms/DatePicker";
 import { IAdvancedSearchState } from "../../../entities/IAdvancedSearchState";
 import { Select } from "../../atoms/Select";
 import { colors } from "../../../data/colors";
+import { compareValues } from "../../../utils/compareValues";
 
 interface IAdvancedSearchProps {
   state: IAdvancedSearchState;
@@ -19,7 +20,7 @@ interface IAdvancedSearchProps {
 }
 
 export const AdvancedSearch = ({ state, methods }: IAdvancedSearchProps) => {
-  const isCurrent = state?.source === "current";
+  const isCurrent = compareValues(state?.source, "current");
 
   return (
     <VStack

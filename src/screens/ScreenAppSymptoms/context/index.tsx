@@ -19,19 +19,13 @@ import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
 import { auth } from "../../../config/firebase";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { createSearchConfig } from "../../../utils/createSearchConfig";
+import { ITrackedSymptomsState } from "../../../entities/ITrackedSymptomsState";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
 const TAGS = ["current", "past"];
 
 const DEBOUNCE_TIME = 250;
-
-interface ITrackedSymptomsState {
-  isLoading: boolean;
-  currentPage: number;
-  source: string;
-  isSearchActive: boolean;
-}
 
 const INITAL_STATE: ITrackedSymptomsState = {
   currentPage: 1,
@@ -42,7 +36,7 @@ const INITAL_STATE: ITrackedSymptomsState = {
 
 const INITAL_SEARCH: IAdvancedSearch = {
   symptom: "",
-  targetDate: new Date(),
+  targetDate: null,
   currentRating: INITAL_OPTION,
   targetRating: INITAL_OPTION,
   severityType: INITAL_OPTION,

@@ -7,8 +7,6 @@ import {
   SelectPortal,
   SelectBackdrop,
   SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
   SelectItem,
   SelectScrollView,
   Icon,
@@ -18,7 +16,6 @@ import { IOption } from "../../../entities/IOption";
 import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
-import { SelectFlatList } from "@gluestack-ui/themed";
 import { getOptionNameFromId } from "../../../utils/getOptionNameFromId";
 
 interface ISelectProps {

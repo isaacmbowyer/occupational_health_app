@@ -7,11 +7,8 @@ import {
   SelectPortal,
   SelectBackdrop,
   SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
   SelectItem,
   SelectScrollView,
-  SelectFlatList,
   Icon,
 } from "@gluestack-ui/themed";
 import { ICONS } from "../../../data/icons";

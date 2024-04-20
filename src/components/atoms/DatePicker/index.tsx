@@ -36,6 +36,7 @@ export const DatePicker = ({
     <Pressable onPress={showDatepicker}>
       <Input
         label={label}
+        placeholder={"dd/mm/yyyy"}
         value={formattedDate}
         icon={ICONS.CALANDER}
         isDisabled={true}

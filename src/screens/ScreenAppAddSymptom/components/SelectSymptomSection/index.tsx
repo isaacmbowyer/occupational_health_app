@@ -36,7 +36,6 @@ export const SelectSymptomSection = ({
         hiddenSection={
           <VStack space="md">
             <Input
-              label="Search"
               placeholder="Search..."
               type="rounded"
               value={search}

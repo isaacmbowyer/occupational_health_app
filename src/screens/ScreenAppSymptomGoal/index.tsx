@@ -112,11 +112,20 @@ const SymptomGoal = () => {
 
           <Divider mt="$0.5" mb="$8" />
 
-          <Button.Solid
-            text="Track Symptom Progress"
-            onPress={methods.handleOnPress}
-            isDisabled={state?.isDisabled}
-          />
+          <VStack space="md" width="$full">
+            <Button.Solid
+              text="Track Symptom Progress"
+              onPress={methods.handleOnPress}
+              isDisabled={state?.isButtonDisabled}
+            />
+
+            {state?.isPastDateReached ? (
+              <Text.Small fontStyle="italic" textAlign="center">
+                You can no longer track the progress of this symptom because the
+                target date has passed.
+              </Text.Small>
+            ) : null}
+          </VStack>
         </VStack>
       }
     />

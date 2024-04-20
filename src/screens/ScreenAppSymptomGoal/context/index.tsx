@@ -25,6 +25,8 @@ import { useResources } from "../../../hooks/useResources";
 import { formatDate } from "../../../utils/formatDate";
 import { findTodaysDateInScores } from "../../../utils/findTodaysDateInScores";
 import { createSeverityList } from "../../../utils/createSeverityList";
+import { compareValues } from "../../../utils/compareValues";
+import { checkPastDate } from "../../../utils/checkIsPastDate";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
@@ -147,7 +149,10 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     navigation.navigate("Symptom Progress");
   };
 
-  const isDisabled = findTodaysDateInScores(scores);
+  const isPastDateReached = checkPastDate(state?.targetDate);
+  const isButtonDisabled = findTodaysDateInScores(scores) || isPastDateReached;
+
+  console.log("VALUE", isButtonDisabled);
 
   const isFetching =
     isFetchingRatings ||
@@ -166,7 +171,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           activeSource: state?.source,
           daysLeft: getDaysLeft(state?.targetDate),
           isFetching: isFetching,
-          isDisabled: isDisabled,
+          isButtonDisabled: isButtonDisabled,
+          isPastDateReached: isPastDateReached,
           currentPage: state?.currentPage,
           count: resourcesState.totalCount,
           totalPages: resourcesState.totalPages,
@@ -208,7 +214,8 @@ interface ISymptomGoalContext {
     daysLeft: number;
     activeSource: string;
     isFetching: boolean;
-    isDisabled: boolean;
+    isButtonDisabled: boolean;
+    isPastDateReached: boolean;
     currentPage: number;
     count: number;
     totalPages: number;

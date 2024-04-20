@@ -21,8 +21,6 @@ export const OverallProgressCard = ({
     currentSeverity: currentSeverity,
   });
 
-  console.log("PROGRES VALUE", progressPercentage);
-
   return (
     <VStack
       w="$full"

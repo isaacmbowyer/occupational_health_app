@@ -1,7 +1,7 @@
 import { ISymptom } from "../../entities/ISymptom";
 import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
 
-export const retrieveUnusedSymptoms: IRetrieveUnusedSymptomsUtil = (
+export const filterUsedSymptoms: IFilterUsedSymptomsUtil = (
   symptoms,
   trackedSymptoms
 ) => {
@@ -16,6 +16,6 @@ export const retrieveUnusedSymptoms: IRetrieveUnusedSymptomsUtil = (
   });
 };
 
-interface IRetrieveUnusedSymptomsUtil {
+interface IFilterUsedSymptomsUtil {
   (symptoms: ISymptom[], trackedSymptoms: ITrackedSymptom[]): ISymptom[];
 }

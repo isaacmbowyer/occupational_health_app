@@ -1,4 +1,4 @@
-import { displayDate } from "../displayDate";
+import { displayDate } from "../displayFullDate";
 import { getDaysLeft } from "../getDaysLeft";
 
 export const displaySymptomProgressMessage: IDisplaySymptomProgressMessageUtil =

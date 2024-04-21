@@ -1,12 +1,12 @@
 import { VStack } from "@gluestack-ui/themed";
-import { IUserSymptom } from "../../../entities/IUserSymptom";
 import { SymptomCardContainer } from "../../modules/SymptomCardContainer";
+import { ITrackedSymptom } from "../../../entities/ITrackedSymptom";
 
 interface ISymptomContainer {
-  items: IUserSymptom[];
+  items: ITrackedSymptom[];
   isLoading: boolean;
-  handleOnView: (symptom: IUserSymptom) => void;
-  handleOnDelete: (symptom: IUserSymptom) => void;
+  handleOnView: (symptom: ITrackedSymptom) => void;
+  handleOnDelete: (symptom: ITrackedSymptom) => void;
 }
 
 export const SymptomContainer = ({
@@ -25,7 +25,6 @@ export const SymptomContainer = ({
           targetSeverity={item?.targetSeverity}
           isLoading={isLoading}
           severityType={item?.severityType}
-          imageUri={item?.imageUri}
           targetDate={item?.targetDate}
           handleOnDelete={() => handleOnDelete(item)}
           handleOnView={() => handleOnView(item)}

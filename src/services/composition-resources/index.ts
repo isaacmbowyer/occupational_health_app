@@ -1,6 +1,5 @@
 import { services } from "..";
 import { IOption } from "../../entities/IOption";
-import { resourcesWithLikesAdapter } from "../../utils/resourceWithLikeAdapter";
 
 export const compositionResources: ICompositionResourcesService = async (
   props
@@ -20,15 +19,9 @@ export const compositionResources: ICompositionResourcesService = async (
       userId: props?.userId,
     });
 
-    const formattedResources = resourcesWithLikesAdapter({
-      resources: resources?.results,
-      likes: likes,
-      userId: props?.userId,
-    });
-
     return {
       count: resources.count,
-      results: formattedResources,
+      results: resourceWithLikes,
     };
   }
 

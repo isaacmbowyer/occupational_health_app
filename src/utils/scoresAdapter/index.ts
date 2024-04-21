@@ -2,7 +2,7 @@ import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore/lite";
 import { Timestamp } from "firebase/firestore";
 import { ISymptomScore } from "../../entities/ISymptomScore";
 
-export const symptomIdScoresAdapter: ISymptomIdScoresAdapter = (docs) => {
+export const scoresAdapter: IScoresAdapter = (docs) => {
   const scores = docs?.map((doc) => {
     const data = doc?.data();
 
@@ -21,6 +21,6 @@ export const symptomIdScoresAdapter: ISymptomIdScoresAdapter = (docs) => {
   return scores;
 };
 
-interface ISymptomIdScoresAdapter {
+interface IScoresAdapter {
   (docs: QueryDocumentSnapshot<DocumentData, DocumentData>[]): ISymptomScore[];
 }

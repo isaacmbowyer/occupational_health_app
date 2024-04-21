@@ -7,7 +7,6 @@ import { IResourceResponse } from "../../entities/IResourceResponse";
 import { calculateNumberOfPages } from "../../utils/calculateNumberOfPages";
 import { getLimit } from "../../utils/getLimit";
 import { IResourceWithLike } from "../../entities/IResourceWithLike";
-import { IResourceTypeTag } from "../../entities/IResourceTypeTag";
 import { IOption } from "../../entities/IOption";
 
 const INITAL_DATA: IResourceResponse = {
@@ -21,6 +20,7 @@ export const useResources = ({
   refId,
   currentPage,
   name,
+  skip,
 }: IProps): IResourcesResponse => {
   const { state } = useAuthenticationContext();
 
@@ -30,12 +30,13 @@ export const useResources = ({
     ["/resources", limit, source, currentPage],
     async () => {
       const data = await services.composition.resources({
-        userId: auth?.currentUser?.uid,
         refId: refId,
-        name: name,
-        limit: getLimit(limit, currentPage),
-        currentPage: currentPage,
+        userId: auth?.currentUser?.uid,
         type: source,
+        limit: getLimit(limit, currentPage),
+        skip: skip,
+        currentPage: currentPage,
+        name: name,
       });
 
       return data;
@@ -92,4 +93,5 @@ interface IProps {
   currentPage?: number;
   name: "work" | "symptom";
   refId: string;
+  skip: number;
 }

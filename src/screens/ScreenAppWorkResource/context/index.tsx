@@ -6,10 +6,8 @@ import { services } from "../../../services";
 import { SERVICES_LIMITS } from "../../../config/services";
 import { IOption } from "../../../entities/IOption";
 import { useUsersContext } from "../../../contexts/useUsersContext";
-import { IResource } from "../../../entities/IResource";
 import { auth } from "../../../config/firebase";
 import { Linking } from "react-native";
-import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
 import { findOption } from "../../../utils/findOption";
 import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 import { IResourceWithLike } from "../../../entities/IResourceWithLike";
@@ -22,10 +20,10 @@ import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceState
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
+import { INITAL_TAGS } from "../../../data/defaultValues";
+import { filterTags } from "../../../utils/filterTags";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
-
-const TAGS: IResourceTypeTag[] = ["All", "Website", "Video", "Document"];
 
 export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
@@ -56,9 +54,11 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
     refId: validateOptionsBasedOnBoolean(
       resourceName !== "Favourites",
       findOption(resourceCategories, "name", resourceName)?.id,
-      "favourites"
+      "Favourites"
     ),
   });
+
+  const filteredTags = filterTags(resourceName);
 
   // ACTION METHODS
   const _handleSetLoading = (bool: boolean) => {
@@ -141,7 +141,7 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
           numberOfUsers: users?.count,
           resources: resourcesState?.resources,
           resourceTypes: resourceTypes,
-          tagList: TAGS,
+          tagList: filteredTags,
           screenState: screenState,
         },
         methods: {

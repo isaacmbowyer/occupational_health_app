@@ -1,10 +1,13 @@
 import { services } from "..";
 import { IOption } from "../../entities/IOption";
+import { IResourceName } from "../../entities/IResourceName";
+import { validateOptionsBasedOnBoolean } from "../../utils/validateOptionsBasedOnBoolean";
 
 export const compositionResources: ICompositionResourcesService = async (
   props
 ) => {
-  if (props?.refId !== "favourites") {
+  console.log("PROPS", props.refId, props.type, props.name);
+  if (props?.refId !== "Favourites" && props?.type?.name !== "Favourites") {
     const resources = await services.get.resources({
       refId: props?.refId,
       userId: props?.userId,
@@ -25,11 +28,17 @@ export const compositionResources: ICompositionResourcesService = async (
     };
   }
 
-  const resources = await services.get.favouriteWorkResources({
+  const resources = await services.get.favouriteResources({
     userId: props?.userId,
     skip: props?.skip,
     limit: props?.limit,
     type: props?.type,
+    name: props?.name,
+    refId: validateOptionsBasedOnBoolean(
+      props?.refId === "Favourites",
+      "",
+      props?.refId
+    ),
   });
 
   return {
@@ -45,7 +54,7 @@ interface IPayload {
   limit: number;
   skip: number;
   currentPage: number;
-  name: "work" | "symptom";
+  name: IResourceName;
 }
 
 interface ICompositionResourcesService {

@@ -1,4 +1,5 @@
 import { IOption } from "../../entities/IOption";
+import { IResourceTypeTag } from "../../entities/IResourceTypeTag";
 import { ISymptom } from "../../entities/ISymptom";
 import { IUser } from "../../entities/IUser";
 
@@ -24,3 +25,11 @@ export const INITAL_USER: IUser = {
   gender: "",
   birthDate: new Date(),
 };
+
+export const INITAL_TAGS: IResourceTypeTag[] = [
+  "All",
+  "Website",
+  "Video",
+  "Document",
+  "Favourites",
+];

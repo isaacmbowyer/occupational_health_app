@@ -152,8 +152,6 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const isPastDateReached = checkPastDate(state?.targetDate);
   const isButtonDisabled = findTodaysDateInScores(scores) || isPastDateReached;
 
-  console.log("VALUE", isButtonDisabled);
-
   const isFetching =
     isFetchingRatings ||
     resourcesState.isFetching ||
@@ -179,7 +177,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           limit: LIMIT,
           severityList: createSeverityList({
             severityList: severityList,
-            selectedSeverity: Number(currentSymptom?.currentSeverity),
+            selectedSeverity: String(currentSymptom?.currentSeverity),
             type: "target",
           }),
           averageScores: averageScores,

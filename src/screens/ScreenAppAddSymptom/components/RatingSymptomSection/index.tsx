@@ -42,7 +42,7 @@ export const RatingSymptomSection = ({
         />
 
         <Text fontSize={15} color="gray" fontStyle="italic">
-          This value must be less than the Target Severity
+          This value must be higher than the Target Severity
         </Text>
       </VStack>
 
@@ -55,7 +55,7 @@ export const RatingSymptomSection = ({
         />
 
         <Text fontSize={15} color="gray" fontStyle="italic">
-          This value must be higher than the Current Severity
+          This value must be lower than the Current Severity
         </Text>
       </VStack>
 

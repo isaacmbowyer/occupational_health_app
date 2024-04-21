@@ -58,8 +58,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   const SKIP = (state?.currentPage - 1) * LIMIT;
 
   // DATA
-  const { data: symptomList, isFetching: isFetchingSymptoms } =
-    useSymptomsContext();
+  const { data: symptomList } = useSymptomsContext();
 
   const { state: trackedSymptomsState, methods: trackedSymptomsMethods } =
     useTrackedSymptoms({
@@ -71,7 +70,6 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
         isSearchActive: state?.isSearchActive,
         search: searchState,
       }),
-      symptomList: symptomList,
     });
 
   const userSymptoms = formatUserSymptoms({
@@ -141,6 +139,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
       });
 
       trackedSymptomsMethods.handleOnRefetch();
+      toast.successToast("Successfuly removed this tracked symptom");
     } catch (e: any) {
       toast.errorToast("Failed to delete this tracked symptom.");
     } finally {

@@ -5,8 +5,10 @@ import { IWorkResource } from "../../entities/IWorkResource";
 interface ICurrentSymptomContext {
   currentSymptom: IUserSymptom;
   currentWorkResource: IWorkResource;
+  currentSymptomPage: number;
   setCurrentWorkResource: (resource: IWorkResource) => void;
   setCurrentSymptom: (data: IUserSymptom) => void;
+  setCurrentSymptomPage: (page: number) => void;
 }
 
 interface ICurrentEntityContext extends ICurrentSymptomContext {}
@@ -17,14 +19,17 @@ export const CurrentEntityProvider = ({ children }) => {
   const [currentSymptom, setCurrentSymptom] = useState<IUserSymptom>(null);
   const [currentWorkResource, setCurrentWorkResource] =
     useState<IWorkResource>(null);
+  const [currentSymptomPage, setCurrentSymptomPage] = useState<number>(0);
 
   return (
     <CurrentEntityContext.Provider
       value={{
         currentSymptom,
         currentWorkResource,
+        currentSymptomPage,
         setCurrentSymptom,
         setCurrentWorkResource,
+        setCurrentSymptomPage,
       }}
     >
       {children}

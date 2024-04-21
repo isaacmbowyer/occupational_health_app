@@ -94,7 +94,7 @@ const SymptomGoal = () => {
                   />
 
                   <Text.Regular color="gray" fontStyle="italic">
-                    This value must be higher than the Current Severity
+                    This value must be lower than the Current Severity
                   </Text.Regular>
                 </VStack>
 

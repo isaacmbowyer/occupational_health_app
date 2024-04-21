@@ -4,8 +4,8 @@ import { resourcesAdapter } from "../../utils/resourcesAdapter";
 import { sliceData } from "../../utils/sliceData";
 
 import { IResourceWithLikeResponse } from "../../entities/IResourceWithLikeResponse";
-import { IResourceWithLike } from "../../entities/IResourceWithLike";
 import { resourceWithLikeAdapter } from "../../utils/resourceWithLikeAdapter";
+import { IOption } from "../../entities/IOption";
 
 export const getFavouriteWorkResources: IGetFavouriteWorkResourcesService =
   async (props) => {
@@ -16,10 +16,18 @@ export const getFavouriteWorkResources: IGetFavouriteWorkResourcesService =
 
     const totalSnapshot = await getDocs(collectionQuery);
 
-    const resources = resourcesAdapter({
+    let resources = resourcesAdapter({
       userId: props?.userId,
       resourceDocs: totalSnapshot.docs,
     });
+
+    console.log("TYPE", props?.type?.name);
+    if (props?.type?.name !== "All") {
+      console.log("TYPE: INSIDE", props?.type?.name);
+      resources = resources.filter(
+        (resource) => resource.typeId === props?.type?.id
+      );
+    }
 
     const resourceLikesPromises = resources?.map(async (doc) => {
       const { docs: likesDocs } = await getDocs(
@@ -58,6 +66,7 @@ interface IProps {
   skip: number;
   limit: number;
   userId: string;
+  type: IOption;
 }
 
 interface IGetFavouriteWorkResourcesService {

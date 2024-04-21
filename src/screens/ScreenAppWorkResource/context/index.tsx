@@ -43,6 +43,8 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<IWorkResourceState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
+  const SKIP = (state?.currentPage - 1) * LIMIT;
+
   const resourceName = currentWorkResource?.label;
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
@@ -50,6 +52,7 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
     source: findOption(resourceTypes, "name", state?.source),
     currentPage: state?.currentPage,
     name: "work",
+    skip: SKIP,
     refId: validateOptionsBasedOnBoolean(
       resourceName !== "Favourites",
       findOption(resourceCategories, "name", resourceName)?.id,

@@ -29,11 +29,12 @@ export const compositionResources: ICompositionResourcesService = async (
     userId: props?.userId,
     skip: props?.skip,
     limit: props?.limit,
+    type: props?.type,
   });
 
   return {
     count: resources.count,
-    results: resources,
+    results: resources.results,
   };
 };
 

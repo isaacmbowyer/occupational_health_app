@@ -1,9 +1,9 @@
-import { displayDate } from "../displayFullDate";
+import { displayFullDate } from "../displayFullDate";
 import { getDaysLeft } from "../getDaysLeft";
 
 export const displaySymptomProgressMessage: IDisplaySymptomProgressMessageUtil =
   ({ targetDate, currentSeverity, targetSeverity }) => {
-    const date = displayDate(targetDate);
+    const date = displayFullDate(targetDate);
 
     if (new Date() > targetDate) {
       if (currentSeverity <= targetSeverity) {

@@ -13,7 +13,6 @@ interface ISymptomCardProps {
   severityType: ISeverityType;
   currentSeverity: number;
   targetSeverity: number;
-  imageUri: string;
   targetDate: Date;
   handleOnOpen: () => void;
   handleOnView: () => void;
@@ -22,7 +21,6 @@ interface ISymptomCardProps {
 export const SymptomCard = ({
   label,
   severityType,
-  imageUri,
   currentSeverity,
   targetSeverity,
   targetDate,

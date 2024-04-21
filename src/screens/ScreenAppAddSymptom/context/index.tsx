@@ -11,7 +11,6 @@ import { IOption } from "../../../entities/IOption";
 import { filterSymptoms } from "../../../utils/filterSymptoms";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { useTrackedSymptoms } from "../../../hooks/useTrackedSymptoms";
-import { retrieveUnusedSymptoms } from "../../../utils/retrieveUnusedSymptoms";
 import { services } from "../../../services";
 import { auth } from "../../../config/firebase";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -19,6 +18,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ISymptomState } from "../../../entities/ISymptomState";
 import { createSeverityList } from "../../../utils/createSeverityList";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { filterUsedSymptoms } from "../../../utils/filterUsedSymptoms";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -51,7 +51,7 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const [formState, setFormState] =
     useState<IAddSymptomFormState>(INITAL_FORM_STATE);
 
-  const symptomList = retrieveUnusedSymptoms(
+  const symptomList = filterUsedSymptoms(
     symptoms,
     trackedSymptomsState?.trackedSymptoms
   );
@@ -141,8 +141,6 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
 
   const isFetching = isFetchingSymptoms || trackedSymptomsState.isFetching;
 
-  console.log("CURRENT", formState?.currentSeverity.name);
-  console.log("TARGET", formState?.targetSeverity.name);
   return (
     <AddSymptomContext.Provider
       value={{

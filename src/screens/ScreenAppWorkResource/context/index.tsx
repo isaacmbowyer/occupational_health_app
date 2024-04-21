@@ -6,10 +6,8 @@ import { services } from "../../../services";
 import { SERVICES_LIMITS } from "../../../config/services";
 import { IOption } from "../../../entities/IOption";
 import { useUsersContext } from "../../../contexts/useUsersContext";
-import { IResource } from "../../../entities/IResource";
 import { auth } from "../../../config/firebase";
 import { Linking } from "react-native";
-import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
 import { findOption } from "../../../utils/findOption";
 import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 import { IResourceWithLike } from "../../../entities/IResourceWithLike";
@@ -21,19 +19,18 @@ import { IWorkResourceStateKey } from "../../../entities/IWorkResourceStateKey";
 import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceStateKeyValue";
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
+import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
+import { INITAL_TAGS } from "../../../data/defaultValues";
+import { filterTags } from "../../../utils/filterTags";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
-
-const TAGS: IResourceTypeTag[] = ["All", "Website", "Video", "Document"];
 
 export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const { currentWorkResource } = useCurrentEntityContext();
-  const { data: users, isFetching: isFetchingUsers } = useUsersContext();
-  const { data: resourceTypes, isFetching: isFetchingTypes } =
-    useResourceTypesContext();
-  const { data: resourceCategories, isFetching: isFetchingCategories } =
-    useResourceCategoriesContext();
+  const { data: users } = useUsersContext();
+  const { data: resourceTypes } = useResourceTypesContext();
+  const { data: resourceCategories } = useResourceCategoriesContext();
 
   const INITIAL_STATE: IWorkResourceState = {
     currentPage: 1,
@@ -44,15 +41,24 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<IWorkResourceState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
+  const SKIP = (state?.currentPage - 1) * LIMIT;
+
+  const resourceName = currentWorkResource?.label;
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
     source: findOption(resourceTypes, "name", state?.source),
     currentPage: state?.currentPage,
     name: "work",
-    refId: findOption(resourceCategories, "name", currentWorkResource?.label)
-      ?.id,
+    skip: SKIP,
+    refId: validateOptionsBasedOnBoolean(
+      resourceName !== "Favourites",
+      findOption(resourceCategories, "name", resourceName)?.id,
+      "Favourites"
+    ),
   });
+
+  const filteredTags = filterTags(resourceName);
 
   // ACTION METHODS
   const _handleSetLoading = (bool: boolean) => {
@@ -135,7 +141,7 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
           numberOfUsers: users?.count,
           resources: resourcesState?.resources,
           resourceTypes: resourceTypes,
-          tagList: TAGS,
+          tagList: filteredTags,
           screenState: screenState,
         },
         methods: {

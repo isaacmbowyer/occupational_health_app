@@ -22,14 +22,11 @@ import { findOption } from "../../../utils/findOption";
 import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 import { IResourceWithLike } from "../../../entities/IResourceWithLike";
 import { useResources } from "../../../hooks/useResources";
-import { formatDate } from "../../../utils/formatDate";
 import { findTodaysDateInScores } from "../../../utils/findTodaysDateInScores";
 import { createSeverityList } from "../../../utils/createSeverityList";
-import { compareValues } from "../../../utils/compareValues";
 import { checkPastDate } from "../../../utils/checkIsPastDate";
+import { INITAL_TAGS } from "../../../data/defaultValues";
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
-
-const TAGS: IResourceTypeTag[] = ["All", "Website", "Video"];
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -55,6 +52,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
+  const SKIP = (state?.currentPage - 1) * LIMIT;
 
   const {
     scores,
@@ -68,6 +66,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     currentPage: state?.currentPage,
     name: "symptom",
     refId: currentSymptom?.symptomId,
+    skip: SKIP,
   });
 
   // ACTION METHODS
@@ -184,7 +183,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           numberOfUsers: users?.count,
           resources: resourcesState?.resources,
           resourceTypes: resourceTypes,
-          tagList: TAGS,
+          tagList: INITAL_TAGS,
         },
         methods: {
           handleOnChange: handleOnChange,

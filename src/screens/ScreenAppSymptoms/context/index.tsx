@@ -7,7 +7,6 @@ import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { SERVICES_LIMITS } from "../../../config/services";
 import { services } from "../../../services";
 import { formatUserSymptoms } from "../../../utils/formatUserSymptoms";
-import { IUserSymptom } from "../../../entities/IUserSymptom";
 import { IAdvancedSearch } from "../../../entities/IAdvancedSearch";
 import { INITAL_OPTION } from "../../../data/defaultValues";
 import { useSeverityTypes } from "../../../hooks/useSeverityTypes";
@@ -22,6 +21,7 @@ import { createSearchConfig } from "../../../utils/createSearchConfig";
 import { ITrackedSymptomsState } from "../../../entities/ITrackedSymptomsState";
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
+import { ITrackedSymptom } from "../../../entities/ITrackedSymptom";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -121,7 +121,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
   };
 
   // ACTION METHODS
-  const handleDeleteTrackedSymptom = async (symptom: IUserSymptom) => {
+  const handleDeleteTrackedSymptom = async (symptom: ITrackedSymptom) => {
     try {
       _handleSetLoading(true);
 
@@ -147,7 +147,7 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const handleNavigateToTrackedSymptom = (symptom: IUserSymptom) => {
+  const handleNavigateToTrackedSymptom = (symptom: ITrackedSymptom) => {
     setCurrentSymptom(symptom);
     setState(INITAL_STATE);
     navigation.navigate("Symptom Goal");
@@ -219,7 +219,7 @@ interface ITrackedSymptomsContext {
     count: number;
     totalPages: number;
     limit: number;
-    symptoms: IUserSymptom[];
+    symptoms: ITrackedSymptom[];
     source: string;
     tagList: string[];
     severityTypeOptions: IOption[];
@@ -232,8 +232,8 @@ interface ITrackedSymptomsContext {
     severityType: IOption;
   };
   methods: {
-    handleOnDelete: (symptom: IUserSymptom) => void;
-    handleOnPress: (symptom: IUserSymptom) => void;
+    handleOnDelete: (symptom: ITrackedSymptom) => void;
+    handleOnPress: (symptom: ITrackedSymptom) => void;
     handleOnAdd: () => void;
     handleOnChange: (
       key: IAppSymptomsStateKey,

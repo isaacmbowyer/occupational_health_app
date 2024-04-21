@@ -27,7 +27,12 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
   const severityList = useSeverityRatings();
-  const { currentSymptom, setCurrentSymptom } = useCurrentEntityContext();
+  const {
+    currentSymptom,
+    setCurrentSymptom,
+    currentSymptomPage,
+    setCurrentSymptomPage,
+  } = useCurrentEntityContext();
 
   const [formState, setFormState] =
     useState<IAddSymptomProgressFormState>(INITAL_FORM_STATE);
@@ -70,6 +75,7 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
 
       setCurrentSymptom(null);
       setFormState(INITAL_FORM_STATE);
+      setCurrentSymptomPage(currentSymptomPage + 1);
       toast.successToast("Successfully added the daily symptom severity");
       navigation.navigate("User Symptoms");
     } catch (e: any) {

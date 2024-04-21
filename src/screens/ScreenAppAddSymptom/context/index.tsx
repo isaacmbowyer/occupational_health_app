@@ -141,8 +141,6 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
 
   const isFetching = isFetchingSymptoms || trackedSymptomsState.isFetching;
 
-  console.log("CURRENT", formState?.currentSeverity.name);
-  console.log("TARGET", formState?.targetSeverity.name);
   return (
     <AddSymptomContext.Provider
       value={{

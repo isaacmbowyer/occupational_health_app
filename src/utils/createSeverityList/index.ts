@@ -5,18 +5,20 @@ export const createSeverityList: ICreateSeverityListUtil = ({
   type,
   selectedSeverity,
 }) => {
+  if (selectedSeverity === "") return severityList;
+
   return severityList.filter((item) => {
     if (type === "current") {
-      return Number(item.name) > selectedSeverity;
+      return Number(item.name) > Number(selectedSeverity);
     }
 
-    return Number(item.name) < selectedSeverity;
+    return Number(item.name) < Number(selectedSeverity);
   });
 };
 
 interface IProps {
   severityList: IOption[];
-  selectedSeverity: number;
+  selectedSeverity: string;
   type: "current" | "target";
 }
 interface ICreateSeverityListUtil {

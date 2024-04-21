@@ -177,7 +177,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           limit: LIMIT,
           severityList: createSeverityList({
             severityList: severityList,
-            selectedSeverity: Number(currentSymptom?.currentSeverity),
+            selectedSeverity: String(currentSymptom?.currentSeverity),
             type: "target",
           }),
           averageScores: averageScores,

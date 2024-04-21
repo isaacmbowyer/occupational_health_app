@@ -11,7 +11,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { ISymptom } from "../../entities/ISymptom";
-import { formatDate } from "../../utils/formatDate";
 import { applyFilters } from "../../utils/applyFilters";
 import { sliceData } from "../../utils/sliceData";
 

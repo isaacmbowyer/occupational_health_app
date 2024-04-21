@@ -12,8 +12,6 @@ import { resourcesAdapter } from "../../utils/resourcesAdapter";
 import { IOption } from "../../entities/IOption";
 
 export const getResources: IGetResourcesService = async (props) => {
-  console.log(props);
-
   const collectionName = `${props.name}_resources`;
   const referenceId = props?.name === "symptom" ? "symptomId" : "categoryId";
 

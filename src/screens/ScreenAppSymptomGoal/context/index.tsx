@@ -152,8 +152,6 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const isPastDateReached = checkPastDate(state?.targetDate);
   const isButtonDisabled = findTodaysDateInScores(scores) || isPastDateReached;
 
-  console.log("VALUE", isButtonDisabled);
-
   const isFetching =
     isFetchingRatings ||
     resourcesState.isFetching ||

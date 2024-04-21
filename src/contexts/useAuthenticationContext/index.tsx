@@ -45,6 +45,12 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
         password: formState.password,
       });
 
+      if (!data.user.emailVerified) {
+        toast.errorToast("Unable to login. Please verify your email.");
+
+        return;
+      }
+
       handleSetLoginData({ email: "", password: "" });
       setUser(data);
     } catch (e: any) {

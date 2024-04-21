@@ -79,7 +79,7 @@ export const CreateAccountProvider = ({ children }: IProviderProps) => {
         country: formState?.country,
       });
 
-      toast.successToast("Account created. You can now Log In");
+      toast.successToast("Please verify your email before you login");
       navigation.navigate("Log In");
       _handleResetState();
     } catch (e: any) {

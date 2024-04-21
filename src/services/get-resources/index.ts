@@ -10,6 +10,7 @@ import {
 import { db } from "../../config/firebase";
 import { resourcesAdapter } from "../../utils/resourcesAdapter";
 import { IOption } from "../../entities/IOption";
+import { IResourceResponse } from "../../entities/IResourceResponse";
 
 export const getResources: IGetResourcesService = async (props) => {
   const collectionName = `${props.name}_resources`;
@@ -96,5 +97,5 @@ interface IProps {
 }
 
 interface IGetResourcesService {
-  (props: IProps): Promise<any>;
+  (props: IProps): Promise<IResourceResponse>;
 }

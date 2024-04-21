@@ -21,6 +21,7 @@ import { IWorkResourceStateKey } from "../../../entities/IWorkResourceStateKey";
 import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceStateKeyValue";
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
+import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
 
@@ -29,11 +30,9 @@ const TAGS: IResourceTypeTag[] = ["All", "Website", "Video", "Document"];
 export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const { currentWorkResource } = useCurrentEntityContext();
-  const { data: users, isFetching: isFetchingUsers } = useUsersContext();
-  const { data: resourceTypes, isFetching: isFetchingTypes } =
-    useResourceTypesContext();
-  const { data: resourceCategories, isFetching: isFetchingCategories } =
-    useResourceCategoriesContext();
+  const { data: users } = useUsersContext();
+  const { data: resourceTypes } = useResourceTypesContext();
+  const { data: resourceCategories } = useResourceCategoriesContext();
 
   const INITIAL_STATE: IWorkResourceState = {
     currentPage: 1,
@@ -44,14 +43,18 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
   const [state, setState] = useState<IWorkResourceState>(INITIAL_STATE);
 
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
+  const resourceName = currentWorkResource?.label;
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
     source: findOption(resourceTypes, "name", state?.source),
     currentPage: state?.currentPage,
     name: "work",
-    refId: findOption(resourceCategories, "name", currentWorkResource?.label)
-      ?.id,
+    refId: validateOptionsBasedOnBoolean(
+      resourceName !== "Favourites",
+      findOption(resourceCategories, "name", resourceName)?.id,
+      "favourites"
+    ),
   });
 
   // ACTION METHODS

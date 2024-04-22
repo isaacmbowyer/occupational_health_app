@@ -6,6 +6,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ICONS } from "../../data/icons";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
+import { DeleteAccountCard } from "../../components/modules/DeleteAccountCard";
 
 export const SettingsScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -33,6 +34,11 @@ export const SettingsScreen = () => {
             image={require("../../../assets/logout.png")}
             handleOnPress={() => methods.handleLogout()}
             isLoading={state.isLoading}
+          />
+
+          <DeleteAccountCard
+            isLoading={state.isLoading}
+            handleOnDelete={() => methods.handleDeleteAccount()}
           />
         </VStack>
       }

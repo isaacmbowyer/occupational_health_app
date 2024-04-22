@@ -14,7 +14,9 @@ import { ICONS } from "../../../data/icons";
 import { Button } from "../../atoms/Button";
 
 interface IDeleteModalProps {
-  symptomName: string;
+  title: string;
+  header: string;
+  subHeader: string;
   isOpen: boolean;
   isLoading: boolean;
   handleOnClose: () => void;
@@ -22,7 +24,9 @@ interface IDeleteModalProps {
 }
 
 export const DeleteModal = ({
-  symptomName,
+  title,
+  header,
+  subHeader,
   isOpen,
   isLoading,
   handleOnClose,
@@ -33,24 +37,20 @@ export const DeleteModal = ({
       <ModalBackdrop />
       <ModalContent>
         <ModalHeader>
-          <Text.SubHeader textAlign="center">{symptomName}</Text.SubHeader>
+          <Text.SubHeader textAlign="center">{title}</Text.SubHeader>
           <ModalCloseButton>
             <Icon as={ICONS.CLOSE} />
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text.Regular textAlign="center">
-            Are you sure you would like to delete this symptom?
-          </Text.Regular>
-          <Text.Small textAlign="center">
-            You will not be able to undo this action.
-          </Text.Small>
+          <Text.Regular textAlign="center">{header}</Text.Regular>
+          <Text.Small textAlign="center">{subHeader}</Text.Small>
         </ModalBody>
         <ModalFooter>
           <VStack w="$full" space="xl">
             <Button.Outline text="Cancel" onPress={handleOnClose} />
             <Button.Solid
-              text="Delete"
+              text="Confirm"
               onPress={handleOnDelete}
               isLoading={isLoading}
             />

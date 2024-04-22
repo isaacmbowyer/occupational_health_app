@@ -37,7 +37,9 @@ export const SymptomCardContainer = ({
   return (
     <>
       <DeleteModal
-        symptomName={name}
+        title={name}
+        header="Are you sure you would like to delete this symptom?"
+        subHeader="You will not be able to undo this action."
         isLoading={isLoading}
         isOpen={isOpen}
         handleOnClose={handleOnClose}

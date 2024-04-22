@@ -11,6 +11,7 @@ import * as Google from "expo-auth-session/providers/google";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { AuthRequestPromptOptions, AuthSessionResult } from "expo-auth-session";
+import { sendCustomEmail } from "../../services/send-email";
 
 const AuthenticationContext = createContext({} as IAuthenticationContext);
 
@@ -101,6 +102,23 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      _handleSetLoading(true);
+
+      await services.delete.account();
+
+      // RESET STATE
+      handleSetLoginData({ email: "", password: "" });
+      setUser(null);
+      toast.successToast("Successfuly deleted your account");
+    } catch (error: any) {
+      toast.errorToast("Unable to delete your account. Try again later");
+    } finally {
+      _handleSetLoading(false);
+    }
+  };
+
   const emailError = validateEmail(formState.email)
     ? ""
     : VALIDATION_ERRORS.EMAIL;
@@ -127,6 +145,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
           handleLogout: handleLogout,
           handleSetLoginData: handleSetLoginData,
           promptAsync: promptAsync,
+          handleDeleteAccount: handleDeleteAccount,
         },
       }}
     >
@@ -156,5 +175,6 @@ interface IAuthenticationContext {
     promptAsync: (
       options?: AuthRequestPromptOptions
     ) => Promise<AuthSessionResult>;
+    handleDeleteAccount: () => void;
   };
 }

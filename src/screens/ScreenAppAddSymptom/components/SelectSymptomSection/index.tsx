@@ -1,8 +1,8 @@
 import { VStack } from "@gluestack-ui/themed";
 import { Accordion } from "../../../../components/atoms/Accordion";
 import { ISymptom } from "../../../../entities/ISymptom";
-import { IAddSymptomStateKey } from "../../../../entities/IAddSymptomStateKey";
-import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomStateKeyValue";
+import { IAddSymptomStateKey } from "../../../../entities/IAddSymptomFormStateKey";
+import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomFormStateKeyValue";
 import { Input } from "../../../../components/atoms/Input";
 import { ICONS } from "../../../../data/icons";
 import { AddSymptomContainer } from "../../../../components/organisms/AddSymptomContainer";

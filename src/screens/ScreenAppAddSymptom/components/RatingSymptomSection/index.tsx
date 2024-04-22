@@ -1,6 +1,6 @@
 import { Text, VStack } from "@gluestack-ui/themed";
-import { IAddSymptomStateKey } from "../../../../entities/IAddSymptomStateKey";
-import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomStateKeyValue";
+import { IAddSymptomStateKey } from "../../../../entities/IAddSymptomFormStateKey";
+import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomFormStateKeyValue";
 import { DatePicker } from "../../../../components/atoms/DatePicker";
 import { IOption } from "../../../../entities/IOption";
 import { Select } from "../../../../components/atoms/Select";

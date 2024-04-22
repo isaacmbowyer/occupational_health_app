@@ -7,8 +7,6 @@ import { InputPassword } from "../../components/atoms/InputPassword";
 import { Button } from "../../components/atoms/Button";
 import { Link } from "../../components/atoms/Link";
 import { useAuthenticationContext } from "../../contexts/useAuthenticationContext";
-import Icon from "react-native-vector-icons/Ionicons";
-import { colors } from "../../data/colors";
 import { GoogleButton } from "../../components/atoms/GoogleButton";
 
 export const LogInScreen = ({ navigation }) => {
@@ -81,7 +79,6 @@ export const LogInScreen = ({ navigation }) => {
 
             <GoogleButton
               handleOnPress={() => {
-                console.log("GOOGLE");
                 methods.promptAsync();
               }}
             />

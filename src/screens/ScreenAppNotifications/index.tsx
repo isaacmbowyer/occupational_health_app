@@ -2,10 +2,10 @@ import { VStack } from "@gluestack-ui/themed";
 import { PrivateTemplateContainer } from "../../components/templates/PrivateTemplateContainer";
 import { MainHeader } from "../../components/modules/MainHeader";
 import { NotificationsSection } from "./components/NotificationsSection";
-import { NotificationsProvider, useNotificationContext } from "./context";
+import { useNotificationsContext } from "../../contexts/useNotificationContext";
 
-const Notifications = () => {
-  const { state, methods } = useNotificationContext();
+export const NotificationsScreen = () => {
+  const { state, methods } = useNotificationsContext();
 
   return (
     <PrivateTemplateContainer
@@ -31,13 +31,5 @@ const Notifications = () => {
         </VStack>
       }
     />
-  );
-};
-
-export const NotificationsScreen = () => {
-  return (
-    <NotificationsProvider>
-      <Notifications />
-    </NotificationsProvider>
   );
 };

@@ -49,7 +49,7 @@ export const Select = ({
   const isTouchedAndHasHelpText = isTouched && helpText;
 
   const _handleOnChange = (value: string) => {
-    const selectedName = findOption(items, "id", +value);
+    const selectedName = findOption(items, "id", String(value))?.name;
     onChange({ id: +value, name: selectedName });
   };
 

@@ -6,7 +6,6 @@ import { validateOptionsBasedOnBoolean } from "../../utils/validateOptionsBasedO
 export const compositionResources: ICompositionResourcesService = async (
   props
 ) => {
-  console.log("PROPS", props.refId, props.type, props.name);
   if (props?.refId !== "Favourites" && props?.type?.name !== "Favourites") {
     const resources = await services.get.resources({
       refId: props?.refId,

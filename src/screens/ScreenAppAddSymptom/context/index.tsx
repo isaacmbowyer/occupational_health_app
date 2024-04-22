@@ -5,8 +5,7 @@ import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { ISymptom } from "../../../entities/ISymptom";
 import { INITAL_OPTION, INITAL_SYMPTOM } from "../../../data/defaultValues";
 import { IAddSymptomFormState } from "../../../entities/IAddSymptomFormState";
-import { IAddSymptomStateKey } from "../../../entities/IAddSymptomStateKey";
-import { IAddSymptomStateKeyValue } from "../../../entities/IAddSymptomStateKeyValue";
+import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
 import { IOption } from "../../../entities/IOption";
 import { filterSymptoms } from "../../../utils/filterSymptoms";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
@@ -19,6 +18,7 @@ import { ISymptomState } from "../../../entities/ISymptomState";
 import { createSeverityList } from "../../../utils/createSeverityList";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { filterUsedSymptoms } from "../../../utils/filterUsedSymptoms";
+import { IAddSymptomFormStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -79,8 +79,8 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   }, [formState?.search]);
 
   const handleOnChange = (
-    key: IAddSymptomStateKey,
-    value: IAddSymptomStateKeyValue
+    key: IAddSymptomFormStateKey,
+    value: IAddSymptomFormStateKeyValue
   ) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
   };
@@ -156,12 +156,12 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
           isDisabled: isDisabled,
           targetSeverityList: createSeverityList({
             severityList: severityList,
-            selectedSeverity: formState?.currentSeverity.name,
+            selectedSeverity: formState?.currentSeverity,
             type: "target",
           }),
           currentSeverityList: createSeverityList({
             severityList: severityList,
-            selectedSeverity: formState?.targetSeverity.name,
+            selectedSeverity: formState?.targetSeverity,
             type: "current",
           }),
         },
@@ -197,8 +197,8 @@ interface IAddSymptomContext {
   };
   methods: {
     handleOnChange: (
-      key: IAddSymptomStateKey,
-      value: IAddSymptomStateKeyValue
+      key: IAddSymptomFormStateKey,
+      value: IAddSymptomFormStateKeyValue
     ) => void;
     handleOnSubmit: () => void;
     handleOnSelect: (item: ISymptom) => void;

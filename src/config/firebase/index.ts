@@ -3,7 +3,6 @@ import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 import { getAuth } from "firebase/auth";
-import { Linking } from "react-native";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAm5LBqHT60zb0yfkbfx4Bu7iWHmS2M6i0",
@@ -19,5 +18,4 @@ initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 export const auth = getAuth();
-
 export const storage = getStorage();

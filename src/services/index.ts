@@ -1,3 +1,4 @@
+import { deleteAccount } from "./composition-delete-account";
 import { compositionResourceLike } from "./composition-resource-like";
 import { compositionResources } from "./composition-resources";
 import { compositionUser } from "./composition-user";
@@ -62,6 +63,7 @@ export const services = {
     scores: deleteSymptomScores,
     resourceLike: deleteSymptomResourceLike,
     notification: deleteNotification,
+    account: deleteAccount,
   },
   update: {
     trackedSymptom: updateTrackedSymptom,

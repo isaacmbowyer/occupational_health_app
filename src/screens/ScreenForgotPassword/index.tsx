@@ -30,7 +30,7 @@ const ForgotPassword = () => {
           />
 
           <Button.Solid
-            text="Create Account"
+            text="Send Reset Password Email"
             onPress={methods.handleSubmit}
             isDisabled={state.isDisabled}
             isLoading={state.isLoading}

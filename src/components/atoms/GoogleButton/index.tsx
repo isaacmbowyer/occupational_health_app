@@ -15,7 +15,7 @@ export const GoogleButton = ({ handleOnPress }: IGoogleProps) => {
       borderRadius="$full"
       width="$full"
       borderColor={colors.sky_blue}
-      onPress={() => handleOnPress}
+      onPress={handleOnPress}
     >
       <HStack width="$full" ml="$2">
         <HStack mr="$16">

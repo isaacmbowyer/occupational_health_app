@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { IProviderProps } from "../../entities/IProviderProps";
 import { ILoginData } from "../../entities/ILoginData";
 import { services } from "../../services";
@@ -6,8 +6,15 @@ import { validateEmail } from "../../utils/validateEmail";
 import { VALIDATION_ERRORS } from "../../data/errors";
 import { validatePassword } from "../../utils/validatePassword";
 import { useCustomToast } from "../../hooks/useCustomToast";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import { AuthRequestPromptOptions, AuthSessionResult } from "expo-auth-session";
 
 const AuthenticationContext = createContext({} as IAuthenticationContext);
+
+WebBrowser.maybeCompleteAuthSession();
 
 const INITAL_STATE: IAuthenticationContextFormState = {
   email: "",
@@ -21,6 +28,21 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
   const [formState, setFormState] =
     useState<IAuthenticationContextFormState>(INITAL_STATE);
   const [user, setUser] = useState(null);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "994826136894-aee800bn8toajcsji454t33o3305v119.apps.googleusercontent.com",
+    iosClientId:
+      "994826136894-u1k32mt7852u3npb9mgffe9707n0qtab.apps.googleusercontent.com",
+  });
+
+  useEffect(() => {
+    if (response?.type == "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
 
   // STATE METHODS
   const _handleSetLoading = (loadingState: boolean) => {
@@ -57,18 +79,6 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
       toast.errorToast(
         "Unable to login. Please ensure your credentials are correct"
       );
-    } finally {
-      _handleSetLoading(false);
-    }
-  };
-
-  const handleLoginWithGoogle = async () => {
-    try {
-      _handleSetLoading(true);
-
-      await services.post.authLoginWithGoogle();
-    } catch (e: any) {
-      toast.errorToast("Unable to login. Please try again later");
     } finally {
       _handleSetLoading(false);
     }
@@ -116,7 +126,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
           handleLogin: handleLogin,
           handleLogout: handleLogout,
           handleSetLoginData: handleSetLoginData,
-          handleLoginWithGoogle: handleLoginWithGoogle,
+          promptAsync: promptAsync,
         },
       }}
     >
@@ -142,7 +152,9 @@ interface IAuthenticationContext {
   methods: {
     handleLogin: () => Promise<void>;
     handleLogout: () => Promise<void>;
-    handleLoginWithGoogle: () => Promise<void>;
     handleSetLoginData: (data: ILoginData) => void;
+    promptAsync: (
+      options?: AuthRequestPromptOptions
+    ) => Promise<AuthSessionResult>;
   };
 }

@@ -8,13 +8,10 @@ WebBrowser.maybeCompleteAuthSession();
 export const postAuthGoogleLogin = async () => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
-      "505025586969-242f4eik71bnn7f4bdkcn0ev6tcn2gvc.apps.googleusercontent.com",
-    iosClientId: "",
+      "994826136894-aee800bn8toajcsji454t33o3305v119.apps.googleusercontent.com",
+    webClientId:
+      "994826136894-0af2htsvlueup794oila6k1gjb62tgou.apps.googleusercontent.com",
+    iosClientId:
+      "994826136894-u1k32mt7852u3npb9mgffe9707n0qtab.apps.googleusercontent.com",
   });
-
-  if (response.type === "success") {
-    const { id_token } = response.params;
-    const credential = GoogleAuthProvider.credential(id_token);
-    await signInWithCredential(auth, credential);
-  }
 };

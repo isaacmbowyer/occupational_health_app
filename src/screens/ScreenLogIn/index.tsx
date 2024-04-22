@@ -79,7 +79,12 @@ export const LogInScreen = ({ navigation }) => {
               OR
             </Text.Regular>
 
-            <GoogleButton handleOnPress={() => {}} />
+            <GoogleButton
+              handleOnPress={() => {
+                console.log("GOOGLE");
+                methods.promptAsync();
+              }}
+            />
 
             <Link.Regular label="Return to Home" screen="Home"></Link.Regular>
           </VStack>

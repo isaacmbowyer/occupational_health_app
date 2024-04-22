@@ -17,7 +17,6 @@ import { ISymptomGoalStateKeyValue } from "../../../entities/ISymptomGoalStateKe
 import { ISymptomGoalState } from "../../../entities/ISymptomGoalState";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
 import { findOption } from "../../../utils/findOption";
 import { useResourceTypesContext } from "../../../contexts/useResourceTypesContext";
 import { IResourceWithLike } from "../../../entities/IResourceWithLike";
@@ -26,6 +25,12 @@ import { findTodaysDateInScores } from "../../../utils/findTodaysDateInScores";
 import { createSeverityList } from "../../../utils/createSeverityList";
 import { checkPastDate } from "../../../utils/checkIsPastDate";
 import { INITAL_TAGS } from "../../../data/defaultValues";
+import { IChartType } from "../../../entities/IChartType";
+import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
+import { calculateAverageScores } from "../../../utils/calculateAverageScores";
+
+const CHART_TAGS: IChartType[] = ["Week", "Month"];
+
 const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
@@ -47,6 +52,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     currentPage: 1,
     isLoading: false,
     source: "All",
+    chartType: "Week",
   };
 
   const [state, setState] = useState<ISymptomGoalState>(INITIAL_STATE);
@@ -54,11 +60,15 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const LIMIT = SERVICES_LIMITS.DEFAULT_LIMIT;
   const SKIP = (state?.currentPage - 1) * LIMIT;
 
-  const {
-    scores,
-    averageScores,
-    isFetching: isFetchingRatings,
-  } = useSymptomRatings();
+  const { scores, isFetching: isFetchingRatings } = useSymptomRatings();
+
+  const averageScoresLimit = state.chartType === "Week" ? 5 : 4;
+
+  const averageScores = calculateAverageScores({
+    data: scores,
+    interval: state.chartType,
+    limit: averageScoresLimit,
+  });
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
@@ -176,14 +186,21 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           limit: LIMIT,
           severityList: createSeverityList({
             severityList: severityList,
-            selectedSeverity: String(currentSymptom?.currentSeverity),
+            selectedSeverity: findOption(
+              severityList,
+              "name",
+              String(currentSymptom?.currentSeverity)
+            ),
             type: "target",
           }),
           averageScores: averageScores,
           numberOfUsers: users?.count,
           resources: resourcesState?.resources,
           resourceTypes: resourceTypes,
-          tagList: INITAL_TAGS,
+          resourceTags: INITAL_TAGS,
+          chartTags: CHART_TAGS,
+          chartType: state.chartType,
+          averageScoresLimit: averageScoresLimit,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -222,7 +239,10 @@ interface ISymptomGoalContext {
     numberOfUsers: number;
     resources: IResourceWithLike[];
     resourceTypes: IOption[];
-    tagList: string[];
+    resourceTags: IResourceTypeTag[];
+    chartTags: IChartType[];
+    chartType: IChartType;
+    averageScoresLimit: number;
   };
   methods: {
     handleOnChange: (

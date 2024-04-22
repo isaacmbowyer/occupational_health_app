@@ -10,9 +10,12 @@ import { Text } from "../../components/atoms/Text";
 import { Button } from "../../components/atoms/Button";
 import { OverallProgressCard } from "../../components/organisms/OverallProgressCard";
 import { SymptomResourcesSection } from "./components/SymptomResourcesSection";
+import { Tags } from "../../components/modules/Tags";
 
 const SymptomGoal = () => {
   const { state, methods } = useSymptomGoalContext();
+
+  const formattedChartType = state.chartType.toLowerCase();
 
   return (
     <PrivateTemplateContainer
@@ -34,26 +37,34 @@ const SymptomGoal = () => {
 
           <Divider my="$0.5" />
 
-          {state?.averageScores?.length > 1 ? (
-            <VStack>
-              <Accordion
-                title="Chart View"
-                isDisabled={state?.isFetching}
-                hiddenSection={
-                  <VStack>
+          <Accordion
+            title="Chart View"
+            isDisabled={state?.isFetching}
+            hiddenSection={
+              <VStack space="md">
+                {!state.isFetching ? (
+                  <>
+                    <Tags
+                      tagList={state.chartTags}
+                      active={state.chartType}
+                      handleSetActive={(value) =>
+                        methods.handleOnChange("chartType", value)
+                      }
+                    />
                     <Chart scores={state?.averageScores} />
                     <Text.Regular color="gray" fontStyle="italic">
                       The chart plots data from the latest daily reports over
-                      the past four months, calculating the average severity
-                      rating for each month.
+                      the past {state.averageScoresLimit} {formattedChartType}s,
+                      calculating the average severity rating for each{" "}
+                      {formattedChartType}.
                     </Text.Regular>
-                  </VStack>
-                }
-              />
+                  </>
+                ) : null}
+              </VStack>
+            }
+          />
 
-              <Divider my="$0.5" />
-            </VStack>
-          ) : null}
+          <Divider my="$0.5" />
 
           <Accordion
             title="Symptom Resources"
@@ -66,7 +77,7 @@ const SymptomGoal = () => {
                 numberOfUsers={state?.numberOfUsers}
                 resources={state?.resources}
                 isFetching={state?.isFetching}
-                tagList={state?.tagList}
+                tagList={state?.resourceTags}
                 source={state.activeSource}
                 types={state?.resourceTypes}
                 handleOnChange={methods.handleOnChange}

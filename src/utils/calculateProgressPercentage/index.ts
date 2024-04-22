@@ -4,7 +4,8 @@ export const calculateProgressPercentage: ICalculateProgresPercentageIUtil = ({
 }) => {
   if (currentSeverity <= targetSeverity) return 100;
 
-  return ((currentSeverity - targetSeverity) / (10 - targetSeverity)) * 100;
+  const remainingRange = currentSeverity - targetSeverity; // Remaining range to target severity
+  return Math.max(0, 100 - (remainingRange / 10) * 100); // Calculate progress percentage
 };
 
 interface IPayload {

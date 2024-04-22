@@ -7,7 +7,7 @@ interface IHeaderTagsProps {
   tagList: string[];
 }
 
-export const HeaderTags = ({
+export const Tags = ({
   active,
   handleSetActive,
   tagList,

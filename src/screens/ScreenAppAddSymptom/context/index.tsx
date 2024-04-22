@@ -99,8 +99,6 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
     setFormState((prev) => ({ ...prev, isLoading: boolean }));
   };
 
-  console.log(formState.currentSeverity, formState.targetSeverity);
-
   // ACTION METHODS
   const handleOnSubmit = async () => {
     try {

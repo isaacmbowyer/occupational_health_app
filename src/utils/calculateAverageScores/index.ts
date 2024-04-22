@@ -1,12 +1,14 @@
-import { endOfWeek, format, getISOWeek, startOfWeek } from "date-fns";
+import { format, startOfWeek } from "date-fns";
 import { IScore } from "../../entities/IScore";
 import { ISymptomScore } from "../../entities/ISymptomScore";
 import { IChartType } from "../../entities/IChartType";
+import { sliceData } from "../sliceData";
 
-export const calculateAverageScores: ICalculateAverageScoresUtil = (
+export const calculateAverageScores: ICalculateAverageScoresUtil = ({
   data,
-  interval
-) => {
+  interval,
+  limit,
+}) => {
   const averageScores = {};
 
   // Determine the date field to use for grouping (createdAt or updatedAt, depending on your data structure)
@@ -44,9 +46,14 @@ export const calculateAverageScores: ICalculateAverageScoresUtil = (
     });
   });
 
-  return result;
+  return sliceData({ data: result, skip: 0, limit: limit });
 };
 
+interface IProps {
+  data: ISymptomScore[];
+  interval: IChartType;
+  limit: number;
+}
 interface ICalculateAverageScoresUtil {
-  (scores: ISymptomScore[], interval: IChartType): IScore[];
+  (props: IProps): IScore[];
 }

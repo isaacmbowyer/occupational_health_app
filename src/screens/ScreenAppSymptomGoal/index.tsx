@@ -15,7 +15,7 @@ import { Tags } from "../../components/modules/Tags";
 const SymptomGoal = () => {
   const { state, methods } = useSymptomGoalContext();
 
-  console.log("SCORES", state.averageScores);
+  const formattedChartType = state.chartType.toLowerCase();
 
   return (
     <PrivateTemplateContainer
@@ -42,19 +42,24 @@ const SymptomGoal = () => {
             isDisabled={state?.isFetching}
             hiddenSection={
               <VStack space="md">
-                <Tags
-                  tagList={state.chartTags}
-                  active={state.chartType}
-                  handleSetActive={(value) =>
-                    methods.handleOnChange("chartType", value)
-                  }
-                />
-                <Chart scores={state?.averageScores} />
-                <Text.Regular color="gray" fontStyle="italic">
-                  The chart plots data from the latest daily reports over the
-                  past four months, calculating the average severity rating for
-                  each month.
-                </Text.Regular>
+                {!state.isFetching ? (
+                  <>
+                    <Tags
+                      tagList={state.chartTags}
+                      active={state.chartType}
+                      handleSetActive={(value) =>
+                        methods.handleOnChange("chartType", value)
+                      }
+                    />
+                    <Chart scores={state?.averageScores} />
+                    <Text.Regular color="gray" fontStyle="italic">
+                      The chart plots data from the latest daily reports over
+                      the past {state.averageScoresLimit} {formattedChartType}s,
+                      calculating the average severity rating for each{" "}
+                      {formattedChartType}.
+                    </Text.Regular>
+                  </>
+                ) : null}
               </VStack>
             }
           />

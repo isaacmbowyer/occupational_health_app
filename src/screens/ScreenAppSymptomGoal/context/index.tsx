@@ -62,7 +62,13 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const { scores, isFetching: isFetchingRatings } = useSymptomRatings();
 
-  const averageScores = calculateAverageScores(scores, state.chartType);
+  const averageScoresLimit = state.chartType === "Week" ? 5 : 4;
+
+  const averageScores = calculateAverageScores({
+    data: scores,
+    interval: state.chartType,
+    limit: averageScoresLimit,
+  });
 
   const { state: resourcesState, methods: resourcesMethods } = useResources({
     limit: LIMIT,
@@ -194,6 +200,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           resourceTags: INITAL_TAGS,
           chartTags: CHART_TAGS,
           chartType: state.chartType,
+          averageScoresLimit: averageScoresLimit,
         },
         methods: {
           handleOnChange: handleOnChange,
@@ -235,6 +242,7 @@ interface ISymptomGoalContext {
     resourceTags: IResourceTypeTag[];
     chartTags: IChartType[];
     chartType: IChartType;
+    averageScoresLimit: number;
   };
   methods: {
     handleOnChange: (

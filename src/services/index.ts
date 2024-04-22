@@ -18,6 +18,7 @@ import { getTrackedSymptoms } from "./get-tracked-symptoms";
 import { getUser } from "./get-user";
 import { getUsers } from "./get-users";
 import { postAuthForgotPassword } from "./post-auth-forgot-password";
+import { postAuthGoogleLogin } from "./post-auth-google-login";
 import { postAuthLogin } from "./post-auth-login";
 import { postAuthLogout } from "./post-auth-logout";
 import { postAuthRegistration } from "./post-auth-registration";
@@ -40,6 +41,7 @@ export const services = {
     score: postSymptomScore,
     resourceLike: postSymptomResourceLike,
     notification: postNotification,
+    authLoginWithGoogle: postAuthGoogleLogin,
   },
   get: {
     symptoms: getSymptoms,

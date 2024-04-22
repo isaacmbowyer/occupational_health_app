@@ -5,7 +5,6 @@ import { useSymptomsContext } from "../../../contexts/useSymptomsContext";
 import { ISymptom } from "../../../entities/ISymptom";
 import { INITAL_OPTION, INITAL_SYMPTOM } from "../../../data/defaultValues";
 import { IAddSymptomFormState } from "../../../entities/IAddSymptomFormState";
-import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
 import { IOption } from "../../../entities/IOption";
 import { filterSymptoms } from "../../../utils/filterSymptoms";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
@@ -18,6 +17,7 @@ import { ISymptomState } from "../../../entities/ISymptomState";
 import { createSeverityList } from "../../../utils/createSeverityList";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
 import { filterUsedSymptoms } from "../../../utils/filterUsedSymptoms";
+import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
 import { IAddSymptomFormStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
@@ -98,6 +98,8 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const _handleSetLoading = (boolean: boolean) => {
     setFormState((prev) => ({ ...prev, isLoading: boolean }));
   };
+
+  console.log(formState.currentSeverity, formState.targetSeverity);
 
   // ACTION METHODS
   const handleOnSubmit = async () => {

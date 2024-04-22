@@ -98,6 +98,12 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
         targetDate: newTargetDate,
       });
 
+      await services.post.notification({
+        userId: auth?.currentUser?.uid,
+        title: "Updated Symptom Details",
+        subTitle: `You adjusted your “${currentSymptom?.name}” symptom details.`,
+      });
+
       toast.successToast("Successfully updated the symptom's details");
     } catch (e: any) {
       toast.errorToast("Unable to update the symptom. Try again later");

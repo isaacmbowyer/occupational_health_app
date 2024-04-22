@@ -62,6 +62,18 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
     }
   };
 
+  const handleLoginWithGoogle = async () => {
+    try {
+      _handleSetLoading(true);
+
+      await services.post.authLoginWithGoogle();
+    } catch (e: any) {
+      toast.errorToast("Unable to login. Please try again later");
+    } finally {
+      _handleSetLoading(false);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       _handleSetLoading(true);
@@ -104,6 +116,7 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
           handleLogin: handleLogin,
           handleLogout: handleLogout,
           handleSetLoginData: handleSetLoginData,
+          handleLoginWithGoogle: handleLoginWithGoogle,
         },
       }}
     >
@@ -129,6 +142,7 @@ interface IAuthenticationContext {
   methods: {
     handleLogin: () => Promise<void>;
     handleLogout: () => Promise<void>;
+    handleLoginWithGoogle: () => Promise<void>;
     handleSetLoginData: (data: ILoginData) => void;
   };
 }

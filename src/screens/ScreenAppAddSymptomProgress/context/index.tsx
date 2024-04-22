@@ -10,8 +10,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IAddSymptomProgressFormState } from "../../../entities/IAddSymptomProgressFormState";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
-import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
-import { IAddSymptomFormStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
 
 const AddSymptomProgressContext = createContext(
   {} as IAddSymptomProgressContext
@@ -38,8 +36,8 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
     useState<IAddSymptomProgressFormState>(INITAL_FORM_STATE);
 
   const handleOnChange = (
-    key: IAddSymptomFormStateKey,
-    value: IAddSymptomFormStateKeyValue
+    key: IAddSymptomProgressFormStateKey,
+    value: IAddSymptomProgressFormStateKeyValue
   ) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
   };

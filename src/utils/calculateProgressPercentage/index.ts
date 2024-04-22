@@ -4,7 +4,7 @@ export const calculateProgressPercentage: ICalculateProgresPercentageIUtil = ({
 }) => {
   if (currentSeverity <= targetSeverity) return 100;
 
-  return ((currentSeverity - targetSeverity) / currentSeverity) * 100;
+  return ((currentSeverity - targetSeverity) / (10 - targetSeverity)) * 100;
 };
 
 interface IPayload {

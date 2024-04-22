@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
 import { findOption } from "../../../utils/findOption";
+import { getOptionNameFromId } from "../../../utils/getOptionNameFromId";
 
 interface ISelectProps {
   selectedOption: IOption;
@@ -49,7 +50,7 @@ export const Select = ({
   const isTouchedAndHasHelpText = isTouched && helpText;
 
   const _handleOnChange = (value: string) => {
-    const selectedName = findOption(items, "id", +value);
+    const selectedName = getOptionNameFromId(items, value);
     onChange({ id: +value, name: selectedName });
   };
 

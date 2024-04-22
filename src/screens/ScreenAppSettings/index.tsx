@@ -27,15 +27,6 @@ export const SettingsScreen = () => {
           />
 
           <HorizitonalCard
-            label="Notifications"
-            buttonLabel="View"
-            description="Manage your incoming notifications"
-            image={require("../../../assets/notifications.png")}
-            icon={ICONS.CHEVRON_RIGHT}
-            handleOnPress={() => navigation.navigate("Notifications")}
-          />
-
-          <HorizitonalCard
             label="Logout"
             buttonLabel="Logout"
             description="Leave the application"

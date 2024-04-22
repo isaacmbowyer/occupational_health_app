@@ -2,8 +2,6 @@ import { createContext, useContext, useState } from "react";
 import { IProviderProps } from "../../../entities/IProviderProps";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { INITAL_OPTION } from "../../../data/defaultValues";
-import { IAddSymptomStateKey } from "../../../entities/IAddSymptomFormStateKey";
-import { IAddSymptomStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
 import { IOption } from "../../../entities/IOption";
 import { useSeverityRatings } from "../../../hooks/useSeverityRatings";
 import { services } from "../../../services";
@@ -12,6 +10,8 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IAddSymptomProgressFormState } from "../../../entities/IAddSymptomProgressFormState";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
+import { IAddSymptomFormStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
 
 const AddSymptomProgressContext = createContext(
   {} as IAddSymptomProgressContext
@@ -38,8 +38,8 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
     useState<IAddSymptomProgressFormState>(INITAL_FORM_STATE);
 
   const handleOnChange = (
-    key: IAddSymptomStateKey,
-    value: IAddSymptomStateKeyValue
+    key: IAddSymptomFormStateKey,
+    value: IAddSymptomFormStateKeyValue
   ) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
   };

@@ -11,7 +11,7 @@ import * as Google from "expo-auth-session/providers/google";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { AuthRequestPromptOptions, AuthSessionResult } from "expo-auth-session";
-import { sendCustomEmail } from "../../services/send-email";
+import { sendEmail } from "../../utils/sendEmail";
 
 const AuthenticationContext = createContext({} as IAuthenticationContext);
 
@@ -105,6 +105,12 @@ export const AuthenticationProvider = ({ children }: IProviderProps) => {
   const handleDeleteAccount = async () => {
     try {
       _handleSetLoading(true);
+
+      const user = await services.get.user({
+        userId: auth.currentUser.uid,
+      });
+
+      sendEmail({ firstName: user.firstName, email: auth.currentUser.email });
 
       await services.delete.account();
 

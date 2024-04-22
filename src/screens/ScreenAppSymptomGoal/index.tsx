@@ -118,6 +118,19 @@ const SymptomGoal = () => {
               onPress={methods.handleOnPress}
               isDisabled={state?.isButtonDisabled}
             />
+            {!state?.isButtonDisabled ? (
+              <Text.Small fontStyle="italic" textAlign="center">
+                You can submit a severity score for each symptom once every 24
+                hours.
+              </Text.Small>
+            ) : null}
+
+            {state?.isButtonDisabled && !state?.isPastDateReached ? (
+              <Text.Small fontStyle="italic" textAlign="center">
+                You have allready submitted a severity score for this symptom
+                today.
+              </Text.Small>
+            ) : null}
 
             {state?.isPastDateReached ? (
               <Text.Small fontStyle="italic" textAlign="center">

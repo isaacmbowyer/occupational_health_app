@@ -1,4 +1,5 @@
 import { IOption } from "../../entities/IOption";
+import { adjustSeverityValue } from "../adjustSeverityValue";
 
 export const createSeverityList: ICreateSeverityListUtil = ({
   severityList,
@@ -10,11 +11,13 @@ export const createSeverityList: ICreateSeverityListUtil = ({
   if (!severity) return severityList;
 
   return severityList.filter((item) => {
+    const adjustedValue = adjustSeverityValue(item);
+
     if (type === "current") {
-      return Number(item.name) > severity;
+      return Number(adjustedValue.name) > severity;
     }
 
-    return Number(item.name) < severity;
+    return Number(adjustedValue.name) < severity;
   });
 };
 

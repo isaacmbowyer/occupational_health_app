@@ -16,7 +16,6 @@ import { IOption } from "../../../entities/IOption";
 import { useState, useEffect } from "react";
 import { Label } from "../Label";
 import { LabelError } from "../LabelError";
-import { findOption } from "../../../utils/findOption";
 import { getOptionNameFromId } from "../../../utils/getOptionNameFromId";
 
 interface ISelectProps {

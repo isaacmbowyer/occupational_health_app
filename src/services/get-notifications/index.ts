@@ -34,7 +34,7 @@ export const getNotifications: IGetNotificationsService = async (props) => {
   collectionQuery = query(
     resourcesRef,
     where("userId", "==", props?.userId),
-    orderBy("createdAt"),
+    orderBy("createdAt", "desc"),
     limit(props?.limit)
   );
 
@@ -43,7 +43,7 @@ export const getNotifications: IGetNotificationsService = async (props) => {
       resourcesRef,
       where("userId", "==", props?.userId),
       where("isRead", "==", isReadTag),
-      orderBy("createdAt"),
+      orderBy("createdAt", "desc"),
       limit(props?.limit)
     );
   }
@@ -58,7 +58,7 @@ export const getNotifications: IGetNotificationsService = async (props) => {
       collectionQuery = query(
         resourcesRef,
         where("userId", "==", props?.userId),
-        orderBy("createdAt"),
+        orderBy("createdAt", "desc"),
         startAfter(lastVisible),
         limit(props?.limit)
       );
@@ -67,7 +67,7 @@ export const getNotifications: IGetNotificationsService = async (props) => {
         resourcesRef,
         where("userId", "==", props?.userId),
         where("isRead", "==", isReadTag),
-        orderBy("createdAt"),
+        orderBy("createdAt", "desc"),
         startAfter(lastVisible),
         limit(props?.limit)
       );

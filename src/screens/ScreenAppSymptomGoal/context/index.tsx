@@ -28,6 +28,8 @@ import { INITAL_TAGS } from "../../../data/defaultValues";
 import { IChartType } from "../../../entities/IChartType";
 import { IResourceTypeTag } from "../../../entities/IResourceTypeTag";
 import { calculateAverageScores } from "../../../utils/calculateAverageScores";
+import { adjustSeverityValue } from "../../../utils/adjustSeverityValue";
+import { addWorstOrBestToSeverity } from "../../../utils/addWorstOrBestToSeverity";
 
 const CHART_TAGS: IChartType[] = ["Week", "Month"];
 
@@ -36,7 +38,7 @@ const SymptomGoalContext = createContext({} as ISymptomGoalContext);
 export const SymptomGoalProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
-  const severityList = useSeverityRatings();
+  const { severityOptions, formattedSeverityOptions } = useSeverityRatings();
   const { currentSymptom } = useCurrentEntityContext();
   const { data: users, isFetching: isFetchingUsers } = useUsersContext();
   const { data: resourceTypes, isFetching: isFetchingTypes } =
@@ -44,7 +46,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
 
   const INITIAL_STATE: ISymptomGoalState = {
     targetSeverity: findOption(
-      severityList,
+      severityOptions,
       "name",
       String(currentSymptom?.targetSeverity)
     ),
@@ -79,6 +81,8 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     skip: SKIP,
   });
 
+  console.log("TARGET", state.targetSeverity);
+
   // ACTION METHODS
   const _handleSetLoading = (bool: boolean) => {
     setState((prev) => ({ ...prev, isLoading: bool }));
@@ -88,6 +92,7 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     newTargetDate: Date,
     newTargetSeverity: IOption
   ) => {
+    console.log(+newTargetSeverity?.name);
     try {
       _handleSetLoading(true);
 
@@ -116,16 +121,23 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     key: ISymptomGoalStateKey,
     value: ISymptomGoalStateKeyValue
   ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-
-    if (key === "targetDate")
+    if (key === "targetDate") {
+      setState((prev) => ({ ...prev, targetDate: value as Date }));
       return _handleOnEdit(value as Date, state?.targetSeverity);
+    }
 
-    if (key === "targetSeverity")
-      return _handleOnEdit(state?.targetDate, value as IOption);
+    if (key === "targetSeverity") {
+      const formattedValue = adjustSeverityValue(value);
+      setState((prev) => ({ ...prev, targetSeverity: formattedValue }));
+      return _handleOnEdit(state?.targetDate, formattedValue as IOption);
+    }
 
     if (key === "source")
-      return setState((prev) => ({ ...prev, currentPage: 1 }));
+      return setState((prev) => ({
+        ...prev,
+        source: value as IResourceTypeTag,
+        currentPage: 1,
+      }));
   };
 
   const handleOnLikeResource = async (resource: IResourceWithLike) => {
@@ -180,6 +192,9 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           title: currentSymptom?.name,
           currentSeverity: currentSymptom?.currentSeverity,
           targetSeverity: state?.targetSeverity,
+          formattedTargetSeverity: addWorstOrBestToSeverity(
+            state?.targetSeverity
+          ),
           targetDate: state?.targetDate,
           activeSource: state?.source,
           daysLeft: getDaysLeft(state?.targetDate),
@@ -191,9 +206,9 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
           totalPages: resourcesState.totalPages,
           limit: LIMIT,
           severityList: createSeverityList({
-            severityList: severityList,
+            severityList: formattedSeverityOptions,
             selectedSeverity: findOption(
-              severityList,
+              severityOptions,
               "name",
               String(currentSymptom?.currentSeverity)
             ),
@@ -230,6 +245,7 @@ interface ISymptomGoalContext {
     title: string;
     currentSeverity: number;
     targetSeverity: IOption;
+    formattedTargetSeverity: IOption;
     targetDate: Date;
     daysLeft: number;
     activeSource: string;

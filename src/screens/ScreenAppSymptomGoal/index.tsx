@@ -96,7 +96,7 @@ const SymptomGoal = () => {
               <VStack width="$full" space="xl">
                 <VStack space="md">
                   <Select
-                    selectedOption={state?.targetSeverity}
+                    selectedOption={state?.formattedTargetSeverity}
                     label="Target Severity"
                     items={state.severityList}
                     onChange={(value) =>

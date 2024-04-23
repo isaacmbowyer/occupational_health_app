@@ -22,6 +22,7 @@ import { ITrackedSymptomsState } from "../../../entities/ITrackedSymptomsState";
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 import { ITrackedSymptom } from "../../../entities/ITrackedSymptom";
+import { adjustSeverityValue } from "../../../utils/adjustSeverityValue";
 
 const TrackedSymptomsContext = createContext({} as ITrackedSymptomsContext);
 
@@ -77,8 +78,8 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     trackedSymptoms: trackedSymptomsState.trackedSymptoms,
   });
 
-  const severityTypeList = useSeverityTypes();
-  const severityRatingsList = useSeverityRatings();
+  const severityTypeOptions = useSeverityTypes();
+  const { formattedSeverityOptions } = useSeverityRatings();
 
   // STATE METHODS
   const _handleSetLoading = (boolean: boolean) => {
@@ -96,6 +97,12 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
     key: IAdvancedSearchStateKey,
     value: IAdvancedSearchStateKeyValue
   ) => {
+    if (key === "currentRating" || key === "targetRating") {
+      const formattedValue = adjustSeverityValue(value);
+      setSearchState((prev) => ({ ...prev, [key]: formattedValue }));
+      return;
+    }
+
     setSearchState((state) => ({ ...state, [key]: value }));
   };
 
@@ -179,8 +186,8 @@ export const TrackedSymptomsProvider = ({ children }: IProviderProps) => {
           limit: LIMIT,
           symptoms: userSymptoms,
           tagList: TAGS,
-          severityTypeOptions: severityTypeList,
-          ratingOptions: severityRatingsList,
+          severityTypeOptions: severityTypeOptions,
+          ratingOptions: formattedSeverityOptions,
           source: state?.source,
           isSearchActive: state?.isSearchActive,
           symptom: searchState?.symptom,

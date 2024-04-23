@@ -80,12 +80,6 @@ export const PersonalProfileProvider = ({ children }: IProviderProps) => {
           id: user.id,
         });
 
-        await services.post.notification({
-          userId: auth?.currentUser?.uid,
-          title: "Updated Personal Details",
-          subTitle: `You adjusted your personal details.`,
-        });
-
         console.log("SUCCESS", "Loaded your personal details successfully");
       } catch (error: any) {
         toast.errorToast(

@@ -19,6 +19,7 @@ import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityConte
 import { filterUsedSymptoms } from "../../../utils/filterUsedSymptoms";
 import { IAddSymptomFormStateKey } from "../../../entities/IAddSymptomFormStateKey";
 import { IAddSymptomFormStateKeyValue } from "../../../entities/IAddSymptomFormStateKeyValue";
+import { adjustSeverityValue } from "../../../utils/adjustSeverityValue";
 
 const AddSymptomContext = createContext({} as IAddSymptomContext);
 
@@ -42,7 +43,7 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
   const toast = useCustomToast();
   const { data: symptoms, isFetching: isFetchingSymptoms } =
     useSymptomsContext();
-  const severityList = useSeverityRatings();
+  const { severityOptions, formattedSeverityOptions } = useSeverityRatings();
   const { state: trackedSymptomsState } = useTrackedSymptoms({});
   const { currentSymptomPage, setCurrentSymptomPage } =
     useCurrentEntityContext();
@@ -82,6 +83,12 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
     key: IAddSymptomFormStateKey,
     value: IAddSymptomFormStateKeyValue
   ) => {
+    if (key === "currentSeverity" || key === "targetSeverity") {
+      const formattedValue = adjustSeverityValue(value);
+      setFormState((prev) => ({ ...prev, [key]: formattedValue }));
+      return;
+    }
+
     setFormState((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -155,12 +162,12 @@ export const AddSymptomProvider = ({ children }: IProviderProps) => {
           isLoading: formState?.isLoading,
           isDisabled: isDisabled,
           targetSeverityList: createSeverityList({
-            severityList: severityList,
+            severityList: formattedSeverityOptions,
             selectedSeverity: formState?.currentSeverity,
             type: "target",
           }),
           currentSeverityList: createSeverityList({
-            severityList: severityList,
+            severityList: formattedSeverityOptions,
             selectedSeverity: formState?.targetSeverity,
             type: "current",
           }),

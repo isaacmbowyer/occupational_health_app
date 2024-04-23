@@ -1,11 +1,11 @@
 import { Text, VStack } from "@gluestack-ui/themed";
-import { IAddSymptomStateKey } from "../../../../entities/IAddSymptomFormStateKey";
-import { IAddSymptomStateKeyValue } from "../../../../entities/IAddSymptomFormStateKeyValue";
 import { DatePicker } from "../../../../components/atoms/DatePicker";
 import { IOption } from "../../../../entities/IOption";
 import { Select } from "../../../../components/atoms/Select";
 import { colors } from "../../../../data/colors";
 import { createSeverityList } from "../../../../utils/createSeverityList";
+import { IAddSymptomFormStateKey } from "../../../../entities/IAddSymptomFormStateKey";
+import { IAddSymptomFormStateKeyValue } from "../../../../entities/IAddSymptomFormStateKeyValue";
 
 interface IRatingSymptomSectionProps {
   targetDate: Date;
@@ -14,8 +14,8 @@ interface IRatingSymptomSectionProps {
   targetSeverityList: IOption[];
   currentSeverityList: IOption[];
   handleOnChange: (
-    key: IAddSymptomStateKey,
-    value: IAddSymptomStateKeyValue
+    key: IAddSymptomFormStateKey,
+    value: IAddSymptomFormStateKeyValue
   ) => void;
 }
 

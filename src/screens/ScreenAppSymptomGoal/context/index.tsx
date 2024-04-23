@@ -81,8 +81,6 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     skip: SKIP,
   });
 
-  console.log("TARGET", state.targetSeverity);
-
   // ACTION METHODS
   const _handleSetLoading = (bool: boolean) => {
     setState((prev) => ({ ...prev, isLoading: bool }));
@@ -92,7 +90,6 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
     newTargetDate: Date,
     newTargetSeverity: IOption
   ) => {
-    console.log(+newTargetSeverity?.name);
     try {
       _handleSetLoading(true);
 
@@ -138,6 +135,11 @@ export const SymptomGoalProvider = ({ children }: IProviderProps) => {
         source: value as IResourceTypeTag,
         currentPage: 1,
       }));
+
+    setState((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   const handleOnLikeResource = async (resource: IResourceWithLike) => {

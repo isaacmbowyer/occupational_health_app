@@ -10,6 +10,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IAddSymptomProgressFormState } from "../../../entities/IAddSymptomProgressFormState";
 import { useCurrentEntityContext } from "../../../contexts/useCurrentEntityContext";
+import { adjustSeverityValue } from "../../../utils/adjustSeverityValue";
 
 const AddSymptomProgressContext = createContext(
   {} as IAddSymptomProgressContext
@@ -24,7 +25,7 @@ const INITAL_FORM_STATE: IAddSymptomProgressFormState = {
 export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useCustomToast();
-  const severityList = useSeverityRatings();
+  const { formattedSeverityOptions } = useSeverityRatings();
   const {
     currentSymptom,
     setCurrentSymptom,
@@ -39,7 +40,12 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
     key: IAddSymptomProgressFormStateKey,
     value: IAddSymptomProgressFormStateKeyValue
   ) => {
-    setFormState((prev) => ({ ...prev, [key]: value }));
+    let formattedValue = value;
+    if (key === "currentSeverity") {
+      formattedValue = adjustSeverityValue(value);
+    }
+
+    setFormState((prev) => ({ ...prev, [key]: formattedValue }));
   };
 
   const _handleSetLoading = (boolean: boolean) => {
@@ -51,16 +57,21 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
     try {
       _handleSetLoading(true);
 
+      const formattedCurrentSeverity = adjustSeverityValue(
+        formState?.currentSeverity
+      );
+      const value = Number(formattedCurrentSeverity?.name);
+
       await services.post.score({
         userId: auth.currentUser.uid,
         symptomId: currentSymptom.symptomId,
         comment: formState?.comment,
-        currentSeverity: formState?.currentSeverity,
+        currentSeverity: value,
       });
 
       await services.update.trackedSymptom({
         id: currentSymptom.id,
-        currentSeverity: +formState?.currentSeverity?.name,
+        currentSeverity: value,
         targetSeverity: currentSymptom?.targetSeverity,
         targetDate: currentSymptom?.targetDate,
       });
@@ -71,7 +82,7 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
         subTitle: `You updated your daily progress for “${currentSymptom?.name}”`,
       });
 
-      setCurrentSymptom(null);
+      setCurrentSymptom({ ...currentSymptom, targetSeverity: value });
       setFormState(INITAL_FORM_STATE);
       setCurrentSymptomPage(currentSymptomPage + 1);
       toast.successToast("Successfully added the daily symptom severity");
@@ -91,7 +102,7 @@ export const AddSymptomProgressProvider = ({ children }: IProviderProps) => {
           comment: formState?.comment,
           isLoading: formState?.isLoading,
           isDisabled: isDisabled,
-          severityList: severityList,
+          severityList: formattedSeverityOptions,
           name: currentSymptom?.name,
         },
         methods: {

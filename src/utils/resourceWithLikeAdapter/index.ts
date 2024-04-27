@@ -1,7 +1,5 @@
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { IResource } from "../../entities/IResource";
 import { IResourceWithLike } from "../../entities/IResourceWithLike";
-import { IUserLike } from "../../entities/IUserLike";
 
 export const resourceWithLikeAdapter: IResourceWithLikeAdapter = ({
   userId,

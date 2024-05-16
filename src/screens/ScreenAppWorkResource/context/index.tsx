@@ -90,16 +90,6 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const handleOnChange = (
-    key: IWorkResourceStateKey,
-    value: IWorkResourceStateKeyValue
-  ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-
-    if (key === "source")
-      return setState((prev) => ({ ...prev, currentPage: 1 }));
-  };
-
   const handleOnViewResource = async (resource: IResourceWithLike) => {
     const typeName = findOption(resourceTypes, "id", resource.typeId)?.name;
 
@@ -116,6 +106,16 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
       console.log("ERROR", e);
       toast.errorToast("Unable to open this resource");
     }
+  };
+
+  const handleOnChange = (
+    key: IWorkResourceStateKey,
+    value: IWorkResourceStateKeyValue
+  ) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+
+    if (key === "source")
+      return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
   const isInvalidSearch = state.source !== "All" && !resourcesState.totalCount;

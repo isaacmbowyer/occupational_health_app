@@ -62,7 +62,7 @@ export const Input = ({
 
           {icon && (
             <InputSlot pr="$3">
-              <InputIcon as={icon} />
+              <InputIcon as={icon} data-testid="input-icon" />
             </InputSlot>
           )}
         </GluestackInput>

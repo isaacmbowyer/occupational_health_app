@@ -1,6 +1,8 @@
-import { FormControlErrorIcon } from "@gluestack-ui/themed";
-import { FormControlErrorText } from "@gluestack-ui/themed";
-import { FormControlError } from "@gluestack-ui/themed";
+import {
+  FormControlErrorIcon,
+  FormControlErrorText,
+  FormControlError,
+} from "@gluestack-ui/themed";
 import { ReactNode } from "react";
 import { ICONS } from "../../../data/icons";
 
@@ -12,7 +14,7 @@ export const LabelError = ({ children }: ILabelErrorProps) => {
   return (
     <FormControlError>
       <FormControlErrorIcon as={ICONS.ALERT} />
-      <FormControlErrorText>{children}</FormControlErrorText>
+      <FormControlErrorText width={310}>{children}</FormControlErrorText>
     </FormControlError>
   );
 };

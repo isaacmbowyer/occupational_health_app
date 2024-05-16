@@ -24,8 +24,8 @@ export const IllustrationStateLoading = ({
 
   return (
     <VStack space="md" mb="$8">
-      {cards.map((card) => (
-        <Card key={card} />
+      {cards.map((card, index) => (
+        <Card key={card} data-testid={`skeleton-card-${index + 1}`} />
       ))}
     </VStack>
   );

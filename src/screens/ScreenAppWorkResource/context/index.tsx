@@ -20,7 +20,6 @@ import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceState
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
-import { INITAL_TAGS } from "../../../data/defaultValues";
 import { filterTags } from "../../../utils/filterTags";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);

@@ -20,7 +20,6 @@ import { IWorkResourceStateKeyValue } from "../../../entities/IWorkResourceState
 import { decideScreenStateToRender } from "../../../utils/decideScreenStateToRender";
 import { IRenderOptionsOutput } from "../../../entities/IRenderOptionsOutput";
 import { validateOptionsBasedOnBoolean } from "../../../utils/validateOptionsBasedOnBoolean";
-import { INITAL_TAGS } from "../../../data/defaultValues";
 import { filterTags } from "../../../utils/filterTags";
 
 const WorkResourcesContext = createContext({} as IWorkResourcesContext);
@@ -91,16 +90,6 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
     }
   };
 
-  const handleOnChange = (
-    key: IWorkResourceStateKey,
-    value: IWorkResourceStateKeyValue
-  ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-
-    if (key === "source")
-      return setState((prev) => ({ ...prev, currentPage: 1 }));
-  };
-
   const handleOnViewResource = async (resource: IResourceWithLike) => {
     const typeName = findOption(resourceTypes, "id", resource.typeId)?.name;
 
@@ -117,6 +106,16 @@ export const WorkResourcesProvider = ({ children }: IProviderProps) => {
       console.log("ERROR", e);
       toast.errorToast("Unable to open this resource");
     }
+  };
+
+  const handleOnChange = (
+    key: IWorkResourceStateKey,
+    value: IWorkResourceStateKeyValue
+  ) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+
+    if (key === "source")
+      return setState((prev) => ({ ...prev, currentPage: 1 }));
   };
 
   const isInvalidSearch = state.source !== "All" && !resourcesState.totalCount;

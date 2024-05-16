@@ -1,6 +1,5 @@
 import { ISymptom } from "../../entities/ISymptom";
 import { ITrackedSymptom } from "../../entities/ITrackedSymptom";
-import { IUserSymptom } from "../../entities/IUserSymptom";
 
 export const formatUserSymptoms: IFormatUserSymptomsUtil = (props) => {
   const userSymptoms = props?.trackedSymptoms?.map((trackedSymptom) => {
@@ -33,5 +32,5 @@ interface IPayload {
 }
 
 interface IFormatUserSymptomsUtil {
-  (props: IPayload): IUserSymptom[];
+  (props: IPayload): ITrackedSymptom[];
 }

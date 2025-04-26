@@ -6,7 +6,7 @@ export const postSymptomScore: IPostSymptomScoreService = async (props) => {
     userId: props?.userId,
     symptomId: props?.symptomId,
     createdAt: new Date(),
-    rating: props?.currentSeverity,
+    rating: Number(props?.currentSeverity.name),
     comment: props?.comment,
   });
 };
